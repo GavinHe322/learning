@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>插槽</title>
+</head>
+<body>
+    <div id="app">
+        <parent></parent>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+
+        var children = {
+            template: `<div>
+                            <h1>我是子组件</h1>
+                            <slot name="h1"/>
+                            <slot name="hh"/>
+                            <slot></slot>
+                        </div>`
+        }
+
+        var parent = {
+            template: `<div>
+                            <children>
+                                <h1 slot="h1">标题1</h1>
+                                <h2 slot="h2">标题2</h2>
+                                <h3>标题三</h3>
+                            </children>
+                        </div>`,
+            components: {
+                children
+            }
+        }    
+        
+        new Vue({
+            el: "#app",
+            components: {
+                parent,
+            }
+        })
+
+        var slot1 = {
+            template: `
+                <div>
+                    <div>下面是一个slot</div>
+                    <slot a="123" b="msg"/>
+                </div>
+            `,
+        }
+
+        var myslot = {
+            template: `<myslot>
+
+                        </myslot>
+            `,
+            
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <title>保留组件状态</title>
+</head>
+<body>
+<!-- <keep-alive>是一个抽象组件：它不会呈现DOM元素本身，也不会显示在组件父链中。 -->
+    <div id="app">
+        <pre>
+            include - 字符串或RegExp或数组。只会缓存具有匹配名称的组件。
+            exclude - 字符串或RegExp或数组。任何具有匹配名称的组件都不会被缓存。
+            max - 号码 要缓存的最大组件实例数
+        </pre>
+        <button @click="flag='my-hellow'">显示hellow组件</button>
+        <button @click="flag='my-world'">显示world组件</button>
+        <div>
+            <!-- 使用keep-alive组件缓存飞活动组件，可以保留状态，避免重复渲染 -->
+            <keep-alive>
+                <component :is="flag"></component>
+            </keep-alive>
+        </div>
+    </div>
+
+    <script>
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                flag: 'my-hellow'
+            },
+            components: {
+                'my-hellow': {
+                    template: `<h3>我是hellow组件{{x}}</h3>`,
+                    data() {
+                        return {
+                            x: new Date().getMilliseconds()
+                        }
+                    }
+                },
+                'my-world': {
+                    template: '<h3>我是world组件{{x}}</h3>',
+                    data() {
+                        return {
+                            x: new Date().getMilliseconds()
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
