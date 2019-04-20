@@ -18,4 +18,4 @@
 '''
 # pip install -i https://pypi.douban.com/simple django
 # pip install django=2.0
-
+# django-admin startproject 'name!'
