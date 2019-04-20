@@ -21,3 +21,4 @@
 
 from A12_module import *
 info.getAvatar()
+
