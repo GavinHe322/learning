@@ -33,3 +33,11 @@ window.onmousedown = function(mouseEvent: any) {
     console.log(mouseEvent.button); // <-Now,no error is gavin
 }
 
+// 这个函数表达式有明确的参数类型注解，上下文类型被忽略。这样的话就不会报错了。因为这里使用不会使用到上下文类型。
+
+// 上下文归类会有很多情况下使用到。通常包含函数的参数，赋值表达式的右边，类型断言，对象成员和数组字面量和返回语句。上下文类型也会做为做为最佳通用类型的候选类型。比如：
+function createZAoo(): Animal[] {
+    return [new Rhino(), new Elephant(), new Snake()];
+}
+
+// 这个例子中，最佳通用类型有四个候选者：Animal, Rhino< Elephant和Snake。 当然，Animal会被做为最佳通用类型。
