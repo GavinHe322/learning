@@ -105,7 +105,44 @@ x = ["hello", 10]; // OK
 // A helpful addition to the standard set of datatypes from javascript is the enum, As in languages like C#,
 // an enum is a way of giving more friendly names to sets of numeric values.
 
-enum Color {Red, Green, Blue}
+// enum Color {Red, Green, Blue}
 
-let c: Color = Color.Green
+// let c: Color = Color.Green
 
+// 默认情况下， 从0 开始为元素编号，你也可以手动的指定成员的数值。例如，我们将上面的例子改成1 开始编号
+
+// enum Color {Red = 1, Green, Blue}
+
+// let c: Color = Color.Green
+
+// console.log(c)
+
+
+// 或者，全部都采用手动赋值：
+// enum Color {Red = 1, Green = 2, Blue = 4}
+// let c: Color = Color.Green
+
+
+// console.log(c)
+
+
+// 枚举类型提供的一个遍历是你可以由枚举的值得到它的名字。例如，我们知道数值为2， 
+// 但是不确定它映射到Color里的哪个名字，我们可以查找相应的名字：
+
+enum Color {
+   Red = 1,
+   Green,
+   Blue
+}
+
+let ColorName: string = Color[2]
+
+console.log(ColorName)
+
+// we may need to describe the type of variables that we do not know when we are writing an application, these values
+// may come from dynamic content, e.g. from the user or 3rd party libraty, in these cases, we want to
+// opt-out of type checking and let the values pass throught compile-time checks, To do so, we label these with the
+// any type
+
+let notSure: any = 4
+notSure = 'maybe a string instead'
