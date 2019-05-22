@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class BinaryNode {
+            constructor(node) {
+                this.node = node
+                this.right = null
+                this.left = null
+            }
+        }
+
+        class BinaryTree { 
+            constructor() {
+                this.root = null
+            }
+            insert(newNode) {
+                debugger
+                var newNode = new BinaryNode(newNode)
+                if (this.root) {
+                    this.insertNode(this.root, newNode)
+                } else {
+                    this.root = newNode
+                }
+            }
+            insertNode(node, newNode) {
+                debugger
+                if (node.node > newNode.node) {
+                    if (node.left === null) {
+                        node.left = newNode
+                    } else {
+                        this.insertNode(node.left, newNode)
+                    }
+                } else {
+                    if (node.right === null) {
+                        node.right = newNode
+                    } else {
+                        this.insertNode(node.right, newNode)
+                    }
+                }
+            }
+        }
+        var nodes = [8, 1, 3, 6, 7, 4, 10, 14, 13]
+        var binaryTree = new BinaryTree()
+        nodes.forEach(node => {
+            debugger
+            binaryTree.insert(node)
+        })
+        console.log(binaryTree.root)
+    </script>
+</body>
+</html>
