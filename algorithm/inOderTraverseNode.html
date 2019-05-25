@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>中序排序</title>
+</head>
+<body>
+    <script>
+        class BinaryNode {
+            constructor(node) {
+                this.node = node
+                this.right = null
+                this.left = null
+            }
+        }
+
+        class BinaryTree { 
+            constructor() {
+                this.root = null
+            }
+            insert(newNode) {
+                var newNode = new BinaryNode(newNode)
+                if (this.root) {
+                    this.insertNode(this.root, newNode)
+                } else {
+                    this.root = newNode
+                }
+            }
+            insertNode(node, newNode) {
+                if (node.node > newNode.node) {
+                    if (node.left === null) {
+                        node.left = newNode
+                    } else {
+                        this.insertNode(node.left, newNode)
+                    }
+                } else {
+                    if (node.right === null) {
+                        node.right = newNode
+                    } else {
+                        this.insertNode(node.right, newNode)
+                    }
+                }
+            }
+            // 中序遍历
+            inOrderTraverse(callback) {
+                debugger
+                this.inOrderTraverseNode(this.root, callback)
+            }
+
+            inOrderTraverseNode(node, callback) {
+                if (node !== null) {
+                    this.inOrderTraverseNode(node.left, callback)
+                    callback(node.node)
+                    this.inOrderTraverseNode(node.right, callback)
+                }
+            }
+
+            // 前序遍历
+        }
+        var nodes = [8, 3,10, 1, 6, 14, 4, 7, 13]
+        var binaryTree = new BinaryTree()
+        nodes.forEach(node => {
+            binaryTree.insert(node)
+        })
+        console.log(binaryTree.root)
+        var callback = function(node) {
+            console.log(node)
+        }
+        binaryTree.inOrderTraverse(callback)
+    </script>
+</body>
+</html>
