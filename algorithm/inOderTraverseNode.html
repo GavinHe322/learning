@@ -21,6 +21,7 @@
                 this.root = null
             }
             insert(newNode) {
+                // debugger
                 var newNode = new BinaryNode(newNode)
                 if (this.root) {
                     this.insertNode(this.root, newNode)
@@ -29,6 +30,7 @@
                 }
             }
             insertNode(node, newNode) {
+                // debugger
                 if (node.node > newNode.node) {
                     if (node.left === null) {
                         node.left = newNode
@@ -43,25 +45,14 @@
                     }
                 }
             }
-            // 中序遍历
-            inOrderTraverse(callback) {
-                debugger
-                this.inOrderTraverseNode(this.root, callback)
-            }
-
-            inOrderTraverseNode(node, callback) {
-                if (node !== null) {
-                    this.inOrderTraverseNode(node.left, callback)
-                    callback(node.node)
-                    this.inOrderTraverseNode(node.right, callback)
-                }
-            }
-            
+         
             // 前序遍历
             preOrderTraverse(callback) {
+                // debugger
                 this.preOrderTraverseNode(this.root, callback);
             }
             preOrderTraverseNode(node, callback) {
+                // debugger
                 if (node !== null) {
                     callback(node.node)
                     this.preOrderTraverseNode(node.left, callback)
@@ -69,11 +60,29 @@
                 }
             }
 
+            // 中序遍历
+            inOrderTraverse(callback) {
+                // debugger
+                this.inOrderTraverseNode(this.root, callback)
+            }
+
+            inOrderTraverseNode(node, callback) {
+                // debugger
+                if (node !== null) {
+                    this.inOrderTraverseNode(node.left, callback)
+                    callback(node.node)
+                    this.inOrderTraverseNode(node.right, callback)
+                }
+            }
+            
+
             // 后序遍历
             postOrderTraverse(callback) {
+                // debugger
                 this.postOrderTraverseNode(this.root, callback)
             }
             postOrderTraverseNode(node, callback) {
+                // debugger
                 if (node !== null) {
                     this.postOrderTraverseNode(node.left, callback) 
                     this.postOrderTraverseNode(node.right, callback)
@@ -83,10 +92,13 @@
 
             // 最小值
             min() {
+                // debugger
                 return this.minNode(this.root)
             }
             minNode(root) {
+                // debugger
                 if (root.left !== null) {
+                    // debugger
                     while(root && root.left) {
                         root = root.left
                     }
@@ -96,9 +108,11 @@
             }
             // 最大值
             max() {
+                // debugger
                 return this.maxNode(this.root)
             }
             maxNode(root) {
+                // debugger
                 if(root.right !== null) {
                     while(root && root.right) {
                         root = root.right
@@ -109,9 +123,11 @@
             }
             // 查找一个指定node
             search(node) {
+                // debugger
                 return this.searchNode(this.root, node)
             }
             searchNode(root, node) {
+                // debugger
                 if (root === null ) {
                     return false
                 }
@@ -123,28 +139,80 @@
                     return true
                 }
             }
+            remove(node) {
+                debugger
+                this.removeNode(this.root, node)
+            }
+            removeNode(root, node) {
+                debugger
+                if (root === null) {
+                    return null
+                }
+                if (root.node > node) {
+                    root.left = this.removeNode(root.left, node)
+                    return root
+                } else if (root.node < node) {
+                    root.right = this.removeNode(root.right, node)
+                    return root
+                } else {
+                    if (root.left === null && root.right === null) {
+                        root = null
+                        return root
+                    }
+                    if (root.left === null) {
+                        root = root.right
+                        return root
+                    } else if (root.right === null) {
+                        root = root.left
+                        return root
+                    }
+                    var aux = this.findMinNode(root.right)
+                    root.node = aux.node
+                    root.right = this.removeNode(root.right, aux.node)
+                    return root
+                }
+            }
+            findMinNode(root) {
+                if (root) {
+                    while(root && root.left !== null) {
+                        root = root.left
+                    }
+                    return root
+                }
+                return null
+            }
         }
         var nodes = [8, 3,10, 1, 6, 14, 4, 7, 13]
         var binaryTree = new BinaryTree()
         nodes.forEach(node => {
             binaryTree.insert(node)
         })
+
         console.log(binaryTree.root)
         var callback = function(node) {
             console.log(node)
         }
+
+        // 如果需要哪个代码则打开注释和方法中的debugger即可,打开一个要把不需要看的注释，
+
+        // 先序遍历
+        binaryTree.preOrderTraverse(callback) //例如这条打开，这个方法中已经打好的debugger打开， 多看一遍函数的执行顺序和当前值，就好了。
+        // 中序遍历
         // binaryTree.inOrderTraverse(callback)
-        // binaryTree.preOrderTraverse(callback)
+        // 后序遍历
         // binaryTree.postOrderTraverse(callback)
-        // console.log(
+        console.log(
         //     `最小值是：${binaryTree.min()}`,
         //     `最大值是：${binaryTree.max()}`,
-        // )
-        console.log(
-            binaryTree.search(1) ? "search num 1 is fount" : "search num 1 is not found",
-            binaryTree.search(15) ? "search num 15 is fount" : "search num 15 is not found",
-
         )
+        console.log(
+            // binaryTree.search(1) ? "search num 1 is fount" : "search num 1 is not found",
+            // binaryTree.search(15) ? "search num 15 is fount" : "search num 15 is not found",
+        )
+        // binaryTree.remove(1)
+        // binaryTree.remove(3)
+        // binaryTree.remove(10)
+        // console.log(binaryTree.root)
     </script>
 </body>
 </html>
