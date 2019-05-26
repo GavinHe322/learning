@@ -56,8 +56,73 @@
                     this.inOrderTraverseNode(node.right, callback)
                 }
             }
-
+            
             // 前序遍历
+            preOrderTraverse(callback) {
+                this.preOrderTraverseNode(this.root, callback);
+            }
+            preOrderTraverseNode(node, callback) {
+                if (node !== null) {
+                    callback(node.node)
+                    this.preOrderTraverseNode(node.left, callback)
+                    this.preOrderTraverseNode(node.right, callback)
+                }
+            }
+
+            // 后序遍历
+            postOrderTraverse(callback) {
+                this.postOrderTraverseNode(this.root, callback)
+            }
+            postOrderTraverseNode(node, callback) {
+                if (node !== null) {
+                    this.postOrderTraverseNode(node.left, callback) 
+                    this.postOrderTraverseNode(node.right, callback)
+                    callback(node.node)
+                }
+            }
+
+            // 最小值
+            min() {
+                return this.minNode(this.root)
+            }
+            minNode(root) {
+                if (root.left !== null) {
+                    while(root && root.left) {
+                        root = root.left
+                    }
+                    return root.node
+                }
+                return root.node
+            }
+            // 最大值
+            max() {
+                return this.maxNode(this.root)
+            }
+            maxNode(root) {
+                if(root.right !== null) {
+                    while(root && root.right) {
+                        root = root.right
+                    }
+                    return root.node
+                }
+                return root.node
+            }
+            // 查找一个指定node
+            search(node) {
+                return this.searchNode(this.root, node)
+            }
+            searchNode(root, node) {
+                if (root === null ) {
+                    return false
+                }
+                if (root.node > node) {
+                    return this.searchNode(root.left, node)
+                } else if (root.node < node) {
+                    return this.searchNode(root.right, node)
+                } else {
+                    return true
+                }
+            }
         }
         var nodes = [8, 3,10, 1, 6, 14, 4, 7, 13]
         var binaryTree = new BinaryTree()
@@ -68,7 +133,18 @@
         var callback = function(node) {
             console.log(node)
         }
-        binaryTree.inOrderTraverse(callback)
+        // binaryTree.inOrderTraverse(callback)
+        // binaryTree.preOrderTraverse(callback)
+        // binaryTree.postOrderTraverse(callback)
+        // console.log(
+        //     `最小值是：${binaryTree.min()}`,
+        //     `最大值是：${binaryTree.max()}`,
+        // )
+        console.log(
+            binaryTree.search(1) ? "search num 1 is fount" : "search num 1 is not found",
+            binaryTree.search(15) ? "search num 15 is fount" : "search num 15 is not found",
+
+        )
     </script>
 </body>
 </html>
