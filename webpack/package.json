@@ -1,0 +1,18 @@
+{
+  "name": "jinjidetuboshu",
+  "version": "1.0.0",
+  "description": "学习webpack打包",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webpack学习",
+    "打包"
+  ],
+  "author": "Gavin",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^4.32.2"
+  }
+}
