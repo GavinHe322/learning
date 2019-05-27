@@ -1,25 +1,32 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ClearWebpackPlugin = require('clean-webpack-plugin')
+const path = require('path');
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
-    // entry: './src/index.js',
-    mode: 'development',
-    entry: {
-        index: './src/index.js',
-    },
-    devtool: 'inline-source-map',
+    entry: './src/index.js',
     plugins: [
-        new ClearWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            title: 'Output management/webpack.config.js设置的title?',
-            filename: 'index.html'
-        })
+      // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
+      new CleanWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        title: 'Caching'
+      }),
+      new webpack.HashedModuleIdsPlugin()
     ],
-    devServer: {
-        contentBase: './dist'
-    },
     output: {
-        filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+      filename: '[name].[contenthash].js',
+      path: path.resolve(__dirname, 'dist')
     },
-};
+    optimization: {
+      runtimeChunk: 'single',
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all'
+          }
+        }
+      }
+    }
+  };
