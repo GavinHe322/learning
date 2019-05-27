@@ -3,19 +3,23 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ClearWebpackPlugin = require('clean-webpack-plugin')
 module.exports = {
     // entry: './src/index.js',
+    mode: 'development',
     entry: {
-        app: './src/index.js',
-        print: './src/print.js',
+        index: './src/index.js',
     },
+    devtool: 'inline-source-map',
     plugins: [
         new ClearWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Output management/webpack.config.js设置的title?',
+            filename: 'index.html'
         })
     ],
+    devServer: {
+        contentBase: './dist'
+    },
     output: {
-        // filename: 'build.js',
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
     },
 };
