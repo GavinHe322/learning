@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var webpack = require('webpack');
 
 var path = require('path');
@@ -30,4 +31,11 @@ module.exports = {
             template:'app/src/index.html'  
         })
      ]
+=======
+module.exports = {
+    entry: './main.js',
+    output: {
+        filename: 'build.js'
+    }
+>>>>>>> 5ca2f12dd50fd33774f9ae96f945ab6425e6857e
 }

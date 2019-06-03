@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "demo03",
   "version": "1.0.0",
   "description": "",
@@ -30,4 +31,14 @@
   "dependencies": {
     "lodash": "^4.17.11"
   }
+=======
+  "name": "webpack-demo1",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "dev": "webpack-dev-server --open",
+    "build": "webpack -p"
+  },
+  "license": "MIT"
+>>>>>>> 5ca2f12dd50fd33774f9ae96f945ab6425e6857e
 }
