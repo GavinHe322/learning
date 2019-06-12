@@ -180,64 +180,6 @@ function myPromise(constructor) {
         reject(e)
     }
 }
-myPromise.prototype.then=function(onFullfilled,onRejected){
-    let self=this;
-    let promise2;
-    switch(self.status){
-      case "pending":
-        promise2=new myPromise(function(resolve,reject){
-             self.onFullfilledArray.push(function(){
-                try{
-                   let temple=onFullfilled(self.value);
-                   resolve(temple)
-                }catch(e){
-                   reject(e) //error catch
-                }
-             });
-             self.onRejectedArray.push(function(){
-                 try{
-                   let temple=onRejected(self.reason);
-                   reject(temple)
-                 }catch(e){
-                   reject(e)// error catch
-                 }
-             });
-        })
-      case "resolved":
-        promise2=new myPromise(function(resolve,reject){
-            try{
-              let temple=onFullfilled(self.value);
-              //将上次一then里面的方法传递进下一个Promise的状态
-              resolve(temple);
-            }catch(e){
-              reject(e);//error catch
-            }
-        })
-        break;
-      case "rejected":
-        promise2=new myPromise(function(resolve,reject){
-            try{
-               let temple=onRejected(self.reason);
-               //将then里面的方法传递到下一个Promise的状态里
-               resolve(temple);   
-            }catch(e){
-               reject(e);
-            }
-        })
-        break;
-      default:       
-   }
-   return promise2;
-}
-
-let p = new myPromise((resolve, reject) => {
-    setTimeout( () => {
-        resolve('hei')
-    }, 4000)
-})
-
-p.then(function(x){console.log(x)}).then(function(){console.log("链式调用1")}).then(function(){console.log("链式调用2")})
-
 
 // new Promise( function (resolve, reject) {
 //     setTimeout( () => {
