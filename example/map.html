@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>高德地图</title>
+    
+</head>
+<body>
+    <div id="container"></div>
+    <script src="https://webapi.amap.com/maps?v=1.4.12&key=6d880b6e6743e09dccff35d23f549cb9&plugin=AMap.Autocomplete,AMap.PlaceSearch,AMap.Geocoder,AMap.DistrictSearch,AMap.CitySearch"></script>
+    <script>
+        var id, target, options;
+
+        function success(pos) {
+            var crd = pos.coords;
+            document.write(crd);
+            if (target.latitude === crd.latitude && target.longitude === crd.longitude) {
+                console.log('Congratulations, you reached the target');
+                navigator.geolocation.clearWatch(id);
+            }
+        }
+
+        function error(err) {
+            console.warn('ERROR(' + err.code + '): ' + err.message);
+        }
+
+        target = {
+            latitude : 0,
+            longitude: 0
+        };
+
+        options = {
+        enableHighAccuracy: false,
+        timeout: 5000,
+        maximumAge: 0
+        };
+
+        id = navigator.geolocation.watchPosition(success, error, options);
+    </script>
+</body>
+</html>
