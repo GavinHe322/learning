@@ -1,0 +1,73 @@
+<script>
+
+    // 1. 单向链表
+    // 节点
+    class Node {
+        constructor(element) {
+            this.element = element //当前节点的元素
+            this.next = null  //下一个节点链接
+        }
+    }
+    // LinkedList 类提供了对链表操作的方法、插入、删除、查找、给定的值等。
+    // 值得注意的是，它只是一个属性， 那就是使用一个Node 对象来保存该链表的几点。
+
+    // 链表类
+
+    class LList {
+        constructor() {
+            this.head = new Node('head') //节点头
+            // this.find = find             //查找节点
+            // this.insert = insert         //插入节点
+            // this.remove = remove         //删除节点
+            // this.findPrev = findPrev     //查找前一个节点
+            // this.display = display       //显示链表
+        }
+        find(item) {
+            var currNode = this.head
+            while ( currNode.element != item) {
+                currNode = currNode.next
+            }
+            return currNode
+        }
+        insert(newElement, item) {
+            // debugger
+            var newNode = new Node(newElement)
+            var currNode = this.find(item) 
+            newNode.next = currNode.next
+            currNode.next = newNode
+        }
+        display() {
+            // debugger
+            var currNode = this.head
+            while ( !(currNode.next == null)) {
+                console.log(currNode.next.element)
+                currNode = currNode.next
+            }
+        }
+        findPrev(item) {
+            var currNode = this.head
+            while ( !(currNode.next == null) && ( currNode.next.element != item)) {
+                currNode = currNode.next
+            }
+            return currNode;
+        }
+        remove(item) {
+            var prevNode = this.findPrev(item)
+            if ( !(prevNode.next == null)) {
+                prevNode.next = prevNode.next.next;
+            }
+        }
+    }
+    var fruits = new LList()
+    fruits.insert('Apple', 'head')
+    fruits.insert('Banana', 'Apple')
+    fruits.insert('Pear', 'Banana')
+    // fruits.insert('Pear', 'Banana')
+    // fruits.insert('aaa', 'bbb')  Cannot read property 'element' of null
+
+    fruits.display()
+
+    fruits.remove('Banana')
+    fruits.display()
+    
+</script>
