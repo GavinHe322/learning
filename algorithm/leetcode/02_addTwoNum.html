@@ -1,0 +1,201 @@
+<script>
+// function LinkedList() {
+//     var Node = function (element) {　　　　　　　　//新元素构造
+//         this.element = element;
+//         this.next = null;
+//     };
+//     var length = 0;
+//     var head = null;
+
+//     this.append = function (element) {
+//         debugger
+//         var node = new Node(element);　　　　　　　　//构造新的元素节点
+//         var current;
+//         if (head === null) {　　　　　　　　　　　　　//头节点为空时  当前结点作为头节点
+//             head = node;
+//         } else {
+//             current = head;　　　　　　　　　　　　　　
+//             while (current.next) {　　　　　　　　　　//遍历，直到节点的next为null时停止循环，当前节点为尾节点
+//                 current = current.next;
+//             }
+//             current.next = node;　　　　　　　　　　　　//将尾节点指向新的元素，新元素作为尾节点
+//         }           
+//         length++;　　　　　　　　　　　　　　　　　　　　//更新链表长度
+//     };
+//     this.removeAt = function (position) {
+//         if (position > -1 && position < length) {
+//             var current = head;
+//             var index = 0;
+//             var previous;
+//             if (position == 0) {
+//                 head = current.next;
+//             } else {
+//                 while (index++ < position) {
+//                     previous = current;
+//                     current = current.next;
+//                 }
+//                 previous.next = current.next;
+//             }
+//             length--;
+//             return current.element;
+//         } else {
+//             return null;
+//         }
+//     };
+//     this.insert = function (position, element) {
+//         if (position > -1 && position <= length) {　　　　　　　　//校验边界
+//             var node = new Node(element);　　　　　　　　
+//             current = head;
+//             var index = 0;
+//             var previous;
+//             if (position == 0) {　　　　　　　　　　　　　　　　　　　　//作为头节点，将新节点的next指向原有的头节点。
+//                 node.next = current;
+//                 head = node;　　　　　　　　　　　　　　　　　　　　　　　　//新节点赋值给头节点
+//             } else {
+//                 while (index++ < position) {
+//                     previous = current;
+//                     current = current.next;
+//                 }　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　//遍历结束得到当前position所在的current节点，和上一个节点
+//                 previous.next = node;　　　　　　　　　　　　　　　　　　　　//上一个节点的next指向新节点  新节点指向当前结点，可以参照上图来看
+//                 node.next = current;
+//             }
+//             length++;
+//             return true;
+//         } else {
+//             return false;
+//         }
+
+//     };
+//     this.toString = function () {
+//         var current = head;
+//         var string = '';
+//         while (current) {
+//             string += ',' + current.element;
+//             current = current.next;
+//         }
+//         return string;
+//     };
+//     this.indexOf = function (element) {
+//         var current = head;
+//         var index = -1;
+//         while (current) {
+//             if (element === current.element) {　　　　　　　　　　　　//从头节点开始遍历
+//                 return index;
+//             }
+//             index++;
+//             current = current.next;
+//         }
+//         return -1;
+//     };
+//     this.getLength = function () {
+//         return length;
+//     }
+
+// }
+
+
+// var arr = [1, 2, 3, 4, 5, 6, 7, 8, 8]
+// var list = new LinkedList(arr)
+// list.append(arr)
+</script>
+<script>
+//节点
+ 
+function Node(element) {
+    this.element = element;   //当前节点的元素
+    this.next = null;         //下一个节点链接
+    this.previous = null;         //上一个节点链接
+}
+
+//链表类
+
+function LList () {
+    this.head = new Node( 'head' );
+    this.find = find;
+    this.findLast = findLast;
+    this.insert = insert;
+    this.remove = remove;
+    this.display = display;
+    this.dispReverse = dispReverse;
+}
+
+//查找元素
+
+function find ( item ) {
+    var currNode = this.head;
+    while ( currNode.element != item ){
+        currNode = currNode.next;
+    }
+    return currNode;
+}
+
+//查找链表中的最后一个元素
+
+function findLast () {
+    var currNode = this.head;
+    while ( !( currNode.next == null )){
+        currNode = currNode.next;
+    }
+    return currNode;
+}
+
+
+//插入节点
+
+function insert ( newElement , item ) {
+    var newNode = new Node( newElement );
+    var currNode = this.find( item );
+    newNode.next = currNode.next;
+    newNode.previous = currNode;
+    currNode.next = newNode;
+}
+
+//显示链表元素
+
+function display () {
+    var currNode = this.head;
+    while ( !(currNode.next == null) ){
+        console.debug( currNode.next.element );
+        currNode = currNode.next;
+    }
+}
+
+//反向显示链表元素
+
+function dispReverse () {
+    var currNode = this.findLast();
+    while ( !( currNode.previous == null )){
+        console.log( currNode.element );
+        currNode = currNode.previous;
+    }
+}
+
+//删除节点
+
+function remove ( item ) {
+    var currNode = this.find ( item );
+    if( !( currNode.next == null ) ){
+        currNode.previous.next = currNode.next;
+        currNode.next.previous = currNode.previous;
+        currNode.next = null;
+        currNode.previous = null;
+    }
+}
+
+var fruits = new LList();
+
+fruits.insert('Apple' , 'head');
+fruits.insert('Banana' , 'Apple');
+fruits.insert('Pear' , 'Banana');
+fruits.insert('Grape' , 'Pear');
+
+console.log( fruits.display() );        // Apple
+                                        // Banana
+                                        // Pear
+                                        // Grape
+                                        
+console.log( fruits.dispReverse() );    // Grape
+                                        // Pear
+                                        // Banana
+                                        // Apple
+</script>
