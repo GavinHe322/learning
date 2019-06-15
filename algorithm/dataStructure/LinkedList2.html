@@ -23,45 +23,45 @@
             // this.display = display
             // this.dispReverse = dispReverse
         }
-        find(item) {
-            var currNode = this.head
-            while (currNode.element != item) {
-                currNode = currNode.next
+        find ( item ) {
+            var currNode = this.head;
+            while ( currNode.element != item ){
+                currNode = currNode.next;
             }
-            return currNode
+            return currNode;
         }
         // 查找链表中的最后一个元素
-        findLast() {
-            var currNode = this.head
-            while( !(currNode.next == null)) {
-                currNode = currNode.next
+        findLast () {
+            var currNode = this.head;
+            while ( !( currNode.next == null )){
+                currNode = currNode.next;
             }
-            return currNode
+            return currNode;
         }
-        insert(newElement, item) {
-            var newNode = new Node(newElement)
-            var currNode = this.find(item)
-            newNode.next = currNode.next
-            newNode.previous = currNode
-            currNode.next = newNode
+        insert ( newElement , item ) {
+            var newNode = new Node( newElement );
+            var currNode = this.find( item );
+            newNode.next = currNode.next;
+            newNode.previous = currNode;
+            currNode.next = newNode;
         }
         display () {
+            // debugger
             var currNode = this.head;
             while ( !(currNode.next == null) ){
-                console.debug( currNode.next.element );
+                console.log( currNode.next.element , 'display');
                 currNode = currNode.next;
             }
         }
-
         // 反向显示链表元素
-        dispReverse() {
-            var currNode = this.findLast()
-            while( !(currNode.previous == null)) {
-                console.log(currNode.element)
-                currNode = currNode.previous
+        dispReverse () {
+            // debugger
+            var currNode = this.findLast();
+            while ( !( currNode.previous == null )){
+                console.log( currNode.element , 'reverse');
+                currNode = currNode.previous;
             }
         }
-
         remove(item) {
             var currNode = this.find(item)
             if ( !(currNode.next == null)) {
