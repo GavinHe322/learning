@@ -11,8 +11,6 @@ function  create(Con, ...args) {
     let obj = {};
     Object.setPrototypeOf(obj, Con.prototype)
     let result = Con.apply(obj, args)
-    console.log(result, 'result')
-    console.log(obj, 'obj')
     return result instanceof Object ? result : obj
 }
 
