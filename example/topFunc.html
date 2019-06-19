@@ -1,0 +1,35 @@
+<script>
+    // 1. 判断对象的数据类型
+    const isType = type => target => `[object ${type}]` === Object.prototype.toString.call(target)
+    const isArray = isType("Array")
+    console.log(isArray([]))
+    const isObj = isType('Object')
+    console.log(isObj({}))
+
+    function test(type) {
+        return function target(target) {
+            return `[object ${type}]` === Object.prototype.toString.call(target)
+        }
+    }
+    const testArray = isType("Array")
+    console.log(testArray([]))
+
+    // 2. 循环实现 map 方法
+    Array.prototype.selfMap = function (fn, context) {
+        let arr = Array.prototype.slice.call(this)
+        console.log(arr);
+        let mappedArr = Array(arr.length - 1)
+        for (let i = 0; i < arr.length; i++) {
+            // 判断稀松数组
+            // if (!arr.hasOwnproperty(i)) continue;
+            console.log(i);
+            mappedArr[i] = fn.call(context, arr[i], i, this)
+        }
+        return mappedArr
+    }
+    var arr = [1, 2, 3,5 , 5]
+    arr.selfMap( (val, i, arr) => {
+        console.log(val)
+        return val
+    })
+</script>
