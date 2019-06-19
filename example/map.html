@@ -1,43 +1,207 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- <!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>高德地图</title>
-    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>轨迹回放</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=6d116d4252d7f7ce90a808ace0812248"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
 </head>
 <body>
-    <div id="container"></div>
-    <script src="https://webapi.amap.com/maps?v=1.4.12&key=6d880b6e6743e09dccff35d23f549cb9&plugin=AMap.Autocomplete,AMap.PlaceSearch,AMap.Geocoder,AMap.DistrictSearch,AMap.CitySearch"></script>
-    <script>
-        var id, target, options;
+<div id="container"></div>
+<div class="button-group">
+    <input type="button" class="button" value="开始动画" id="start"/>
+    <input type="button" class="button" value="停止动画" id="stop"/>
+</div>
+<script>
+    var marker, lineArr = [];
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        center: [116.397428, 39.90923],
+        zoom: 17
+    });
+    map.on("complete", completeEventHandler);
+    AMap.event.addDomListener(document.getElementById('start'), 'click', function() {
+        marker.moveAlong(lineArr, 500);
+    }, false);
+    AMap.event.addDomListener(document.getElementById('stop'), 'click', function() {
+        marker.stopMove();
+    }, false);
 
-        function success(pos) {
-            var crd = pos.coords;
-            document.write(crd);
-            if (target.latitude === crd.latitude && target.longitude === crd.longitude) {
-                console.log('Congratulations, you reached the target');
-                navigator.geolocation.clearWatch(id);
+    // 地图图块加载完毕后执行函数
+    function completeEventHandler() {
+        marker = new AMap.Marker({
+            map: map,
+            position: [121.50457499999999, 31.242533333333334],
+            icon: "http://webapi.amap.com/images/car.png",
+            offset: new AMap.Pixel(-26, -13),
+            autoRotation: true
+        });
+
+        lineArr.push([121.511817, 31.243308]);
+        lineArr.push([121.51054, 31.242932]);
+        lineArr.push([121.502258, 31.243474]);
+        lineArr.push([121.506131, 31.242831]);
+        lineArr.push([121.509939, 31.243574]);
+        lineArr.push([121.504328, 31.244758]);
+        lineArr.push([121.500219, 31.244694]);
+        lineArr.push([121.502376, 31.240657]);
+        lineArr.push([121.51127, 31.243538]);
+        lineArr.push([121.510615, 31.240281]);
+        lineArr.push([121.506184, 31.239584]);
+        lineArr.push([121.51005332464929, 31.236946810744094]);
+        lineArr.push([121.50769666666665, 31.243458333333333]);
+
+        // 绘制轨迹
+        var polyline = new AMap.Polyline({
+            map: map,
+            path: lineArr,
+            strokeColor: "#00A",  //线颜色
+            strokeOpacity: 1,     //线透明度
+            strokeWeight: 3,      //线宽
+            strokeStyle: "solid"  //线样式
+        });
+        map.setFitView();
+    }
+</script>
+</body>
+</html> -->
+
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <!-- 原始地址：//webapi.amap.com/ui/1.0/ui/misc/PoiPicker/examples/search.html -->
+    <base href="//webapi.amap.com/ui/1.0/ui/misc/PoiPicker/examples/" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>POI搜索</title>
+    <style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+        padding: 0;
+        font-size: 13px;
+    }
+    
+    #outer-box {
+        height: 100%;
+        padding-right: 300px;
+    }
+    
+    #container {
+        height: 100%;
+        width: 100%;
+    }
+    
+    #panel {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        height: 100%;
+        overflow: auto;
+        width: 300px;
+        z-index: 999;
+        border-left: 1px solid #eaeaea;
+        background: #fff;
+    }
+    
+    #searchBar {
+        height: 30px;
+        background: #ccc;
+    }
+    
+    #searchInput {
+        width: 100%;
+        height: 30px;
+        line-height: 30%;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        padding: 0 5px;
+    }
+    
+    #searchResults {
+        overflow: auto;
+        height: calc(100% - 30px);
+    }
+    
+    .amap_lib_placeSearch,
+    .amap-ui-poi-picker-sugg-container {
+        border: none!important;
+    }
+    
+    .amap_lib_placeSearch .poibox.highlight {
+        background-color: #CAE1FF;
+    }
+    
+    .poi-more {
+        display: none!important;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="outer-box">
+        <div id="container" class="map" tabindex="0"></div>
+        <div id="panel" class="scrollbar1">
+            <div id="searchBar">
+                <input id="searchInput" placeholder="输入关键字搜素POI" />
+            </div>
+            <div id="searchResults"></div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=6d116d4252d7f7ce90a808ace0812248"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <!-- <script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.15&key=您申请的key值'></script> -->
+    <!-- UI组件库 1.0 -->
+    <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+    <script type="text/javascript">
+    var map = new AMap.Map('container', {
+        zoom: 10
+    });
+
+    AMapUI.loadUI(['misc/PoiPicker'], function(PoiPicker) {
+
+        var poiPicker = new PoiPicker({
+            input: 'searchInput',
+            placeSearchOptions: {
+                map: map,
+                pageSize: 10
+            },
+            searchResultsContainer: 'searchResults'
+        });
+
+        poiPicker.on('poiPicked', function(poiResult) {
+            console.log(poiResult)
+            poiPicker.hideSearchResults();
+
+            var source = poiResult.source,
+                poi = poiResult.item;
+
+            if (source !== 'search') {
+
+                //suggest来源的，同样调用搜索
+                poiPicker.searchByKeyword(poi.name);
+
+            } else {
+
+                //console.log(poi);
             }
-        }
+        });
 
-        function error(err) {
-            console.warn('ERROR(' + err.code + '): ' + err.message);
-        }
-
-        target = {
-            latitude : 0,
-            longitude: 0
-        };
-
-        options = {
-        enableHighAccuracy: false,
-        timeout: 5000,
-        maximumAge: 0
-        };
-
-        id = navigator.geolocation.watchPosition(success, error, options);
+        poiPicker.onCityReady(function() {
+            poiPicker.searchByKeyword('美食');
+        });
+    });
     </script>
 </body>
+
 </html>
