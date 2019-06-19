@@ -1,0 +1,195 @@
+<script>
+// 掘进 ysk的 文章
+
+//  原型的概念
+// 没必要看太多文章， 这就是核心概念，看太多反而乱
+
+// 所有对象都有一个属性 __proto__ 指向一个对象， 也就是原型
+// 每个对象的原型都可以通过 constructor 找到构造函数， 构造函数也可以通过 prototype 找到原型
+// 所有函数都可以通过 __proto__ 找到 Function 对象
+// 所有对象都可以通过 __proto__ 找到 Object 对象
+// 对象之间通过 __proto__ 链接起来， 这样称之为原型链。 当前对象上不存在的属性可以通过原型链一层层往上查找， 知道顶层 Object 对象
+
+
+// 1. ES5 实现继承
+
+// function Parent(val) {
+//     this.val = val
+// }
+
+// Parent.prototype.getVal = function() {
+//     console.log(this.val)
+// }
+
+// function Child(val) {
+//     Parent.call(this, val)
+// }
+
+
+// Child.prototype = new Parent()
+
+// const child = new Child(1)
+
+// child.getVal()
+
+// console.log(
+//     child instanceof Parent
+// )
+
+
+// 以上的集成的方式核心在 子类的构造函数中通过 Parent.call(this) 集成父类的属性， 然后改变子类的原型为 new Parent 来继承父类的函数
+
+// 这种集成方式有点在与构造函数可以传参， 不会与父类引用属性共享， 可以复用父类的函数， 但是也存在一个缺点就是在继承父类函数的时候调用父类构造函数， 
+// 导致子类的原型上多了不需要的父类属性， 存在内存的`浪费`
+
+
+
+// 2. 继承组合继承
+
+// 这种继承烦死对组合继承进行了优化， 组合继承缺点在与继承父函数时调用了构造函数， 我们只需要优化掉这点就行了。
+
+function Parent(val) {
+    this.val = val
+}
+
+Parent.prototype.getVal = function () {
+    console.log(this.val)
+}
+
+function Child(val) {
+    Parent.call(this, val)
+}
+
+Child.prototype = Object.create(Parent.prototype, {
+    constructor: {
+        value: Child,
+        enumerable: false,
+        writable: true,
+        configurable: true
+    }
+})
+
+
+const child = new Child(1)
+
+child.getVal()
+console.log(
+    child instanceof Parent
+)
+
+console.log(child)
+
+// 以上继承实现的核心就是将父类的原型赋值给了子类， 并且将构造函数设置为子类， 这样即解决了无用的父类属性问题， 还能正确的找到子类的构造函数。
+
+
+// Babel 如何编译 Es6 Class 的
+function _possibleConstructorReturn(self, call) {
+    // ...
+    return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+}
+
+function _inherits(subClass, superClass) {
+    // ...
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+            value: subClass,
+            enumerable: false,
+            writable: true,
+            configurable: true
+        }
+    })
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass
+}
+
+var Parent = function Parent() {
+    // 验证是否是 Parent 构造出来的 this
+    _classCallCheck(this, parent)
+}
+
+var Child = (function (_Parent) {
+    _inherits(Child, _Parent);
+
+    function Child() {
+        _classCallCheck(this, Child)
+        return _possibleConstructorReturn(this, (Child.__proto__ || Object.getPrototypeOf(Child)).apply(this,arguments))
+    }
+    return Child
+})(Parent)
+
+// 以上代码就是编译出来的部分代码， 隐去了一些非核心的代码， 我们先阅读 _inherits 函数。
+// 设置了子类原型部分的代码其实和寄生组合继承一模一样， 侧面也说明了这种实现方式是最好的。 但是这部分的代码多了一句 Object.setPrototypeOf( subClass, superClass), 其实这句代码的作用是 为了继承到父类的静态方法， 之前
+
+// 然后 Child 构造函数这块的代码也基本和之前的实现方式类似。 所以总的来说 Babel 实现继承的方式函数继承组合组合，无非多实现一步继承方法的静态方法。
+
+// 继承存在的问题
+
+class Car {
+    constructor(brand) {
+        this.brand = brand
+    }
+    wheel() {
+        return '8 个 轮子'
+    }
+    drive() {
+        return '停车！'
+    }
+    addOil() {
+        return '加油'
+    }
+}
+
+// 油车
+const car = compose(wheel, addOil)
+
+// 新能源车
+const energyCar = compose(wheel, drive)
+
+
+
+
+function Parent() {
+    this.names= ['gavin', 'kevin']
+}
+
+function Child() {
+
+}
+
+Child.prototype = new Parent()
+
+var Child1 = new Child()
+
+Child1.names.push('yayu')
+console.log(Child1.names)
+
+var Child2 = new Child()
+console.log(Child2.names)
+
+
+
+// 给子类型原型添加属性和方法必须在替换原型之后，原因在第二点已经解释过了，因为子类型的原型会被覆盖。
+
+function Animal() {
+    this.value = 'amimal'
+}
+
+Animal.prototype.run = function() {
+    return this.value + 'is runing'
+}
+
+function Cat() {}
+Cat.prototype = new Animal()
+Cat.prototype.constructor = Cat
+// 新增
+
+
+Cat.prototype.getVal = function() {
+    return this.value
+}
+
+var instance = new Cat()
+instance.value = 'cat'
+
+console.log(instance.getVal() ) // cat
+
+</script>
