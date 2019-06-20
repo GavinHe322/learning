@@ -87,7 +87,6 @@
         </div>
     </div>
     <script type="text/javascript" src='http://webapi.amap.com/maps?v=1.4.15&key=511aaf6dcb5f9231422e083c0c9e07a7'></script>
-    <!-- UI组件库 1.0 -->
     <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
     <script type="text/javascript">
     var map = new AMap.Map('container', {
@@ -123,12 +122,9 @@
             }
         });
 
-        poiPicker.searchByKeyword('美食');
         poiPicker.onCityReady(function() {
-
+            poiPicker.searchByKeyword('美食');
         });
-        // searchQuery.setCityLimit(true);
-        // poiPicker.setCityLimit(true);
     });
 
     </script>
