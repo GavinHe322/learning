@@ -12,7 +12,7 @@
         }
     }
     const testArray = isType("Array")
-    console.log(testArray([]))
+    // console.log(testArray([]))
 
     // 2. 循环实现 map 方法
     Array.prototype.selfMap = function (fn, context) {
@@ -21,15 +21,34 @@
         let mappedArr = Array(arr.length - 1)
         for (let i = 0; i < arr.length; i++) {
             // 判断稀松数组
-            // if (!arr.hasOwnproperty(i)) continue;
-            console.log(i);
+            if (!arr[i]) continue;
             mappedArr[i] = fn.call(context, arr[i], i, this)
         }
         return mappedArr
     }
-    var arr = [1, 2, 3,5 , 5]
-    arr.selfMap( (val, i, arr) => {
-        console.log(val)
+    var arr = [1,, 2, 3,5 , 5]
+    var b = arr.selfMap( (val, i, arr) => {
         return val
     })
+
+    // 3. 使用 reduce 实现 map 方法
+    Array.prototype.selfMap2 = function(fn, context) {
+        let arr = Array.prototype.slice.call(this)
+        console.log(arr)
+        return arr.reduce( (pre, cur, index) => {
+            return [...pre, fn.call(context, cur, index, this)]
+        }, [])
+    }
+    var arr = [1, 2, 3, 4, , 6]
+
+    var c = arr.selfMap2((val) => {
+        return val
+    })
+    console.log(c, 'reduce to realization')
+
+    var reduceTotal = arr.reduce( (total, val, index) => {
+        console.log('reduce', total, val, index)
+        return total += val
+    })
+    console.log(reduceTotal)
 </script>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            height: 80px;
+            width: 100px;
+            overflow: hidden;
+            position: relative;
+            left: 40px;
+            top: 50px;
+            display: inline-block;
+        }
+        .container2 {
+            transform: rotate(180deg);
+            left: 20px;   
+        }
+        .first, .secend {
+            display: inline-block;
+            background: green;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .first {
+            border-radius: 4px;
+            color: #fff;
+            width: 80px;
+            height: 80px;
+            z-index: 1;
+            line-height: 80px;
+            text-align: center;
+            font-size: 3rem;
+        }
+        .secend {
+            border: 40px solid green;
+            transform: rotate(10deg);
+            left: 8px;
+            top: -7px;
+        }
+       
+    </style>
+</head>
+<body>
+    <div>
+        <div class="container">
+            <span class="first">
+                买
+            </span>
+            <span class="secend">
+                
+            </span>
+        </div>
+        <div class="container container2">
+                <span class="first">
+                    买
+                </span>
+                <span class="secend">
+                    
+                </span>
+            </div>
+    </div>
+</body>
+</html>
