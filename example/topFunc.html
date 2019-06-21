@@ -2,9 +2,9 @@
     // 1. 判断对象的数据类型
     const isType = type => target => `[object ${type}]` === Object.prototype.toString.call(target)
     const isArray = isType("Array")
-    console.log(isArray([]))
+    // console.log(isArray([]))
     const isObj = isType('Object')
-    console.log(isObj({}))
+    // console.log(isObj({}))
 
     function test(type) {
         return function target(target) {
@@ -17,7 +17,7 @@
     // 2. 循环实现 map 方法
     Array.prototype.selfMap = function (fn, context) {
         let arr = Array.prototype.slice.call(this)
-        console.log(arr);
+        // console.log(arr);
         let mappedArr = Array(arr.length - 1)
         for (let i = 0; i < arr.length; i++) {
             // 判断稀松数组
@@ -33,8 +33,13 @@
 
     // 3. 使用 reduce 实现 map 方法
     Array.prototype.selfMap2 = function(fn, context) {
+        // let arr = Array.prototype.slice.call(this)
+        // console.log(arr)
+        // return arr.reduce( (pre, cur, index) => {
+        //     return [...pre, fn.call(context, cur, index, this)]
+        // }, [])
         let arr = Array.prototype.slice.call(this)
-        console.log(arr)
+        debugger
         return arr.reduce( (pre, cur, index) => {
             return [...pre, fn.call(context, cur, index, this)]
         }, [])
@@ -46,9 +51,10 @@
     })
     console.log(c, 'reduce to realization')
 
-    var reduceTotal = arr.reduce( (total, val, index) => {
-        console.log('reduce', total, val, index)
-        return total += val
-    })
-    console.log(reduceTotal)
+    // var reduceTotal = arr.reduce( (total, val, index) => {
+    //     console.log('reduce', total, val, index)
+    //     return total += val
+    // })
+    // console.log(reduceTotal)
+
 </script>
