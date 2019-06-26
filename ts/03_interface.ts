@@ -8,6 +8,16 @@
  *  提供某些方法，提供这方方法的类就可以瞒住实际需求， ts 中的接口类似于 java，同时还增加了更灵活的接口类型，包括属性，函数，可索引和类等。
  */
 
+ /**
+  * 
+  * @param labelledObj 
+  * 普通接口
+  * 函数类接口
+  * 可索引接口
+  * 类类型接口
+  * 接口拓展
+  */
+
 //  定义标准
 
 
@@ -72,8 +82,69 @@ function ajax(config: Config) {
 
 }
 
-ajax({
-    type: 'get',
-    url: 'http://localhost:3000/comment/music?id=186016&limit=1',
-    dataType: 'json'
-})
+// ajax({
+//     type: 'get',
+//     url: 'http://localhost:3000/comment/music?id=186016&limit=1',
+//     dataType: 'json'
+// })
+
+
+// 2.函数接口
+
+interface encrypt {
+    (key: string, value: number):any
+}
+
+
+var md5: encrypt = function(key: string, value: number):any {
+    return key + value
+}
+
+console.log(
+    md5('name', 124)
+)
+
+
+// 3. 可索引接口  数组、对象的约束（不常用）
+
+var arr:string[] = ['124', '235']
+
+var arr:Array<string> = ['124', '124']
+
+interface arrInterface {
+    [index: number]: string
+}
+
+var arr1: arrInterface = ['124']
+
+console.log(arr1)
+
+interface objInterface {
+    [index: string]: string
+}
+var obj: objInterface = {name:'zhangsan'}
+
+
+// 4. 类类型接口 对类的约束  和抽象类有点相识
+
+
+
+interface Animal {
+    name: string
+    eat(str: string): void
+}
+
+class Dog implements Animal {
+    name: string
+    constructor(name: string) {
+        this.name = name
+    }
+    eat(foot: string) {
+        console.log(124)
+        console.log(this.name + foot)
+        return foot
+    }
+}
+
+var bai = new Dog('小白')
+bai.eat('吃狗粮')
