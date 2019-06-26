@@ -1,0 +1,119 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=511aaf6dcb5f9231422e083c0c9e07a7&plugin=AMap.Geocoder,AMap.Autocomplete,AMap.PlaceSearch"></script>
+
+<div id="container"></div>
+<div id="myPageTop">
+    <table>
+        <tr>
+            <td>
+                <label>请输入关键字：</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="tipinput"/>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="tip">
+
+    <span id="result"></span>
+</div>
+<script type="text/javascript">
+    //地图加载
+      map  = new AMap.Map("container", {resizeEnable: true, center: [116.403851,39.915177],zoom: 13});
+            //输入提示
+            var autoOptions = {
+                input: "tipinput"
+            };
+            var auto = new AMap.Autocomplete(autoOptions);
+            var placeSearch = new AMap.PlaceSearch({
+                map: ''
+            });  //构造地点查询类
+            AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+            var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
+            function select(e) {
+                   placeSearch.setCity(e.poi.adcode);
+                   if (e.poi && e.poi.location) {
+                        map.setZoom(15);
+                        map.setCenter(e.poi.location);
+                    }
+                 placeSearch.search(e.poi.name, function(status, result) {
+                    if (status === 'complete' && result.info === 'OK') {                    
+                        for(var h=0;h<result.poiList.pois.length;h++){//返回搜索列表循环绑定marker
+                            var jy=result.poiList.pois[h]['location'];//经纬度
+                            var address=result.poiList.pois[h]['address'];//地址
+
+                            var marker=new AMap.Marker({  //加点
+                                    map: map,
+                                    position: jy
+                                });
+                            marker.extData = {'getLng':jy['lng'],'getLat':jy['lat'],'address':address};//自定义想传入的参数
+                            marker.content = '123123123';                       
+                            marker.on("click",function(e) {
+                                var hs=e.target.extData;
+                                 infoWindow.setContent(hs['address']);//点击以后窗口展示的内容
+                                 infoWindow.open(map, e.target.getPosition());
+                                console.log(hs);    
+                                 });
+                            marker.emit('click', {target: marker});
+                            }
+
+                        //alert(result.poiList.pois[0].location);
+                        //geocoder_CallBack(result);
+                    }
+                });  //关键字查询查询
+
+
+            //geocoder(e.poi.name) //关键字查询查询
+
+            }
+            //默认的点
+            marker = new AMap.Marker({  //加点
+                        map: map,
+                        position: [116.403851,39.915177]
+                    });
+
+             map.on('click', function(e) {
+                   if (marker) {
+                        marker.setMap(null);
+                        marker = null;
+                    }
+                 getLng=e.lnglat.getLng();
+                 getLat=e.lnglat.getLat();
+                 lnglatXY = [e.lnglat.getLng(), e.lnglat.getLat()]; //已知点坐标
+                   var geocoder = new AMap.Geocoder({
+                        radius: 1000,
+                        extensions: "all"
+                    });        
+                    geocoder.getAddress(lnglatXY, function(status, result) {
+                        if (status === 'complete' && result.info === 'OK') {
+                            //geocoder_CallBack(result);
+                            address=result.regeocode.formattedAddress;
+                            // g.find(".input-group :text").val(address);
+                            alert('您在[ '+result.regeocode.formattedAddress+' ]的位置点击了地图！');
+                        }
+                    });        
+                    marker = new AMap.Marker({  //加点
+                        map: map,
+                        position: lnglatXY
+                    });  
+                    map.setFitView();
+    })
+</script>
+
+    
+</body>
+</html>
