@@ -148,3 +148,36 @@ class Dog implements Animal {
 
 var bai = new Dog('小白')
 bai.eat('吃狗粮')
+
+
+// 接口拓展，接口可以继承接口
+
+interface Animal1 {
+    eat(foot: string): void;
+}
+
+interface Person extends Animal1 {
+    work(): void;
+}
+
+class Web implements Person {
+    public name: string
+    constructor(name: string) {
+        this.name = name
+    }
+
+    eat(foot: string) {
+        console.log(this.name + '喜欢吃' + foot)
+    }
+
+    work() {
+        console.log(this.name + '喜欢工作')
+    }
+}
+
+var me = new Web('Gavin')
+
+me.eat('大餐')
+
+me.work()
+
