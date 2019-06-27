@@ -39,7 +39,6 @@
         //     return [...pre, fn.call(context, cur, index, this)]
         // }, [])
         let arr = Array.prototype.slice.call(this)
-        debugger
         return arr.reduce( (pre, cur, index) => {
             return [...pre, fn.call(context, cur, index, this)]
         }, [])
@@ -56,5 +55,22 @@
     //     return total += val
     // })
     // console.log(reduceTotal)
+    
+
+    // 4. 循环实现数组 filter 方法
+    Array.prototype.selfFilter = function(fn, context) {
+        let arr = Array.prototype.slice.call(this)
+        let filterArr = []
+        console.log(fn, context)
+        for ( let i = 0; i < arr.length; i++) {
+            if (!arr.hasOwnProperty(i)) continue
+            fn.call(context, arr[i], i, this) && filterArr.push(arr[i])
+        }        
+        return filterArr
+    }
+    var arr = [1,2,3,4,5]
+    arr.selfFilter((val, index ) => {
+        return val
+    })
 
 </script>

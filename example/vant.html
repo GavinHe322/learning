@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vant ui 组件</title>
+</head>
+<body>
+    <div id="app">
+        <van-area :area-list="areaList"/>
+    </div>
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+
+    <!-- 引入组件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+
+    <script>
+    var Vue = window.Vue;
+    var vant = window.vant;
+
+    // 注册组件
+    Vue.use(vant);
+
+    // 调用函数式组件
+    vant.Toast('提示');
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                areaList: {
+                    110000: '北京市',
+                    120000: '天津市'
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>
