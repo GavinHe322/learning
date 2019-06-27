@@ -140,7 +140,7 @@
 
 
  function get (params: any) {
-     return function( target: string, methodName: string, desc: any) {
+     return function( target: any, methodName: any, desc: any) {
          console.log(
             params,
             target,
@@ -155,7 +155,7 @@
  }
 
  class Http {
-    public url: string | undefined
+    public apiUrl: string | undefined
     constructor() {
 
     }

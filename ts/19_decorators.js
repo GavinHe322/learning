@@ -113,7 +113,6 @@ function get(params) {
         };
     };
 }
-//  @logMethod()
 var Http = /** @class */ (function () {
     function Http() {
     }
