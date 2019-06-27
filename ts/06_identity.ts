@@ -99,13 +99,13 @@ interface Config {
 }
 
 
-var fn1: Config = function(value1: string, value2: string): string {
-        return value1 + value2
-}
+// var fn1: Config = function(value1: string, value2: string): string {
+//         return value1 + value2
+// }
 
-console.log(
-    fn1('账号', '很好')
-)
+// console.log(
+//     fn1('账号', '很好')
+// )
 
 // 第一种
 interface ConfigFn {
