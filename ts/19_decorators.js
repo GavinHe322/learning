@@ -106,7 +106,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
  */
 function get(params) {
     return function (target, methodName, desc) {
-        console.log(params, target, methodName, desc);
+        console.log(params, 'parm', target, 'target', methodName, 'methodName', desc, 'desc');
         target.apiUrl = 'get ---> apiUrl';
         target.run = function () {
             console.log('get ---> run');
@@ -115,6 +115,7 @@ function get(params) {
 }
 var Http = /** @class */ (function () {
     function Http() {
+        // this.apiUrl = 'contructor apiUrl'
     }
     Http.prototype.getData = function () {
         console.log(this.apiUrl);

@@ -142,10 +142,10 @@
  function get (params: any) {
      return function( target: any, methodName: any, desc: any) {
          console.log(
-            params,
-            target,
-            methodName,
-            desc
+            params, 'parm',
+            target, 'target',
+            methodName ,'methodName',
+            desc, 'desc'
          )
          target.apiUrl = 'get ---> apiUrl'
          target.run =function() {
@@ -157,7 +157,7 @@
  class Http {
     public apiUrl: string | undefined
     constructor() {
-
+        // this.apiUrl = 'contructor apiUrl'
     }
     @get('https://www.baidu.com')
     getData() {
@@ -171,3 +171,10 @@ console.log(
     http.apiUrl
 )
 http.run()
+
+
+
+/**
+ * 方法装饰修饰器
+ * 
+ */
