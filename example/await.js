@@ -121,5 +121,11 @@ async function fn() {
     var a = await promiseFn()
     console.log(a, '两秒后输出？？')
 }
-
-fn()
+function timeout() {
+    setTimeout( _ => {
+        console.log('timeout')
+    }, 1000)
+}
+console.log('before')
+fn().then(timeout)
+console.log('after')
