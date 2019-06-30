@@ -86,22 +86,40 @@ function resolveAfter2Seconds(x) {
 //     console.log(v)  //prints 60 after 2 seconds
 // })
 
-(async function(x) { // async function expression used as an IIFE
-    var p_a = resolveAfter2Seconds(20);
-    var p_b = resolveAfter2Seconds(30);
-    return x + await p_a + await p_b;
-  })(10).then(v => {
-    console.log(v);  // prints 60 after 2 seconds.
-});
-setTimeout( () => {
-    console.log('timeout1')
-    var a = new Promise(
-        resolve => {
-            resolve('timeout inner promise.resolve')
-        }
-    )
-    a.then(v => {
-        console.log(v)
+// (async function(x) { // async function expression used as an IIFE
+//     var p_a = resolveAfter2Seconds(20);
+//     var p_b = resolveAfter2Seconds(30);
+//     return x + await p_a + await p_b;
+//   })(10).then(v => {
+//     console.log(v);  // prints 60 after 2 seconds.
+// });
+// setTimeout( () => {
+//     console.log('timeout1')
+//     var a = new Promise(
+//         resolve => {
+//             resolve('timeout inner promise.resolve')
+//         }
+//     )
+//     a.then(v => {
+//         console.log(v)
+//     })
+// }, 500) 
+// console.log('outer')
+
+
+
+function promiseFn() {
+    return new Promise( ( resolve, reject) => {
+        setTimeout(_ => {
+            resolve('两秒后执行')
+        }, 2000)
     })
-}, 500) 
-console.log('outer')
+}
+
+
+async function fn() {
+    var a = await promiseFn()
+    console.log(a, '两秒后输出？？')
+}
+
+fn()
