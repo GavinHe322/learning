@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>this 序列</title>
+</head>
+<body>
+    <script>
+        function fn(){
+            // debugger
+            console.log(this, 'fn')
+            fn1()
+        }    
+        function fn1(){
+            console.log(this, 'fn1')
+            // debugger
+            fn2()
+        }
+        function fn2(){
+            console.log(this, 'fn2')
+        }
+        fn()
+        function fun(){
+            console.log(this.a)
+        }
+        var a = 2;
+        (function(){
+            'use strct'
+            fun()
+        })()
+    </script>
+</body>
+</html>
