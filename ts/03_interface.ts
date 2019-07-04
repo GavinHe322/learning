@@ -79,7 +79,6 @@ function ajax(config: Config) {
             }
         }
     }
-
 }
 
 // ajax({
