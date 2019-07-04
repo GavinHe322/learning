@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo 01</title>
+</head>
+<body>
+    <div id="main" style="width: 700px;height:500px;"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
+
+    <script>
+        var myChart = echarts.init(
+            document.getElementById('main')
+        );
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'ECharts 入门示例',
+                subtext: 'subtext title',
+                top: 100,  // position 
+                backgroundColor: '#ccc',
+                textStyle: {
+                    color: '#f40',
+                    fontWeight: 'bold',
+                    fontSize: 25,
+                    formatter: [
+                            '{a|这段文本采用样式a}',
+                            '{b|这段文本采用样式b}这段用默认样式{x|这段用样式x}'
+                        ].join('\n'),
+                    rich: {
+                        a: {
+                            color: 'red',
+                            lineHeight: 10
+                        },
+                        b: {
+                            backgroundColor: {
+                                image: 'http://192.168.31.128:9000/public/images/step_right.png'
+                            },
+                            height: 40
+                        },
+                        x: {
+                            fontSize: 18,
+                            fontFamily: 'Microsoft YaHei',
+                            borderColor: '#449933',
+                            borderRadius: 4
+                        },
+                    }
+                },
+            },
+            toolbox: {
+                orient: 'vertical',
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    dataView: {readOnly: false},
+                    magicType: {type: ['line', 'bar']},
+                    restore: {},
+                    saveAsImage: {
+                        title: '自定义 title'
+                    },
+                    left:　"50px"
+                }
+            },
+            // 提示工具
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        show: true,
+                        formatter: 'some text {value} some text',
+                        color: '#f40',
+                        fontStyle: 'italic',
+                        fontSize: 12
+                    }
+                }
+            },
+            // 对应 series 的 name
+            legend: {
+                data:['销量1', '销量2']
+            },
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: '销量1',
+                    type: 'line',
+                    data: [
+                        30, 1, 40, 20, 70, 50
+                    ],
+                    symbol: 'circle',
+                    markPoint: {
+                        data: [
+                            {
+                                type: 'max', name: '最大值'
+                            },
+                            {
+                                type: 'min', name: '最小值'
+                            }
+                        ]
+                    },
+                },
+                {
+                    name: '销量2',
+                    type: 'bar',
+                    data: [
+                        5, 20, 36, 10, 10, 20
+                    ],
+                    markPoint: {
+                        data: [
+                            {
+                                type: 'max', name: '最大值'
+                            },
+                            {
+                                type: 'min', name: '最小值'
+                            }
+                        ]
+                    },
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+
+    </script>
+</body>
+</html>
