@@ -80,20 +80,61 @@
                     }
                 }
             },
+            // 动画
+            animation: true,
+            // 动画效果
+            animationEasing: 'elasticOut',
+            // 动画的阈值，当每个系列大于这个 阈值时，就会关闭动画
+            // animationThreshold: 1000,
+            animationDelayUpdate: function(idx) {
+
+            },
+            // 
             // 对应 series 的 name
             legend: {
                 data:['销量1', '销量2']
             },
+            // 直角 x 轴
             xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                id: '1',
+                // show : true,
+                data: [
+                    {
+                        value: '衬衫',
+                        // 突出第一个
+                        textStyle: {
+                            fontSize: 20,
+                            color: 'red'
+                        }
+                    }, 
+                    '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子'
+                ],
+                // 坐标系类型
+                // type: 'log',
+                nameTextStyle: {
+                    color: '#f40'
+                },
+                axisPointer: {
+                    label: 'label'
+                }
             },
             yAxis: {},
+            aria: {
+                show: true
+            },
             series: [
                 {
                     name: '销量1',
                     type: 'line',
                     data: [
                         30, 1, 40, 20, 70, 50
+                        // { 
+                        //     value: 335, name: '直接访问',
+                        //     value: 300, name: '邮件营销',
+                        //     value: 200, name: '联盟广告',
+                        //     value: 100, name: '视频',
+                        //     value: 150, name: '直接访问',
+                        // }
                     ],
                     symbol: 'circle',
                     markPoint: {
