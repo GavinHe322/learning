@@ -15,11 +15,10 @@
     <6>.重复步骤 2~5。
  */
 
-console.time('插入排序')
- function insertionSort(arr) {
+function insertionSort(arr) {
+  console.time('插入排序')
     var len = arr.length
     for (var i = 1; i < len; i++) {
-        debugger
         var key = arr[i]
         var j = i -1
         while(j >= 0 && arr[j] > key) {
@@ -40,10 +39,37 @@ console.time('插入排序')
 }
 
 console.log(
-    insertionSort(arr)
+  binaryInsertionSort(arr)
 )
+
+function binaryInsertionSort(array) {
+    console.time("二分插入排序耗时：");
+    for (var i = 1; i < array.length; i++) {
+      var key = array[i],
+        left = 0,
+        right = i - 1;
+      while (left <= right) {
+        var middle = parseInt((left + right) / 2);
+        if (key < array[middle]) {
+          right = middle - 1;
+        } else {
+          left = middle + 1;
+        }
+      }
+      for (var j = i - 1; j >= left; j--) {
+        array[j + 1] = array[j];
+      }
+      array[left] = key;
+    }
+    console.timeEnd("二分插入排序耗时：");
+    return array;
+}
+
+
 /**
    最佳情况：输入数组按升序排列。(T(n) = O(n))
    最坏情况：输入数组按降序排列。(T(n) = O(n2))
    平均情况：(T(n) = O(n2))
  */
+
+

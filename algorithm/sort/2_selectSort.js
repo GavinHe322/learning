@@ -25,6 +25,18 @@
      console.timeEnd('选择排序')
     //  return arr
  }
+ function selectionSort2(arr) {
+     var len = arr.length
+     var minIndex, temp
+     for (var i = 0; i < len; i++) {
+         minIndex = i
+
+         for (var j = i + 1; j < len; j++) {
+             
+         }
+     }
+ }
+
 var arr = []
  for (var i = 0; i < 1000; i ++) {
     arr.push(
