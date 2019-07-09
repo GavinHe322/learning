@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>有效的括号</title>
+</head>
+<body>
+    <script>
+        /**
+         * @param {string} s
+         * @return {boolean}
+         */
+         var isValid = function(s) {
+                let valid = true
+                const stack = []
+                const mapper = {
+                    '{': '}',
+                    '[': ']',
+                    '(': ')'
+                }
+                for (let i in s) {
+                    const v = s[i]
+                    if (
+                        ['(', '[', '{'].indexOf(v) > -1
+                    ) {
+                        stack.push(v)
+                    } else {
+                        const prek = stack.pop()
+                        if (v !== mapper[peak]) {
+                            return false
+                        }
+                    }
+                }
+                if (stack.length > 0) return false
+                return valid
+            };
+            console.log(
+                isValid("(){}[]"), // ouput true
+                isValid('()['), //output fasle
+            )
+    </script>
+</body>
+</html>
