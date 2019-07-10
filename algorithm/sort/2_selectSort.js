@@ -32,7 +32,9 @@
          minIndex = i
 
          for (var j = i + 1; j < len; j++) {
-             
+             if (arr[j] < arr[minIndex]) {
+                 minIndex = j
+             }
          }
      }
  }

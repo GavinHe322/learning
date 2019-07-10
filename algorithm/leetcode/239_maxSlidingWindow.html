@@ -18,7 +18,7 @@ var maxSlidingWindow = function(nums, k) {
         }
         // 如果原数组 的deque最大位置 小于当前循环数 则删除末尾
         // 第二次循环 因为上一个循环 push deque中的为 0 所以 会 进入循环
-        // 知道循环三次后找打最大的 才会再次进入循环
+        // 知道循环三次后找打最大的 才会再次进入循环d
         while (nums[deque[deque.length - 1]] < nums[i]) {
             deque.pop();
         }
