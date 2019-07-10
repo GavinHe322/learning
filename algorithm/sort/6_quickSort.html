@@ -8,11 +8,14 @@
             typeof left === 'number' &&
             typeof right === 'number'
         ) {
+            //1. 如果 最小 一直 < 最大
+
             if (left < right) {
+                // x 为最大
                 var x = array[right],
                     i = left - 1,
                     temp;
-                
+                // j = 0; j < length
                 for (var j = left; j <= right; j++) {
                     if (array[j] <= x) {
                         i++
