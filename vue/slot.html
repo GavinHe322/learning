@@ -9,8 +9,9 @@
 <body>
     <div id="app">
         <parent></parent>
+        <parent1></parent1>
     </div>
-    <script src="../js/vue.js"></script>
+    <script src="../../js/vue.js"></script>
     <script>
 
         var children = {
@@ -33,12 +34,29 @@
             components: {
                 children
             }
-        }    
+        }
+        var children1 = {
+            template: `<div>
+                        slot??
+                        <slot name="name1"/>
+                      </div>`
+        }
+        var parent1 = {
+            template: `<div>
+                            <children1>
+                                <h1 slot="name1"> 什么过</h1>
+                            </children1>
+                      </div>`,
+            components: {
+                children1
+            }
+        }
         
         new Vue({
             el: "#app",
             components: {
                 parent,
+                parent1,
             }
         })
 

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>插槽作用域</title>
+</head>
+<body>
+    <div id="app">
+        <parent></parent>
+    </div>
+    <script src="../../js/vue.js"></script>
+    <script>
+        var child = {
+            template: `
+                <template>
+                    <div class="child">
+                        // 具名插槽
+                        <slot name="up"></slot>
+                        <h3>这里是子组件</h3>
+                        // 具名插槽
+                        <slot name="down"></slot>
+                        // 匿名插槽
+                        <slot></slot>
+                    </div>
+                </template>`,
+        }
+        var parent = {
+            template: `
+                <template>
+                    <div class="father">
+                        <h3>这里是父组件</h3>
+                        <child>
+                        <div class="tmpl" slot="up">
+                            <span>菜单1</span>
+                            <span>菜单2</span>
+                            <span>菜单3</span>
+                            <span>菜单4</span>
+                            <span>菜单5</span>
+                            <span>菜单6</span>
+                        </div>
+                        <div class="tmpl" slot="down">
+                            <span>菜单-1</span>
+                            <span>菜单-2</span>
+                            <span>菜单-3</span>
+                            <span>菜单-4</span>
+                            <span>菜单-5</span>
+                            <span>菜单-6</span>
+                        </div>
+                        <div class="tmpl">
+                            <span>菜单->1</span>
+                            <span>菜单->2</span>
+                            <span>菜单->3</span>
+                            <span>菜单->4</span>
+                            <span>菜单->5</span>
+                            <span>菜单->6</span>
+                        </div>
+                        </child>
+                    </div>
+                </template>`,
+            components: {
+                child
+            }
+        }
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+
+                }
+            },
+            components: {
+                parent
+            }
+        })
+    </script>
+</body>
+</html>
