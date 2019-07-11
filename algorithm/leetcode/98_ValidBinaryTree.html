@@ -1,0 +1,18 @@
+<script>
+/**
+ * @param {number} x
+ * @param {number} n
+ * @return {number}
+ */
+var myPow = function(x, n) {
+    if (!n) return 1
+    if (n < 0) return 1 / myPow(x, -n)
+    return x % 2 == 0 ? x * myPow(x, n - 1) : myPow(x * x, n / 2)
+};
+
+console.log(
+    myPow(2, 3)
+)
+
+
+</script>
