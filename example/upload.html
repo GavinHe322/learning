@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片上传</title>
+    <link rel="stylesheet" href="../../css/element.css">
+    <link rel="stylesheet" href="../../css/vant.css">
+    <style>
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <el-upload
+            action="https://up-z2.qbox.me"
+            list-type="picture-card"
+            :data="headers"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :limit='2'
+            :on-success="handleAvatarSuccess"
+            :file-list="file_list"
+            :on-exceed="bbb"
+            ref="upload"
+        >
+        <i class="el-icon-plus"></i>
+      </el-upload>
+      <el-dialog :visible.sync="dialogVisible">
+        <img width="100%" :src="dialogImageUrl" alt="">
+      </el-dialog>
+      
+          <el-button @click="aaa">按钮</el-button>
+    </div>
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/element.js"></script>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/vant.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    headers: {
+                        token: "9PMRilqr5hqCdk-nE4NhlNx55uhLJYI7MnKFO_Qf:AdCrTkg64wwUzmI_7AVlV_mbVhc=:eyJzY29wZSI6ImRheGlhbmciLCJkZWFkbGluZSI6MTU2MzA4ODY5MH0=",
+                    },
+                    imageUrl: '',
+                    dialogImageUrl: Object(),
+                    dialogVisible: false,
+                    file_list: [
+                        // {
+                        //     name: '14',
+                        //     url: 'http://qiniu.daxiangjucai.com/FnYVF8EPqGwtLCT3MoW9m5eC0IBo',
+                        // }
+                    ]
+                }
+            },
+            methods: {
+                afterRead(file) {
+                    console.log(file)
+                },
+                bbb(e) {
+                    console.log(e, '超过了')
+                },
+                aaa() {
+                    console.log(
+                        this.file_list
+                    )
+                },
+                handleAvatarSuccess(res, file, val) {
+                    console.log(res.key, file, val)
+                    // $(".el-upload").hide()
+                    this.file_list.push({
+                        name: val.name,
+                        key: res.key,
+                        url: 'http://qiniu.daxiangjucai.com/' + res.key
+                    })
+                    console.log(
+                        this.file_list
+                    )
+                    this.imageUrl = URL.createObjectURL(file.raw);
+                },
+                beforeAvatarUpload(file) {
+                    const isJPG = file.type === 'image/jpeg';
+                    const isLt2M = file.size / 1024 / 1024 < 1;
+
+                    if (!isJPG) {
+                        this.$message.error('上传头像图片只能是 JPG 格式!');
+                    }
+                    if (!isLt2M) {
+                        this.$message.error('上传头像图片大小不能超过 2MB!');
+                    }
+                    return isJPG && isLt2M;
+                },
+                handlePictureCardPreview(file) {
+                    this.dialogImageUrl = file.url;
+                    this.dialogVisible = true;
+                },
+                handleRemove(file, fileList) {
+                    console.log(file, fileList, this.file_list);
+                    var a  = this.file_list.findIndex(function(val) {
+                        return val.key == file.key
+                    })
+                    this.file_list.splice(a, 1)
+                    console.log(a)
+                    $(".el-upload").show()
+                },
+            }
+        })
+    </script>
+</body>
+</html>
