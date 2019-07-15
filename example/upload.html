@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -65,7 +65,7 @@
             data() {
                 return {
                     headers: {
-                        token: "9PMRilqr5hqCdk-nE4NhlNx55uhLJYI7MnKFO_Qf:AdCrTkg64wwUzmI_7AVlV_mbVhc=:eyJzY29wZSI6ImRheGlhbmciLCJkZWFkbGluZSI6MTU2MzA4ODY5MH0=",
+                        token: "9PMRilqr5hqCdk-nE4NhlNx55uhLJYI7MnKFO_Qf:I1PJ60z49_qXwJwBfVKrzXHQzTs=:eyJzY29wZSI6ImRheGlhbmciLCJkZWFkbGluZSI6MTU2MzE2MDYwMX0=",
                     },
                     imageUrl: '',
                     dialogImageUrl: Object(),
@@ -127,6 +127,129 @@
                     this.file_list.splice(a, 1)
                     console.log(a)
                     $(".el-upload").show()
+                },
+            }
+        })
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>有输入框的图片上传</title>
+    <link rel="stylesheet" href="../../css/element.css">
+    <link rel="stylesheet" href="../../css/vant.css">
+</head>
+<body>
+    <div id="app">
+        <div>
+            <ul class="el-upload-list el-upload-list--picture-card" v-for="(val, i) of img_list">
+                <li>
+                    <el-input v-model="aaa" :size="button.small"></el-input>
+                </li>
+                <li tabindex="0" class="el-upload-list__item is-success">
+                    <img :src="val.img" alt="" class="el-upload-list__item-thumbnail">
+                    <a class="el-upload-list__item-name">
+                        <i class="el-icon-document"></i>
+                    </a>
+                    <label class="el-upload-list__item-status-label">
+                        <i class="el-icon-upload-success el-icon-check"></i>
+                    </label>
+                    <i class="el-icon-close"></i>
+                    <i class="el-icon-close-tip">按 delete 键可删除</i>
+                    <span class="el-upload-list__item-actions">
+                        <span class="el-upload-list__item-preview" @click="preview(val.img)">
+                            <i class="el-icon-zoom-in"></i>
+                        </span>
+                        <span class="el-upload-list__item-delete">
+                            <i class="el-icon-delete"></i>
+                        </span>
+                    </span>
+                </li>
+            </ul>
+            <label for="input">
+                <div tabindex="0" class="el-upload el-upload--picture-card">
+                    <i class="el-icon-plus"></i>
+                    <input id="input" type="file" @change="change" name="file" class="el-upload__input">
+                </div>
+            </label>
+            <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+        </div>
+    </div>
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/element.js"></script>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/vant.min.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data() {
+                return {
+                    aaa: String(),
+                    button: {
+                        small: 'small'
+                    },
+                    img_list: [
+                        // {
+                        //     name: String(),
+                        //     key: String(),
+                        //     img: String(),
+                        // }
+                    ],
+                    token: "9PMRilqr5hqCdk-nE4NhlNx55uhLJYI7MnKFO_Qf:I1PJ60z49_qXwJwBfVKrzXHQzTs=:eyJzY29wZSI6ImRheGlhbmciLCJkZWFkbGluZSI6MTU2MzE2MDYwMX0=",
+                    dialogImageUrl: '',
+                    dialogVisible: false
+                }
+            },
+            methods: {
+                change(e) {
+                    var reader = new FileReader()
+                    var file = e.target.files[0];
+                    const isLt1M = file.size / 1024 / 1024 < 1;
+
+                    console.log(isLt1M)
+                    if (!isLt1M) {
+                        this.$message.error('上传资质图片大小不能超过 1MB!');
+                    }
+
+                    reader.readAsDataURL(file)
+                    var formdata = new FormData()
+                    formdata.append('file', file)
+                    formdata.append('token', this.token)
+                    var _this = this;
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: 'POST',
+                        url: 'https://up-z2.qbox.me',
+                        data: formdata,
+                        processData:false,
+                        contentType: false,
+                        cache: false,
+                        success:function(res){
+                            var key = res.key
+                            let obj = {
+                                name: String(),
+                                key: key,
+                                img: 'http://qiniu.daxiangjucai.com/' + key
+                            }
+                            _this.img_list.push(obj)
+                        },
+                        error:function(err){
+                            console.log(err);
+                        }
+                    });
+                },
+                preview(img) {
+                    this.dialogVisible = true
+                    this.dialogImageUrl = img
                 },
             }
         })
