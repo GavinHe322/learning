@@ -48,13 +48,18 @@ Function.prototype.mybind = function (context) {
         throw new TypeError('Error')
     }
     let _this = this
+    // console.log([...arguments], 'arguments')
     let arg = [...arguments].slice(1)
-    console.log(arguments)
+    // console.log(arg, context, 'arg, context')
+    // console.log(this, 'this')
     return function F() {
         // 处理函数使用 new 的情况
         if (this instanceof F) {
+            console.log('if')
             return new _this(...arg, ...arguments)
         } else {
+            console.log('else')
+            console.log(arg, [...arguments], context)
             return _this.apply(context, arg.concat(...arguments))
         }
     }
@@ -69,4 +74,5 @@ var module = {
 var retriveX = module.getX
 retriveX()
 retriveX = retriveX.mybind(module)
-retriveX(1)
+
+retriveX()
