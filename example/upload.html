@@ -147,6 +147,14 @@
 <body>
     <div id="app">
         <div>
+            <el-date-picker
+                v-model="form.establish_time"
+                type="date"
+                value-format="yyyy-MM-dd">
+            </el-date-picker>
+
+            <el-button @click="handle">click me!</el-button>
+        </el-form-item>
             <ul class="el-upload-list el-upload-list--picture-card" v-for="(val, i) of img_list">
                 <li>
                     <el-input v-model="aaa" :size="button.small"></el-input>
@@ -204,10 +212,19 @@
                     ],
                     token: "9PMRilqr5hqCdk-nE4NhlNx55uhLJYI7MnKFO_Qf:I1PJ60z49_qXwJwBfVKrzXHQzTs=:eyJzY29wZSI6ImRheGlhbmciLCJkZWFkbGluZSI6MTU2MzE2MDYwMX0=",
                     dialogImageUrl: '',
-                    dialogVisible: false
+                    dialogVisible: false,
+                    form: {
+                        establish_time: String(),
+                    }
                 }
             },
             methods: {
+                handle() {
+                    console.log(
+                        this.form.establish_time,
+                        new Date(this.form.establish_time).toLocaleDateString().split()
+                    )
+                },
                 change(e) {
                     var reader = new FileReader()
                     var file = e.target.files[0];
