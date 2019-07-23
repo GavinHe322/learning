@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>批量打印</title>
+    <link rel="stylesheet" href="../../css/public.css">
+    <style>
+        @media print {
+            @page {
+	          size: auto;  /* auto is the initial value */
+    	      margin: 0mm 10mm; /* this affects the margin in the printer settings */
+            }
+
+            #printDetailDiv {
+                background: #ddd;
+            }
+            .noprint {
+                display: none !important;
+            }
+
+            .print {
+                font-size: 14px;
+                height: 100vh;
+            }
+        }
+        .bor_l {
+            border-left: 1px dashed black;
+        }
+        .bor_r {
+            border-right: 1px dashed black;
+        }
+        .bor_t {
+            border-top: 1px dashed black;
+        }
+        .bor_b {
+            border-bottom: 1px dashed black;
+        }
+        .border {
+            border: 1px dashed black;
+        }
+        .print div {
+            box-sizing: border-box;
+        }
+        .print .border .flex div {
+            padding: 0.2rem 0.3rem;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="noprint">
+        不用打印
+    </div>
+    <div id='app'>
+        <div class="print">
+            <p class="text_center bold">白蔬贞售货单</p>
+            <div class="border">
+                <div class="flex">
+                    <div style="width:30%;" class="bor_r bor_b">
+                            送货日期： 2019-07-14
+                    </div>
+                    <div class="flex_1 bor_r bor_b">销售单号: xxxxxxxxxxxxxxxxxxxx</div>
+                    <div class="bor_b" style="width:20%;">顺序xxxxxxxx</div>
+                </div>
+                <div class="flex">
+                    <div class="flex_1 bor_b">
+                        门店地址： xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    </div>
+                </div>
+                <div class="flex">
+                    <div style="width:50%" class="bor_b bor_r">
+                        门店名称： xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    </div>
+                    <div style="width:20%" class="bor_b bor_r">
+                        主要收货人：秋葵
+                    </div>
+                    <div style="width:30%" class="bor_b">
+                        联系电话：15811851876
+                    </div>
+                </div>
+              
+                <div class="flex">
+                    <div style="width:30%;" class="bor_b bor_r">
+                            配送线路: xxxxxxxxxxxxxxxxxx
+                    </div>
+                    <div style="width:20%;" class="bor_b bor_r">营业时间: 8:00 - 9:00</div>
+                    <div style="width:20%;" class="bor_b bor_r">备用收货人: 秋葵</div>
+                    <div style="width:30%;" class="bor_b">联系电话: 15811851876</div>
+                </div>
+                <div class="flex">
+                    <div style="width:10%;" class="text_center bor_b bor_r">序号</div>
+                    <div style="width:20%;" class="text_center bor_b">
+                        商品名称
+                    </div>
+                    <div style="width:10%;" class="text_center bor_b bor_r">商品规格</div>
+                    <div style="width:20%;" class="text_center bor_b bor_r">商品型号</div>
+                    <div style="width:10%;" class="text_center bor_b bor_r">商品单价</div>
+                    <div style="width:10%;" class="text_center bor_b bor_r">商品数量</div>
+                    <div style="width:20%;" class="text_center bor_b">商品总价</div>
+                </div>
+                <div class="flex">
+                    <div style="width:10%;" class="text_center bor_b bor_r">序号</div>
+                    <div style="width:20%;" class="text_center bor_b bor_r">
+                        商品名称
+                    </div>
+                    <div style="width:10%;" class="text_center bor_b bor_r">商品规格</div>
+                    <div style="width:20%;" class="text_center bor_b bor_r">商品型号</div>
+                    <div style="width:10%;" class="text_center bor_b bor_r">商品单价</div>
+                    <div style="width:10%;" class="text_center bor_b bor_r">商品数量</div>
+                    <div style="width:20%;" class="text_center bor_b">商品总价</div>
+                </div>
+                <div class="flex">
+                    <div style="width:80%;" class="bor_b bor_r">合计： xxxx</div>
+                    <div style="width:10%;" class="text_center bor_b bor_r"> 35 </div>
+                    <div style="width:10%;" class="text_center bor_b">商品总价</div>
+                </div>
+                <div class="flex">
+                    <div style="width:40%;" class="text_center bor_b bor_r">优惠金额</div>
+                    <div style="width:20%;" class="text_center bor_b bor_r">优惠后金额</div>
+                    <div style="width:20%;" class="text_center bor_b bor_r">已支付金额</div>
+                    <div style="width:20%;" class="text_center bor_b">欠收金额</div>
+                </div>
+                <div class="flex">
+                    <div class="flex_1 bor_b">订单备注：</div>
+                </div>
+                <div class="flex">
+                    <div class="flex_1 bor_b">收货人签名：</div>
+                </div>
+                <div class="flex">
+                    <div class="flex_1 bor_r">销售人员：新白蔬贞 202291383</div>
+                    <div class="flex_1">销售人员：新白蔬贞 202291383</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="button" class="noprint"> click me !</button>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/vue.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    checkMsg:  [
+                        {
+                            materialName: '124',
+                            materialCode: '124',
+                            spec: '124',
+                            plodOrderId: '124',
+                            amount: '124',
+                            developCode: '124',
+                            bomDetailId: '124',
+                            barcode: 'https://csdnimg.cn/public/common/toolbar/images/csdn-gitchat.png',
+                            bomDetailId: '1',
+                        },
+                        {
+                            materialName: '2',
+                            materialCode: '124',
+                            spec: '124',
+                            plodOrderId: '124',
+                            amount: '124',
+                            developCode: '124',
+                            bomDetailId: '124',
+                            barcode: 'https://csdnimg.cn/public/common/toolbar/images/csdn-gitchat.png',
+                            bomDetailId: '1',
+                        },
+                        {
+                            materialName: '3',
+                            materialCode: '124',
+                            spec: '124',
+                            plodOrderId: '124',
+                            amount: '124',
+                            developCode: '124',
+                            bomDetailId: '124',
+                            barcode: 'https://csdnimg.cn/public/common/toolbar/images/csdn-gitchat.png',
+                            bomDetailId: '1',
+                        },
+                        {
+                            materialName: '4',
+                            materialCode: '124',
+                            spec: '124',
+                            plodOrderId: '124',
+                            amount: '124',
+                            developCode: '124',
+                            bomDetailId: '124',
+                            barcode: 'https://csdnimg.cn/public/common/toolbar/images/csdn-gitchat.png',
+                            bomDetailId: '1',
+                        },
+                    ]
+                }
+            }
+        })
+        let checkMsg = [
+            {
+                materialName: '1',
+                materialCode: '124',
+                spec: '124',
+                plodOrderId: '124',
+                amount: '124',
+                developCode: '124',
+                bomDetailId: '124',
+                barcode: 'https://csdnimg.cn/public/common/toolbar/images/csdn-gitchat.png',
+                bomDetailId: '1',
+            },
+            {
+                materialName: '2',
+                materialCode: '124',
+                spec: '124',
+                plodOrderId: '124',
+                amount: '124',
+                developCode: '124',
+                bomDetailId: '124',
+                barcode: 'https://csdnimg.cn/public/common/toolbar/images/csdn-gitchat.png',
+                bomDetailId: '1',
+            },
+            {
+                materialName: '3',
+                materialCode: '124',
+                spec: '124',
+                plodOrderId: '124',
+                amount: '124',
+                developCode: '124',
+                bomDetailId: '124',
+                barcode: 'https://csdnimg.cn/public/common/toolbar/images/csdn-gitchat.png',
+                bomDetailId: '1',
+            },
+            {
+                materialName: '4',
+                materialCode: '124',
+                spec: '124',
+                plodOrderId: '124',
+                amount: '124',
+                developCode: '124',
+                bomDetailId: '124',
+                barcode: 'https://csdnimg.cn/public/common/toolbar/images/csdn-gitchat.png',
+                bomDetailId: '1',
+            },
+        ]
+        function creatTB(checkMsg){
+            let printHtml = "";
+            for(var i = 0;i < checkMsg.length; i++) {
+                $("#th1").text(checkMsg[i].materialName);
+                $("#td12").text(checkMsg[i].materialCode);
+                $("#td14").text(checkMsg[i].spec);
+                $("#td22").text(checkMsg[i].plodOrderId);
+                $("#td24").text(checkMsg[i].amount);
+                $("#td32").text(checkMsg[i].developCode);
+                $("#td34").text(checkMsg[i].bomDetailId);
+                $("#img1").html("<img src='"+checkMsg[i].barcode +"' width='180px' height='80px'></img>");
+                $("#img2").html("<img src='"+checkMsg[i].bomDetailId +"' width='180px' height='80px' ></img>");
+                printHtml = printHtml + $("#printDetailDiv").prop("outerHTML");
+                printHtml = printHtml + "<div id='page1' style='height：300px;page-break-after:always'></div>";
+            }
+            return printHtml;
+        }
+        var printHtml = "";
+        printHtml = creatTB(checkMsg);
+        $('#hahah').html(printHtml)
+        console.log(
+            // $('#hahah').html()
+        )
+
+        $("#button").click(function(e) {
+            window.print();
+        })
+    </script>
+</body>
+</html>
