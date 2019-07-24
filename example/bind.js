@@ -55,11 +55,8 @@ Function.prototype.mybind = function (context) {
     return function F() {
         // 处理函数使用 new 的情况
         if (this instanceof F) {
-            console.log('if')
             return new _this(...arg, ...arguments)
         } else {
-            console.log('else')
-            console.log(arg, [...arguments], context)
             return _this.apply(context, arg.concat(...arguments))
         }
     }
@@ -76,3 +73,31 @@ retriveX()
 retriveX = retriveX.mybind(module)
 
 retriveX()
+
+
+
+var person = {
+    name: 'Gavin',
+    getName() {
+        console.log(this.name)
+        return this.name
+    }
+}
+person.getName()
+
+Function.prototype.mybind = function(context) {
+    if (typeof this != 'function') {
+        throw new TypeError('this is not a func')
+    }
+    let _this = this
+    let arg = [...arguments].slice(1)
+    return function F() {
+        return _this.apply(context, arg.concat(...arguments))
+    }
+}
+var getName = person.getName
+
+getName()
+var Gavin = getName.mybind(person)
+
+console.log(Gavin())

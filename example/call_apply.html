@@ -36,4 +36,20 @@ Function.prototype.myapply = function(context) {
 var b = Math.min.myapply(this, [1, 2, 3, 4])
 console.log(b)
 
+
+
+Function.prototype.myapply = function(context) {
+    context = context || window
+    context.fn = this
+    let arg = [...arguments].slice(1);
+    let res = context.fn(...arg)
+    delete context.fn
+    return res
+}
+
+console.log(
+    Math.min.myapply(this, 10, 20, 2)
+)
+
+
 </script>
