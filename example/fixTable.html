@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>固定表格</title>
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/element.css">
+    <link rel="stylesheet" href="../css/iview.css">
+    <style>
+        .tablefixed {
+            position: absolute;
+            top: 0;
+            min-height: 600px;
+            max-height: 722px;
+            overflow: hidden;
+            width: 300px;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0,0,0,.12);
+        }
+      
+        .tablefixed_header {
+            z-index: 100;
+        }
+        tr:nth-child(2n) {
+            background: #f8f8f9;
+        }
+        tr:nth-child(odd){
+            background: #fff;
+        }
+        .table {
+            width: 3000px;
+        }
+    </style>
+</head>
+<body>
+        <div id='app'>
+      
+          <!-- <el-table
+                :data="tableData"
+                style="width: 100%"
+                v-loading="loading"
+                max-height="400">
+                <el-table-column
+                fixed
+                prop="date"
+                label="日期"
+                width="150">
+                </el-table-column>
+                <el-table-column
+                prop="name"
+                label="姓名"
+                width="120">
+                </el-table-column>
+                <el-table-column
+                prop="province"
+                label="省份"
+                width="120">
+                </el-table-column>
+                <el-table-column
+                prop="city"
+                label="市区"
+                width="120">
+                </el-table-column>
+                <el-table-column
+                prop="address"
+                label="地址"
+                width="300">
+                </el-table-column>
+                <el-table-column
+                prop="zip"
+                label="邮编"
+                width="120">
+                </el-table-column>
+                <el-table-column
+                    fixed
+                    prop="date"
+                    label="日期"
+                    width="150">
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    label="姓名"
+                    width="120">
+                </el-table-column>
+                <el-table-column
+                    prop="province"
+                    label="省份"
+                    width="120">
+                </el-table-column>
+                <el-table-column
+                    prop="city"
+                    label="市区"
+                    width="120">
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="地址"
+                    width="300">
+                </el-table-column>
+                <el-table-column
+                    prop="zip"
+                    label="邮编"
+                    width="120">
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    label="姓名"
+                    width="120">
+                </el-table-column>
+                <el-table-column
+                    prop="province"
+                    label="省份"
+                    width="120">
+                </el-table-column>
+                <el-table-column
+                    prop="city"
+                    label="市区"
+                    width="120">
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="地址"
+                    width="300">
+                </el-table-column>
+                <el-table-column
+                    prop="zip"
+                    label="邮编"
+                    width="120">
+                </el-table-column>
+          </el-table> -->
+
+          <section>
+                <div class="relative">
+                    <div class='table1wrap'>
+                        <table class='table relative' ref='header'>
+                            <thead>
+                                <tr>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="min-width: 150px;">120</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class='table2wrap'  @scroll="scrollFn" ref='body'>
+                        <div class='loadingwrap loadingDiy' v-show="loading">
+                            <i class='loading'></i>
+                        </div>
+                        <table class='table table-bordered exportTable'>
+                            <tbody>
+                                <tr v-for='(item, index) of items' :key='index'>
+                                    <td style='width:150px;'></td>
+                                    <td style='width:150px;'></td>
+                                    <td style='width:150px;'>{{index + 1}}</td>
+                                    <td style='width:150px;'></td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique cumque omnis neque tenetur quidem sequi modi ducimus praesentium temporibus? Eius rem tempora fugiat impedit amet assumenda nobis non officia. Natus?
+                                    </td>
+                                    <td style='min-width: 150px;'>
+                                            111111111111111111111111111112011111111111111111111111111111201111111111111111111111111111120
+                                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repudiandae ad est vel distinctio debitis quidem eligendi quia adipisci rerum, quasi ipsum ipsa saepe temporibus, vitae aliquam. Debitis voluptates ullam asperiores.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tablefixed">
+                        <table  class='table1wrap table tablefixed_header relative'>
+                            <thead>
+                                <tr>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">商品分类</th>
+                                    <th style="width: 150px;">地址</th>
+                                    <th style="min-width: 150px;">120</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <table class='table tablefixed_body relative' ref='tablefixed'>
+                            <tbody>
+                                <tr v-for='(item, index) of items' :key='index'>
+                                    <td style='width:150px;'>{{index + 1}}</td>
+                                    <td style='width:150px;'></td>
+                                    <td style='width:150px;'></td>
+                                    <td style='width:150px;'></td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>1</td>
+                                    <td style='width:150px;'>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique cumque omnis neque tenetur quidem sequi modi ducimus praesentium temporibus? Eius rem tempora fugiat impedit amet assumenda nobis non officia. Natus?
+                                    </td>
+                                    <td style='min-width: 150px;'>
+                                        111111111111111111111111111112011111111111111111111111111111201111111111111111111111111111120
+                                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repudiandae ad est vel distinctio debitis quidem eligendi quia adipisci rerum, quasi ipsum ipsa saepe temporibus, vitae aliquam. Debitis voluptates ullam asperiores.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        
+        </div>
+    <script src="../js/vue.min.js"></script>
+    <!-- <script src="../js/iview.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/receive_detailed.js"></script> -->
+    <script src="../js/element.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data:{
+                loading: true,
+                items: [
+                    {
+                        name: 'John Brown',
+                        age: 18,
+                        address: 'New York No. 1 Lake Park',
+                        province: 'America',
+                        city: 'New York',
+                        zip: 100000
+                    },
+                    {
+                        name: 'Jim Green',
+                        age: 24,
+                        address: 'Washington, D.C. No. 1 Lake Park',
+                        province: 'America',
+                        city: 'Washington, D.C.',
+                        zip: 100000
+                    },
+                    {
+                        name: 'Joe Black',
+                        age: 30,
+                        address: 'Sydney No. 1 Lake Park',
+                        province: 'Australian',
+                        city: 'Sydney',
+                        zip: 100000
+                    },
+                    {
+                        name: 'Jon Snow',
+                        age: 26,
+                        address: 'Ottawa No. 2 Lake Park',
+                        province: 'Canada',
+                        city: 'Ottawa',
+                        zip: 100000
+                    }
+                ],
+                tableData: [{
+                        date: '2016-05-03',
+                        name: '王小虎',
+                        province: '上海',
+                        city: '普陀区',
+                        address: '上海市普陀区金沙江路 1518 弄',
+                        zip: 200333
+                    }, {
+                        date: '2016-05-02',
+                        name: '王小虎',
+                        province: '上海',
+                        city: '普陀区',
+                        address: '上海市普陀区金沙江路 1518 弄',
+                        zip: 200333
+                    }, {
+                        date: '2016-05-04',
+                        name: '王小虎',
+                        province: '上海',
+                        city: '普陀区',
+                        address: '上海市普陀区金沙江路 1518 弄',
+                        zip: 200333
+                    }, {
+                        date: '2016-05-01',
+                        name: '王小虎',
+                        province: '上海',
+                        city: '普陀区',
+                        address: '上海市普陀区金沙江路 1518 弄',
+                        zip: 200333
+                    }, {
+                        date: '2016-05-08',
+                        name: '王小虎',
+                        province: '上海',
+                        city: '普陀区',
+                        address: '上海市普陀区金沙江路 1518 弄',
+                        zip: 200333
+                    }, {
+                        date: '2016-05-06',
+                        name: '王小虎',
+                        province: '上海',
+                        city: '普陀区',
+                        address: '上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄',
+                        zip: 200333
+                    }, {
+                        date: '2016-05-07',
+                        name: '王小虎',
+                        province: '上海',
+                        city: '普陀区',
+                        address: '上海市普陀区金沙江路 1518 弄',
+                        zip: 200333
+                }]
+            },
+            methods: {
+                scrollFn(){
+                    this.$refs.tablefixed.style.top = -this.$refs.body.scrollTop + 'px'
+                    this.$refs.header.style.left = -this.$refs.body.scrollLeft + 'px'
+                },
+            },
+            created() {
+                var arr = [];
+                var json = [];
+                this.loading = true;
+                var timer = setTimeout( _ => {
+                    for (var i = 0; i < 2000; i++) {
+                        arr.push({
+                            name: 'Jon Snow',
+                            age: 26,
+                            address: 'Ottawa No. 2 Lake Park',
+                            province: 'Canada',
+                            city: 'Ottawa',
+                            zip: 100000
+                        })
+                        json.push(
+                            {
+                                date: '2016-05-03',
+                                name: '王小虎',
+                                province: '上海',
+                                city: '普陀区',
+                                address: '上海市普陀区金沙江路 1518 弄',
+                                zip: 200333
+                            }
+                        )
+                    }
+                    this.items = arr;
+                    this.tableData = json;
+                    this.loading = false;
+
+                }, )
+            }
+        })
+    </script>
+</body>
+</html>
