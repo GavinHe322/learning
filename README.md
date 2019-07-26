@@ -45,7 +45,9 @@ step by step
     </li>
     <li>
         vue
-        <ul>vue 的一些常见用法</ul>
+        <ul>
+            <li>vue 的一些常见用法</li>
+        </ul>
     </li>
 </ul>
 
