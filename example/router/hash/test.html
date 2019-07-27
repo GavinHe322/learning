@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <a href="#/page1">page1</a>
+        <a href="#/page2">page2</a>
+        <a href="#/page3">page3</a>
+        <a href="#/page4">page4</a>
+        <a href="#/page5">page5</a>
+    </div>
+    <div id="container"></div>
+
+    <script>
+        class HashRouter {
+            constructor() {
+                // 用于存储不用 hash 值所对应的回调函数
+                this.routers = {}
+                window.addEventListener('hashchange', this.load.bind(this), false)
+            }
+            // 用于注册每个视图
+            register(hash, callback = function() {}) {
+                this.routers[hash] = callback
+            }
+            // 不存在hash 值时， 默认访问首页
+            registerIndex(callback = function() {}) {
+                this.routers['index'] = callback
+            }
+            // 资源路由
+            registerNotFound(callback = function() {}) {
+                this.routers['404'] = callback
+            }
+            // 用于处理异常错误情况
+            registerError(callback = function() {}) {
+                this.routers['error'] = callback
+            }
+            // 用户调用不用视图的回调函数
+            load() {
+                let hash = location.hash.slice(1),
+                    handler;
+                
+                // 如果没有 hash 默认为home
+                if (!hash) {
+                    handler = this.routers.index
+                } else if (!this.routers.hasOwnProperty(hash)) {
+                    handler = this.routers['404'] || function() {}
+                } else {
+                    handler = this.routers[hash]
+                }
+                console.log(handler, 'handler')
+                try {
+                    handler.call(this);
+                } catch (e) {
+                    this.routers['error'].call(this, e)
+                }
+            }
+        }    
+        let router = new HashRouter()
+        var container = document.getElementById('container')
+        
+        function html(txet) {
+            return function f() {
+                container.innerHTML = txet
+            }
+        }
+        
+        // 注册页面
+        router.registerIndex( html('我是主页'))
+        
+        // 其他页面
+        router.register('/page1', html('我是page1'))
+        router.register('/page2', html('我是page2'))
+        router.register('/page3', html('我是page3'))
+        router.register('/page4', () => {throw new Error('抛出异常')})
+
+        // 404
+        router.registerNotFound(html('404 not found'))
+        router.registerError((e) => container.innerHTML = '错误->>>'+ e.message)
+
+        router.load();
+
+    </script>
+</body>
+</html>

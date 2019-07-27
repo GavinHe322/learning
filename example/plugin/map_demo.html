@@ -90,85 +90,126 @@
 <div class="info">
     点击地图上的点标记，打开所添加的自定义信息窗体
 </div>
-<script type="text/javascript"
-        src="https://webapi.amap.com/maps?v=1.4.15&key=511aaf6dcb5f9231422e083c0c9e07a7"></script>
+<!-- <script type="text/javascript" -->
+        <!-- src="https://webapi.amap.com/maps?v=1.4.15&key=511aaf6dcb5f9231422e083c0c9e07a7"></script> -->
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.3&key=511aaf6dcb5f9231422e083c0c9e07a7"></script>
+
 <script type="text/javascript">    //地图初始化时，在地图上添加一个marker标记,鼠标点击marker可弹出自定义的信息窗体
-var map = new AMap.Map("container", {
-    resizeEnable: true,
-    center: [116.481181, 39.989792],
-    zoom: 16
-});
-addMarker();
+// var map = new AMap.Map("container", {
+//     resizeEnable: true,
+//     center: [116.481181, 39.989792],
+//     zoom: 16
+// });
+// addMarker();
 
-//添加marker标记
-function addMarker() {
-    map.clearMap();
-    var marker = new AMap.Marker({
-        map: map,
-        position: [116.481181, 39.989792]
-    });
-    //鼠标点击marker弹出自定义的信息窗体
-    AMap.event.addListener(marker, 'click', function () {
-        infoWindow.open(map, marker.getPosition());
-    });
-}
+// //添加marker标记
+// function addMarker() {
+//     map.clearMap();
+//     var marker = new AMap.Marker({
+//         map: map,
+//         position: [116.481181, 39.989792]
+//     });
+//     //鼠标点击marker弹出自定义的信息窗体
+//     AMap.event.addListener(marker, 'click', function () {
+//         infoWindow.open(map, marker.getPosition());
+//     });
+// }
 
-//实例化信息窗体
-var title = '方恒假日酒店<span style="font-size:11px;color:#F00;">价格:318</span>',
-    content = [];
-content.push("<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：北京市朝阳区阜通东大街6号院3号楼东北8.3公里");
-content.push("电话：010-64733333");
-content.push("<a href='https://ditu.amap.com/detail/B000A8URXB?citycode=110105'>详细信息</a>");
-var infoWindow = new AMap.InfoWindow({
-    isCustom: true,  //使用自定义窗体
-    content: createInfoWindow(title, content.join("<br/>")),
-    offset: new AMap.Pixel(16, -45)
-});
+// //实例化信息窗体
+// var title = '方恒假日酒店<span style="font-size:11px;color:#F00;">价格:318</span>',
+//     content = [];
+// content.push("<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：北京市朝阳区阜通东大街6号院3号楼东北8.3公里");
+// content.push("电话：010-64733333");
+// content.push("<a href='https://ditu.amap.com/detail/B000A8URXB?citycode=110105'>详细信息</a>");
+// var infoWindow = new AMap.InfoWindow({
+//     isCustom: true,  //使用自定义窗体
+//     content: createInfoWindow(title, content.join("<br/>")),
+//     offset: new AMap.Pixel(16, -45)
+// });
 
-//构建自定义信息窗体
-function createInfoWindow(title, content) {
-    var info = document.createElement("div");
-    info.className = "custom-info input-card content-window-card";
+// //构建自定义信息窗体
+// function createInfoWindow(title, content) {
+//     var info = document.createElement("div");
+//     info.className = "custom-info input-card content-window-card";
 
-    //可以通过下面的方式修改自定义窗体的宽高
-    //info.style.width = "400px";
-    // 定义顶部标题
-    var top = document.createElement("div");
-    var titleD = document.createElement("div");
-    var closeX = document.createElement("img");
-    top.className = "info-top";
-    titleD.innerHTML = title;
-    closeX.src = "https://webapi.amap.com/images/close2.gif";
-    closeX.onclick = closeInfoWindow;
+//     //可以通过下面的方式修改自定义窗体的宽高
+//     //info.style.width = "400px";
+//     // 定义顶部标题
+//     var top = document.createElement("div");
+//     var titleD = document.createElement("div");
+//     var closeX = document.createElement("img");
+//     top.className = "info-top";
+//     titleD.innerHTML = title;
+//     closeX.src = "https://webapi.amap.com/images/close2.gif";
+//     closeX.onclick = closeInfoWindow;
 
-    top.appendChild(titleD);
-    top.appendChild(closeX);
-    info.appendChild(top);
+//     top.appendChild(titleD);
+//     top.appendChild(closeX);
+//     info.appendChild(top);
 
-    // 定义中部内容
-    var middle = document.createElement("div");
-    middle.className = "info-middle";
-    middle.style.backgroundColor = 'white';
-    middle.innerHTML = content;
-    info.appendChild(middle);
+//     // 定义中部内容
+//     var middle = document.createElement("div");
+//     middle.className = "info-middle";
+//     middle.style.backgroundColor = 'white';
+//     middle.innerHTML = content;
+//     info.appendChild(middle);
 
-    // 定义底部内容
-    var bottom = document.createElement("div");
-    bottom.className = "info-bottom";
-    bottom.style.position = 'relative';
-    bottom.style.top = '0px';
-    bottom.style.margin = '0 auto';
-    var sharp = document.createElement("img");
-    sharp.src = "https://webapi.amap.com/images/sharp.png";
-    bottom.appendChild(sharp);
-    info.appendChild(bottom);
-    return info;
-}
+//     // 定义底部内容
+//     var bottom = document.createElement("div");
+//     bottom.className = "info-bottom";
+//     bottom.style.position = 'relative';
+//     bottom.style.top = '0px';
+//     bottom.style.margin = '0 auto';
+//     var sharp = document.createElement("img");
+//     sharp.src = "https://webapi.amap.com/images/sharp.png";
+//     bottom.appendChild(sharp);
+//     info.appendChild(bottom);
+//     return info;
+// }
 
-//关闭信息窗体
-function closeInfoWindow() {
-    map.clearInfoWindow();
-}
+// //关闭信息窗体
+// function closeInfoWindow() {
+//     map.clearInfoWindow();
+// }
+</script>
+<script>
+    var mapObj = new AMap.Map('map');
+    mapObj.plugin('AMap.Geolocation', function () {
+        geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true, // 是否使用高精度定位，默认:true
+            timeout: 10000,           // 超过10秒后停止定位，默认：无穷大
+            maximumAge: 0,            // 定位结果缓存0毫秒，默认：0
+            convert: true,            // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+            showButton: true,         // 显示定位按钮，默认：true
+            buttonPosition: 'LB',     // 定位按钮停靠位置，默认：'LB'，左下角
+            buttonOffset: new AMap.Pixel(10, 20), // 定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            showMarker: true,         // 定位成功后在定位到的位置显示点标记，默认：true
+            showCircle: true,         // 定位成功后用圆圈表示定位精度范围，默认：true
+            panToLocation: true,      // 定位成功后将定位到的位置作为地图中心点，默认：true
+            zoomToAccuracy:true       // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+        });
+        mapObj.addControl(geolocation);       //授权弹窗
+        geolocation.getCurrentPosition();
+        AMap.event.addListener(geolocation, 'complete', onComplete); // 返回定位信息
+        AMap.event.addListener(geolocation, 'error', onError);       // 返回定位出错信息
+    });
+
+    function onComplete(obj){
+        var res = '经纬度：' + obj.position + 
+                '\n精度范围：' + obj.accuracy + 
+                '米\n定位结果的来源：' + obj.location_type + 
+                '\n状态信息：' + obj.info + 
+                '\n地址：' + obj.formattedAddress + 
+                '\n地址信息：' + JSON.stringify(obj.addressComponent, null, 4);
+        alert(res);
+
+    $("#addr").text(obj.position);
+    }
+
+    function onError(obj) {
+        alert(obj.info + ',,,,' + obj.message);
+        console.log(obj);
+    }
 </script>
 </body>
 </html>
