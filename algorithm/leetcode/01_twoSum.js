@@ -1,4 +1,3 @@
-<script>
 var sum = [2, 7, 2, 15]
 var target = 9
 // retun [0, 1]
@@ -25,8 +24,20 @@ function toSum(nums, target) {
         a[nums[i]] = i
     }
 }
-
 console.log(
     toSum(sum, target)
 )
-</script>
+
+var sum = [2, 7, 2, 15]
+var target = 9
+
+function toSum(nums, target) {
+    let a = [],
+        len = nums.length
+    for (var i = 0; i < len; i++) {
+        let tem = target - nums[i]
+
+        if (a[tem] != undefined) return [a[tem], i]
+        a[nums[i]] = i
+    }
+}
