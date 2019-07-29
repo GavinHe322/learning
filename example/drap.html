@@ -42,17 +42,11 @@
             endX: 0,
         },
         methods:{
-            aaa() {
-                console.log(
-                    this.list
-                )
-            },
             dragstart(e){
                 var eo = e || event;
                 this.moveDom = eo.currentTarget;
                 this.startX = eo.clientX;
                 this.startY = eo.clientY;
-                // eo.dataTransfer.effectAllowed = "copy" // 设置这个属性应该配合 eo.dataTransfer来使用
             },
             dragover(e){
                 var eo = e || event;
@@ -60,10 +54,7 @@
                 this.changeDom = eo.currentTarget;
                 this.endX = eo.clientX;
                 this.endY = eo.clientY;
-                
-                console.log(this.changeDom, 'this.changeDom?')
-                console.log(this.moveDom, 'this.moveDom')
-
+             
                 if(this.endX - this.startX >= 0){
                     this.$refs.parent.insertBefore(this.moveDom, this.changeDom.nextSibling);
                 } else {
@@ -86,16 +77,16 @@
                 let domList = this.$refs.parent.childNodes; // 在前面html中设置id
                 let arr = [];
                 for(let i=0;i < domList.length;i++){// 取出各id
-                        if(domList[i].id){
-                                arr.push(domList[i].id)
-                        }
+                    if(domList[i].id){
+                        arr.push(domList[i].id)
+                    }
                 }
                 let newList = [];
                 for (let v1 of arr.values()) { // 根据id 重新组合数据
                     for (let v of that.list.values()) {
-                            if(v1 == v.id ){
-                                    newList.push(v);
-                            }
+                        if(v1 == v.id ){
+                            newList.push(v);
+                        }
                     }
                 }
             }
