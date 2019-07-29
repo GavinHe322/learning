@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>拖拽</title>
+    <style>
+        ul {
+            display: flex;
+            justify-content: center;
+        }
+
+        li {
+            list-style: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <ul ref="parent" style="width:300px;">
+            <li class="myli" v-for="(item,index) in list" :id="index" draggable="true" @dragstart="dragstart($event)" @dragover="dragover($event)"@drop="drop($event)">{{item.name}}</li>
+        </ul>
+        <button type="button" @click="aaa">
+                clickMe!
+        </button>
+    </div>
+    <script src="../../js/vue.min.js"></script>
+    <script>
+    new Vue({
+        el:"#app",
+        data:{
+            list:[
+                {id:1,name:"乖"},
+                {id:2,name:"不乖"},
+                {id:3,name:"任性"},
+                {id:4,name:"高兴"}],
+            moveDom: "",
+            startX: 0,
+            changeDom: "",
+            endX: 0,
+        },
+        methods:{
+            aaa() {
+                console.log(
+                    this.list
+                )
+            },
+            dragstart(e){
+                var eo = e || event;
+                this.moveDom = eo.currentTarget;
+                this.startX = eo.clientX;
+                this.startY = eo.clientY;
+                // eo.dataTransfer.effectAllowed = "copy" // 设置这个属性应该配合 eo.dataTransfer来使用
+            },
+            dragover(e){
+                var eo = e || event;
+                eo.preventDefault();
+                this.changeDom = eo.currentTarget;
+                this.endX = eo.clientX;
+                this.endY = eo.clientY;
+                
+                console.log(this.changeDom, 'this.changeDom?')
+                console.log(this.moveDom, 'this.moveDom')
+
+                if(this.endX - this.startX >= 0){
+                    this.$refs.parent.insertBefore(this.moveDom, this.changeDom.nextSibling);
+                } else {
+                    this.$refs.parent.insertBefore(this.moveDom, this.changeDom)
+                }
+            },
+            drop(e){
+                const that = this;
+                var eo = e || event;
+                eo.preventDefault();
+                this.changeDom = eo.currentTarget;
+               
+                this.endX = eo.clientX;
+                if(this.endX - this.startX >= 0){
+                    this.$refs.parent.insertBefore(this.moveDom,this.changeDom.nextSibling);
+                }else{
+                    this.$refs.parent.insertBefore(this.moveDom,this.changeDom);
+                }
+
+                let domList = this.$refs.parent.childNodes; // 在前面html中设置id
+                let arr = [];
+                for(let i=0;i < domList.length;i++){// 取出各id
+                        if(domList[i].id){
+                                arr.push(domList[i].id)
+                        }
+                }
+                let newList = [];
+                for (let v1 of arr.values()) { // 根据id 重新组合数据
+                    for (let v of that.list.values()) {
+                            if(v1 == v.id ){
+                                    newList.push(v);
+                            }
+                    }
+                }
+            }
+        }
+    })
+
+    </script>
+</body>
+</html>
