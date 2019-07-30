@@ -22,7 +22,7 @@
         <ul ref="parent" style="width:300px;">
             <li class="myli" v-for="(item,index) in list" :id="index" draggable="true" @dragstart="dragstart($event)" @dragover="dragover($event)"@drop="drop($event)">{{item.name}}</li>
         </ul>
-        <ul ref="parent2" style="width:300px;">
+        <ul style="width:300px;">
             <li class="myli" v-for="(item,index) in list" :id="index" draggable="true" @dragstart="dragstart2($event)" @dragover="dragover2($event)"@drop="drop2($event)">{{item.name}}</li>
         </ul>
         <button type="button">
