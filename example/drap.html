@@ -64,12 +64,19 @@
                 this.changeDom = eo.currentTarget
                 this.endX = eo.clientX
                 this.endY = eo.clientY
-                console.log(this.moveDom, this.changeDom, this.changeDom.nextSibling, '??')
+                console.log(this.moveDom , 'moveDom', this.changeDom + 'changeDom', this.changeDom.nextSibling + 'nextSiblings', '??')
                 if (this.endX - this.startX >= 0) {
                     this.$refs.parent.insertBefore(this.moveDom, this.changeDom.nextSibling)
                 } else {
                     this.$refs.parent.insertBefore(this.moveDom, this.changeDom)
                 }
+            },
+            c(e) {
+                const that = this
+                var eo = e || event
+                eo.preventDefault()
+                this.changeDom = eo.currentTarget
+                // this.
             },
             dragover(e){
                 var eo = e || event;
@@ -78,7 +85,8 @@
                 this.endX = eo.clientX;
                 this.endY = eo.clientY;
                 
-                console.log(this.moveDom, this.changeDom, this.changeDom.nextSibling, '??')
+                console.log(this.moveDom , 'moveDom', this.changeDom , 'changeDom', this.changeDom.nextSibling , 'nextSiblings', '??')
+                
 
                 if(this.endX - this.startX >= 0){
                     this.$refs.parent.insertBefore(this.moveDom, this.changeDom.nextSibling);
