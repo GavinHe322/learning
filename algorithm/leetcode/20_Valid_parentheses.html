@@ -13,6 +13,7 @@
          * @return {boolean}
          */
          var isValid = function(s) {
+             debugger
                 let valid = true
                 const stack = []
                 const mapper = {
@@ -28,7 +29,7 @@
                         stack.push(v)
                     } else {
                         const prek = stack.pop()
-                        if (v !== mapper[peak]) {
+                        if (v !== mapper[prek]) {
                             return false
                         }
                     }
@@ -38,7 +39,7 @@
             };
             console.log(
                 isValid("(){}[]"), // ouput true
-                isValid('()['), //output fasle
+                // isValid('()['), //output fasle
             )
     </script>
 </body>

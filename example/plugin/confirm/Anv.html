@@ -1,0 +1,283 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height">
+    <title>项目整体监控</title>
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;height:100%;margin:0;}</style>
+</head>
+<body>
+<div id="mountNode"></div>
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
+<style>
+    .g2-guide-html {
+        width: 100px;
+        height: 80px;
+        vertical-align: middle;
+        text-align: center;
+        line-height: 0.2;
+    }
+
+    .g2-guide-html .title {
+        font-size: 12px;
+        color: #8c8c8c;
+        font-weight: 300;
+    }
+
+    .g2-guide-html .amount22222 {
+        font-size: 32px;
+        color: #000;
+        font-weight: bold;
+    }
+</style>
+<script>
+  var count = 4000;
+  var data = [{
+    type: '评估中',
+    percent: 2500
+  }, {
+    type: '设计中',
+    percent: 400
+  }, {
+    type: '正在开发',
+    percent: 500
+  }, {
+    type: '已上线',
+    percent: 600
+  }];
+  let index = 0;
+  var sum = 500;
+  var ds = new DataSet();
+  var dv = ds.createView().source(data);
+  dv.transform({
+    type: 'map',
+    callback: function callback(row) {
+      row.amount22222 = row.percent / count  //parseInt(sum * row.percent);
+      return row;
+    }
+  });
+  var chart = new G2.Chart({
+    container: 'mountNode',
+    forceFit: true,
+    height: window.innerHeight,
+    padding: 'auto'
+  });
+  chart.source(dv);
+  chart.tooltip(false);
+  chart.legend({
+    useHtml: true,
+    position: 'right-center',
+    offsetX: -100,
+    offsetY: -100,
+    width: 'auto',
+    itemFormatter: function itemFormatter(item, test) {
+        console.log(arguments)
+        return `<span style="color:red;width:50px;display:inline-block;">${item}</span>` + 'xxx';
+    }
+  });
+  chart.coord('theta', {
+    radius: 0.75,
+    innerRadius: 0.6
+  });
+  chart.intervalStack().position('percent').color('type', ['#0a7aca', '#0a9afe', '#4cb9ff', '#8ed1ff']).opacity(1).label('percent', {
+    offset: -18,
+    textStyle: {
+      fill: 'white',
+      fontSize: 12,
+      shadowBlur: 2,
+      shadowColor: 'rgba(0, 0, 0, .45)'
+    },
+    rotate: 0,
+    autoRotate: false,
+    formatter: function formatter(text, item) {
+        console.log(item, 'item?')
+      return item.point.type + ': ' +  String((item.point.percent / count)) + '%';
+    }
+  });
+  chart.guide().html({
+    position: ['50%', '50%'],
+    html: `<div class="g2-guide-html"><p class="title">项目总计</p><p class="amount22222">${count}</p></div>`
+  });
+//   chart.on('interval:mouseenter', function(ev) {
+//     var data = ev.data._origin;
+//     $(".g2-guide-html").css('opacity', 1);
+//     $(".g2-guide-html .title").text(data.type);
+//     $(".g2-guide-html .amount22222").text(data.amount22222);
+//   });
+
+//   chart.on('interval:mouseleave', function() {
+//     $(".g2-guide-html .title").text('项目总计');
+//     $(".g2-guide-html .amount22222").text(500);
+//   });
+  chart.render();
+</script>
+</body>
+</html> -->
+
+
+<!-- 折线图 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height">
+    <title>legend-尾部跟随图例</title>
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;height:100%;margin:0;}</style>
+</head>
+<body>
+<div id="mountNode"></div>
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+<script src="./rertility2.js"></script>
+<script>
+    console.log(data)
+//   $.getJSON('https://antv.alipay.com/assets/data/fertility2.json', function(data) {
+
+    var data = [];
+    for (var i = 0; i < 20; i ++) {
+        data.push(
+            {
+                country1111: '商品' + i,
+                amount22222: parseInt( Math.random() * 100 ),
+                date: new Date(
+                    new Date().getTime() + i * 1000 * 24 * 60 * 60
+                ).toLocaleDateString()
+            }
+        )
+        data.push(
+            {
+                country1111: '商品' + 2,
+                amount22222: parseInt( Math.random() * 100 ),
+                date: new Date(
+                    new Date().getTime() + i * 1000 * 24 * 60 * 60
+                ).toLocaleDateString()
+            }
+        )
+        data.push(
+            {
+                country1111: '商品' + 3,
+                amount22222: parseInt( Math.random() * 100 ),
+                date: new Date(
+                    new Date().getTime() + i * 1000 * 24 * 60 * 60
+                ).toLocaleDateString()
+            }
+        )
+    }
+    console.log(data)
+    var dv = new DataSet.View().source(data).transform({
+      type: 'aggregate',
+      fields: ['amount22222', 'amount22222'],
+      operations: ['min', 'max'],
+      as: ['min', 'max'],
+      groupBy: ['country1111'],
+      orderBy: ['date']
+    }).rows;
+
+    data = new DataSet.View().source(data).transform({
+      type: 'sort-by',
+      field: 'date',
+      orderBy: 'ASC'
+    });
+    var valueMap = {};
+    var chart = new G2.Chart({
+      container: 'mountNode',
+      forceFit: true,
+      height: window.innerHeight,
+      padding: [10, 200, 50, 50]
+    });
+    chart.source(data);
+    chart.legend({
+      attachLast: true
+    });
+    chart.line().position('date*amount22222').color('country1111').size('country1111', function(country1111) {
+      if (country1111 === 'China') return 5;
+      return 2;
+    }).label('country1111*amount22222*date', function(country1111, amount22222, date) {
+      var result = null;
+      for (var i = 0; i < dv.length; i++) {
+        if (dv[i].country1111 === country1111) {
+          if (dv[i].min === amount22222 && !valueMap[country1111 + 'min']) {
+            valueMap[country1111 + 'min'] = date;
+            result = amount22222;
+            console.log(result, 'result??')
+            break;
+          }
+
+          if (dv[i].max === amount22222 && !valueMap[country1111 + 'max']) {
+            valueMap[country1111 + 'max'] = date;
+            result = amount22222;
+            console.log(valueMap, 'max????')
+            break;
+          }
+        }
+      }
+      console.log(result, 'returl')
+      return result;
+    }, {
+      labelLine: false,
+      offset: 10,
+      textStyle: {
+        stroke: '#fff',
+        lineWidth: 2
+      }
+    }).style({
+      lineCap: 'round'
+    });
+    chart.point().position('date*amount22222').color('country1111').style({
+      lineWidth: 2
+    }).size('country1111*amount22222*date', function(country1111, amount22222, date) {
+      if (valueMap[country1111 + 'min'] === date || valueMap[country1111 + 'max'] === date) {
+        return 3;
+      }
+      return 0;
+    });
+    chart.render();
+//   });
+</script>
+</body>
+</html>
+
+<!-- 柱状图 -->
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height">
+    <title>基础柱状图</title>
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;height:100%;margin:0;}</style>
+</head>
+<body>
+<div id="mountNode"></div>
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+<script>
+  var data = [];
+  for (var i =0; i < 10; i++) {
+    data.push({
+      shop: '名店' + i,
+      amount: parseInt(Math.random() * 10)
+    })
+  }
+  var chart = new G2.Chart({
+    container: 'mountNode',
+    forceFit: true,
+    height: window.innerHeight
+  });
+  chart.source(data);
+  chart.scale('amount', {
+    tickInterval: 20
+  });
+  chart.interval().position('shop*amount');
+  chart.render();
+</script>
+</body>
+</html> -->

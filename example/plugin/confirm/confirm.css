@@ -1,0 +1,94 @@
+.UImask {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+.UIdialog {
+  position: fixed;
+  z-index: 999;
+  width: 80%;
+  max-width: 400px;
+  display: table;
+  z-index: 5000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  transition: opacity 0.3s, transform 0.4s;
+  text-align: center;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  padding: 30px 40px;
+}
+.UIdialog_hd {
+  font-weight: bold;
+  font-size: 34px;
+  letter-spacing: 1px;
+}
+.UIdialog_bd {
+  margin: 40px 0;
+  text-align: center;
+  font-size: 24px;
+  slot,
+  p {
+    display: inline-block;
+    text-align: left;
+  }
+}
+.UIdialog_ft {
+  position: relative;
+  font-size: 28px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 20px;
+  margin-bottom: -5px;
+  padding-top: 15px;
+}
+.UIdialog_btn {
+  display: block;
+  text-decoration: none;
+  position: relative;
+  display: block;
+  background-color: #000;
+  border-radius: 40px;
+  padding: 12px 45px;
+}
+.UIdialog_ft_one {
+  text-align: center;
+  justify-content: center;
+}
+
+/* 进入和出去的动画 */
+.confirm-fade-enter-active {
+  animation: bounce-in 0.5s;
+}
+.confirm-fade-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+.confirm-fade-enter,
+.confirm-fade-leave-to {
+  opacity: 0;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+}
