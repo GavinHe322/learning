@@ -4,92 +4,372 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <style></style> -->
+    <!-- <style ></style> -->
+    <!-- <style re></style> -->
+    <link rel="stylesheet" href="../../css/public.css">
+
     <title>拖拽</title>
     <style>
-        ul {
-            display: flex;
-            justify-content: center;
-        }
+    .label {
+        width: 200px;
+        margin-right: 5px;
+    }
 
-        li {
-            list-style: none;
-            margin: 0 10px;
-        }
+    .add, .del {
+        font-size: 22px;
+    }
+
+    .del {
+        transform: rotate(45deg);
+    }
+
+    *[draggable = true] {
+        -khtml-user-drag: element;
+    }
+
+    li {
+        position: relative;
+    }
+
+    .subType {
+        height: 350px;
+        overflow: hidden;
+        width: 146px;
+    }
+
+    .subType_inner {
+        overflow: auto;
+        height: 350px;
+        width: 175px;
+    }
+
+    .parent3 {
+        height: 400px;
+        overflow: auto;
+        margin: 0;
+    }
+
+    .parent3 li {
+        display: block !important;
+    }
+
+    .check1, .check2 {
+        background: #1890ff;
+        border-radius: 4px;
+        color: fff;
+    }
+
+    .parent4 {
+        height: 80px;
+        overflow: auto;
+    }
+
+    .parent2 {
+        height: 100%;
+        overflow: auto;
+    }
+
     </style>
 </head>
 <body>
     <div id="app">
-        <ul ref="parent" style="width:300px;">
-            <li class="myli" v-for="(item,index) in list" :id="index" draggable="true" @dragstart="dragstart($event)" @dragover="dragover($event)"@drop="drop($event)">{{item.name}}</li>
-        </ul>
-        <button type="button" @click="aaa">
-                clickMe!
-        </button>
+        <aside class="fixCenter pt_1 pl_1 pr_1 pb_1" style="width:600px;" v-show="is_show_goods">
+            <div class="pl_1 ml_1">
+                <div class="bold">设置小 tips:</div>
+                <div class="gary_color">1、一添加上分类，二添加左分类，三将商品拖入;</div>
+                <div class="gary_color">2、左分类最多输入4个汉字;</div>
+            </div>
+            <div class="border mb_1 mt_1"></div>
+            <div style="min-height:50px;" class="flex">
+                <div style="width: 130px;" class="flex flex_center mr_1">
+                    <span type="plus-circle" class="blue add pointer" @click="first_add = !first_add" v-show="first_add"></span>
+                    <div class="flex flex_center">
+                        <input style="width:100px;" placeholder="一级分类" ref="first_text" v-model="first_text" v-show="!first_add"></input>
+                        <div v-show="!first_add" class="flex flex_direction pl_05">
+                            <span type="plus-circle" class="blue add pointer" @click="add_good(1)"></span>
+                            <span type="plus" class="red del pointer" v-show="!first_add" @click="first_add = !first_add"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_1">
+                    <ul class="flex flex_wrap" ref="parent1" id="parent1" v-if="update_child">
+                        <li class="poiner mr_1" :data-id="i" :data-name="val.name" v-for="(val, i) of category.categories" @click="changeChild(i, 1)" :key="i" draggable="true" @dragstart="dragstart($event, 1)" @dragover="dragover($event, 1)" @drop="drop($event, 1)" :class="index1 == i ? 'check1' : ''">
+                            <span class="vertical_middle pointer">{{val.name}}</span>
+                            <span type="plus" @click="del_goods(i)" class="red del pointer vertical_middle"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt_05"></div>
+            <div class="border"></div>
+            <div class="pb_05"></div>
+            <div class="flex">
+                <div>
+                    <div class="flex flex_center mr_1" style="min-height: 50px;width: 130px;">
+                        <span type="plus-circle" class="blue add pointer" @click="is_show_add = !is_show_add" v-show="is_show_add"></span>
+                        <div class="flex flex_center">
+                            <input style="width:100px;" placeholder="二级分类" ref="secend_text" v-model="secend_text" v-show="!is_show_add"></input>
+                            <div v-show="!is_show_add" class="flex flex_direction pl_05">
+                                <span type="plus-circle" class="blue add pointer" @click="add_good(2)"></span>
+                                <span type="plus" class="red del pointer" v-show="!is_show_add" @click="is_show_add = !is_show_add"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subType">
+                        <div class="subType_inner">
+                            <ul ref="parent2" id="parent2" class="parent2" v-if="update_child">
+                                <li style="height:30px;" v-if="typeof index1 != 'number' && typeof index2 != 'number'">
+
+                                </li>
+                                <li v-else :data-id="i" class="poiner pt_05 pb_05" v-show="val.name" :data-name="val.name" v-for="(val, i) of category.categories[index1].child" :key="i" draggable="true" @dragstart="dragstart($event, 2)" @dragover="dragover($event, 2)" @drop="drop($event, 2)" @click="changeChild(i, 2)" :class="index2 == i ? 'check1' : ''">
+                                    <span class="vertical_middle pointer inb">{{val.name}}</span>
+
+                                    <span type="plus" @click="del_goods(index1, i)" class="red del pointer vertical_middle" @click.stop.prevent></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="border"></div>
+                <div class="flex_1">
+                    <ul ref="parent3" id="parent3" class="parent3" v-if="typeof index1 == 'number' && typeof index2 == 'number'">
+                        <li style="height:30px;" v-if="category.categories[index1].child[index2].child.length == 0" draggable="true" @dragstart="dragstart($event, 3)" @dragover="dragover($event, 3)" @drop="drop($event, 3)">
+                            该暂无商品
+                        </li>
+                        <!-- eslint-disable -->
+                        <li v-else-if="update_child" class="poiner pt_05 pb_05" :data-id="val.id" v-for="(val, i) of category.categories[index1].child[index2].child" draggable="true" @dragstart="dragstart($event, 3)" @dragover="dragover($event, 3)" @drop="drop($event, 3)">
+                            <span class="vertical_middle pointer">{{val.name}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border"></div>
+            <div class="pb_05">
+                <p class="pt_05">未分类商品</p>
+                <ul ref="parent4" id="parent4" class="parent4">
+                    <li class="poiner pt_05 pb_05 inb" :data-id="val.id" :data-name="val.name" v-for="val in category.products" :key="val.id" draggable="true" @dragstart="dragstart($event, 4)" @dragover="dragover($event, 4)" @drop="drop($event, 4)">
+                        <span class="vertical_middle pointer">{{val.name}}</span>
+                        <a-icon type="plus" class="red del pointer vertical_middle"/>
+                    </li>
+                </ul>
+            </div>
+            <div class="border"></div>
+            <div class="footer flex flex_justify_center pt_1">
+                <a-button>取消</a-button>
+                <div class="pl_1 pr_1"></div>
+                <a-button type="primary">保存</a-button>
+            </div>
+        </aside>
     </div>
     <script src="../../js/vue.min.js"></script>
     <script>
     new Vue({
         el:"#app",
         data:{
-            list:[
-                {id:1,name:"乖"},
-                {id:2,name:"不乖"},
-                {id:3,name:"任性"},
-                {id:4,name:"高兴"}],
-            moveDom: "",
-            startX: 0,
-            changeDom: "",
-            endX: 0,
+            is_show_goods: true,
+           is_show_add: true,
+            // 拖拽
+           moveDom: "",
+           startX: 0,
+           changeDom: "",
+           endX: 0,
+
+           first_add: true,
+           first_text: '',
+           secend_add: false,
+           secend_text: '',
+
+           index1: 0,
+           index2: null,
+           update_child: true,
+           category: {
+                categories: [
+                    {
+                        id: 1,
+                        name: '冻品',
+                        child: [
+                            {
+                                id: '1',
+                                name: '秋刀鱼',
+                            },
+                            {
+                                id: '1',
+                                name: '秋刀鱼',
+                            }
+                        ]
+                    }
+                ],
+                products: [
+                    {
+                        id: '1',
+                        name: '无非类产品1'
+                    },
+                    {
+                        id: '1',
+                        name: '无非类产品2'
+                    },
+                    {
+                        id: '1',
+                        name: '无非类产品3'
+                    },
+                    {
+                        id: '1',
+                        name: '无非类产品4'
+                    }
+                ]
+           }
+
         },
         methods:{
-            dragstart(e){
+            changeChild(index, status) {
+                if (status == 1) {
+                    if (Array.isArray(this.category.categories[index].child)) {
+                        if (this.category.categories[index].child.length == 0) {
+                            this.category.categories[index].child.push({
+                                id: '',
+                                name: null,
+                                child: []
+                            })
+                        }
+                    }
+                    this.index1 = index
+                    var  index2 = 0;
+
+                    if (!this.category.categories[index].child[index2].child) {
+                        this.category.categories[index].child[index2].child = [];
+                    }
+                    this.index2 = index2
+                
+                } else {
+                    if (!this.category.categories[this.index1].child[index].child) {
+                        this.category.categories[this.index1].child[index].child = []
+                    }
+                    this.index2 = index
+                }
+
+            },
+            dragstart(e,){
                 var eo = e || event;
                 this.moveDom = eo.currentTarget;
                 this.startX = eo.clientX;
                 this.startY = eo.clientY;
             },
-            dragover(e){
+            dragover(e, status){
                 var eo = e || event;
                 eo.preventDefault();
                 this.changeDom = eo.currentTarget;
                 this.endX = eo.clientX;
                 this.endY = eo.clientY;
-             
-                if(this.endX - this.startX >= 0){
-                    this.$refs.parent.insertBefore(this.moveDom, this.changeDom.nextSibling);
-                } else {
-                    this.$refs.parent.insertBefore(this.moveDom, this.changeDom)
+                let parent = 'parent' + status
+                if (parent == 'parent4') {
+                    return
                 }
+            
+                if (!this.category.categories[this.index1].child[this.index2].name) {
+                    return;
+                }
+
+            /* eslint-disable */
+                if (this.moveDom.parentNode.id == 'parent4' && this.changeDom.parentNode.id == 'parent3') {
+                } else  if (this.moveDom.parentNode.id != this.changeDom.parentNode.id) {
+                    return;
+                }
+            
+                if(this.endX - this.startX >= 0){
+                    this.$refs[parent].insertBefore(this.moveDom, this.changeDom.nextSibling);
+                } else {
+                    this.$refs[parent].insertBefore(this.moveDom, this.changeDom)
+                }
+            
             },
             drop(e){
-                const that = this;
                 var eo = e || event;
                 eo.preventDefault();
                 this.changeDom = eo.currentTarget;
-               
-                this.endX = eo.clientX;
-                if(this.endX - this.startX >= 0){
-                    this.$refs.parent.insertBefore(this.moveDom,this.changeDom.nextSibling);
-                }else{
-                    this.$refs.parent.insertBefore(this.moveDom,this.changeDom);
+            
+                if (this.changeDom.parentNode.id == 'parent1' && this.moveDom.parentNode.id == 'parent1') {
+                    this.changeCation(1, this.changeDom.parentNode.id)
+                }
+                if (this.changeDom.parentNode.id == 'parent2' && this.moveDom.parentNode.id == 'parent2') {
+                    this.changeCation(2, this.changeDom.parentNode.id)
                 }
 
-                let domList = this.$refs.parent.childNodes; // 在前面html中设置id
-                let arr = [];
-                for(let i=0;i < domList.length;i++){// 取出各id
-                    if(domList[i].id){
-                        arr.push(domList[i].id)
-                    }
-                }
-                let newList = [];
-                for (let v1 of arr.values()) { // 根据id 重新组合数据
-                    for (let v of that.list.values()) {
-                        if(v1 == v.id ){
-                            newList.push(v);
+                /* eslint-disable */
+                this.$nextTick(()　=> {
+                    this.eachChild();
+                })
+            },
+            eachChild() {
+                var child1 = this.$refs.parent3.children;
+                let _this = this;
+            
+                var arr = []
+                Array.prototype.forEach.call(child1, function(ele, index) {
+                    // console.log(child1)
+                    // debugger
+                    var id = ele.getAttribute('data-id')
+                    var is_id = _this.category.categories[_this.index1].child[_this.index2].child.findIndex(res => {
+                        return res.id == id
+                    })
+                    // debugger
+                    let tem = null;
+                    if (is_id != -1) {
+                        tem = _this.category.categories[_this.index1].child[_this.index2].child[is_id]
+                    } else {
+                        for (var i in _this.category.products) {
+                            if (id == _this.category.products[i].id) {
+                                tem = _this.category.products[i];
+                                _this.category.products.splice(i, 1)
+                                break
+                            }
                         }
                     }
+                    if (tem) {
+                        arr[index] = tem
+                    }
+                })
+                this.update_child = false
+                this.$set(this.category.categories[this.index1].child[this.index2], 'child', arr)
+                this.$nextTick(res => {
+                    this.update_child = true;
+                })
+            },
+            changeCation(status, parent) {
+                let _this = this;
+                var children = this.$refs[parent].children
+                let arr = []
+                if (status == 1) {
+                    // var arr = []
+                    Array.prototype.forEach.call(children, (ele, index) => {
+                        var id = ele.getAttribute('data-id')
+                        _this.$set(_this.category.categories[id], 'order', index)
+                        
+                        arr.push(
+                            _this.category.categories[id]
+                        )
+                    })
+                    // console.log(arr,' /??')
+                    this.update_child = false
+                    this.$set(_this.category, 'categories', arr);
+
+                } else {    
+                    
+                    Array.prototype.forEach.call(children, (ele, index) => {
+                        var id = ele.getAttribute('data-id')
+                        _this.$set(_this.category.categories[_this.index1].child[id], 'order', index)
+                        arr.push(
+                            _this.category.categories[_this.index1].child[id]
+                        )
+                    })
+                    this.update_child = false
+                    this.$set(_this.category.categories[_this.index1], 'child', arr);
                 }
-            }
+
+                this.$nextTick(res => {
+                    this.update_child = true;
+                })
+            },
         }
     })
 
