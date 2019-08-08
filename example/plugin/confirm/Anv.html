@@ -27,7 +27,7 @@
         font-weight: 300;
     }
 
-    .g2-guide-html .value {
+    .g2-guide-html .amount22222 {
         font-size: 32px;
         color: #000;
         font-weight: bold;
@@ -55,7 +55,7 @@
   dv.transform({
     type: 'map',
     callback: function callback(row) {
-      row.value = row.percent / count  //parseInt(sum * row.percent);
+      row.amount22222 = row.percent / count  //parseInt(sum * row.percent);
       return row;
     }
   });
@@ -99,18 +99,18 @@
   });
   chart.guide().html({
     position: ['50%', '50%'],
-    html: `<div class="g2-guide-html"><p class="title">项目总计</p><p class="value">${count}</p></div>`
+    html: `<div class="g2-guide-html"><p class="title">项目总计</p><p class="amount22222">${count}</p></div>`
   });
 //   chart.on('interval:mouseenter', function(ev) {
 //     var data = ev.data._origin;
 //     $(".g2-guide-html").css('opacity', 1);
 //     $(".g2-guide-html .title").text(data.type);
-//     $(".g2-guide-html .value").text(data.value);
+//     $(".g2-guide-html .amount22222").text(data.amount22222);
 //   });
 
 //   chart.on('interval:mouseleave', function() {
 //     $(".g2-guide-html .title").text('项目总计');
-//     $(".g2-guide-html .value").text(500);
+//     $(".g2-guide-html .amount22222").text(500);
 //   });
   chart.render();
 </script>
@@ -139,127 +139,149 @@
 <script src="./rertility2.js"></script>
 <script src="../../../../js/vue.js"></script>
 <script>
-    
-    new Vue({
-        el: "#app",
-        data() {
-            return {
-                mountNode: true,
-            }
-        },
-        methods: {
-            drop() {
-                document.getElementById('mountNode').innerHTML = '';
-                var data = [];
-                for (var i = 0; i < 20; i ++) {
-                    data.push(
-                        {
-                            country: '商品' + 1,
-                            value: parseInt( Math.random() * 100 ),
-                            year: new Date(
-                                new Date().getTime() + i * 1000 * 24 * 60 * 60
-                            ).toLocaleDateString()
-                        }
-                    )
-                    data.push(
-                        {
-                            country: '商品' + 2,
-                            value: parseInt( Math.random() * 100 ),
-                            year: new Date(
-                                new Date().getTime() + i * 1000 * 24 * 60 * 60
-                            ).toLocaleDateString()
-                        }
-                    )
-                    data.push(
-                        {
-                            country: '商品' + 3,
-                            value: parseInt( Math.random() * 100 ),
-                            year: new Date(
-                                new Date().getTime() + i * 1000 * 24 * 60 * 60
-                            ).toLocaleDateString()
-                        }
-                    )
-                }
-                console.log(data);
-                data = [];
-                var dv = new DataSet.View().source(data).transform({
-                type: 'aggregate',
-                fields: ['value', 'value'],
-                operations: ['min', 'max'],
-                as: ['min', 'max'],
-                groupBy: ['country'],
-                orderBy: ['year']
-                }).rows;
-
-                data = new DataSet.View().source(data).transform({
-                type: 'sort-by',
-                field: 'year',
-                orderBy: 'ASC'
-                });
-                var valueMap = {};
-                var chart = new G2.Chart({
-                container: 'mountNode',
-                // forceFit: true,
-                // height: window.innerHeight,
-                height: 400,
-                width: 400,
-                // padding: [10, 200, 50, 50]
-                });
-                chart.source(data);
-                chart.legend({
-                attachLast: true
-                });
-                chart.line().position('year*value').color('country').size('country', function(country) {
-                if (country === 'China') return 5;
-                return 2;
-                }).label('country*value*year', function(country, value, year) {
-                var result = null;
-                for (var i = 0; i < dv.length; i++) {
-                    if (dv[i].country === country) {
-                    if (dv[i].min === value && !valueMap[country + 'min']) {
-                        valueMap[country + 'min'] = year;
-                        result = value;
-                        break;
-                    }
-
-                    if (dv[i].max === value && !valueMap[country + 'max']) {
-                        valueMap[country + 'max'] = year;
-                        result = value;
-                        break;
-                    }
-                    }
-                }
-                return result;
-                }, {
-                labelLine: false,
-                offset: 10,
-                textStyle: {
-                    stroke: '#fff',
-                    lineWidth: 2
-                }
-                }).style({
-                lineCap: 'round'
-                });
-                chart.point().position('year*value').color('country').style({
-                lineWidth: 2
-                }).size('country*value*year', function(country, value, year) {
-                if (valueMap[country + 'min'] === year || valueMap[country + 'max'] === year) {
-                    return 3;
-                }
-                return 0;
-                });
-                chart.render();
-            }
-        },
-        mounted() {
-            this.drop();
-        }
-    })
     console.log(data)
 //   $.getJSON('https://antv.alipay.com/assets/data/fertility2.json', function(data) {
 
-   
+    var data = [];
+    for (var i = 0; i < 20; i ++) {
+        data.push(
+            {
+                country1111: '商品' + i,
+                amount22222: parseInt( Math.random() * 100 ),
+                date: new Date(
+                    new Date().getTime() + i * 1000 * 24 * 60 * 60
+                ).toLocaleDateString()
+            }
+        )
+        data.push(
+            {
+                country1111: '商品' + 2,
+                amount22222: parseInt( Math.random() * 100 ),
+                date: new Date(
+                    new Date().getTime() + i * 1000 * 24 * 60 * 60
+                ).toLocaleDateString()
+            }
+        )
+        data.push(
+            {
+                country1111: '商品' + 3,
+                amount22222: parseInt( Math.random() * 100 ),
+                date: new Date(
+                    new Date().getTime() + i * 1000 * 24 * 60 * 60
+                ).toLocaleDateString()
+            }
+        )
+    }
+    console.log(data)
+    var dv = new DataSet.View().source(data).transform({
+      type: 'aggregate',
+      fields: ['amount22222', 'amount22222'],
+      operations: ['min', 'max'],
+      as: ['min', 'max'],
+      groupBy: ['country1111'],
+      orderBy: ['date']
+    }).rows;
+
+    data = new DataSet.View().source(data).transform({
+      type: 'sort-by',
+      field: 'date',
+      orderBy: 'ASC'
+    });
+    var valueMap = {};
+    var chart = new G2.Chart({
+      container: 'mountNode',
+      forceFit: true,
+      height: window.innerHeight,
+      padding: [10, 200, 50, 50]
+    });
+    chart.source(data);
+    chart.legend({
+      attachLast: true
+    });
+    chart.line().position('date*amount22222').color('country1111').size('country1111', function(country1111) {
+      if (country1111 === 'China') return 5;
+      return 2;
+    }).label('country1111*amount22222*date', function(country1111, amount22222, date) {
+      var result = null;
+      for (var i = 0; i < dv.length; i++) {
+        if (dv[i].country1111 === country1111) {
+          if (dv[i].min === amount22222 && !valueMap[country1111 + 'min']) {
+            valueMap[country1111 + 'min'] = date;
+            result = amount22222;
+            console.log(result, 'result??')
+            break;
+          }
+
+          if (dv[i].max === amount22222 && !valueMap[country1111 + 'max']) {
+            valueMap[country1111 + 'max'] = date;
+            result = amount22222;
+            console.log(valueMap, 'max????')
+            break;
+          }
+        }
+      }
+      console.log(result, 'returl')
+      return result;
+    }, {
+      labelLine: false,
+      offset: 10,
+      textStyle: {
+        stroke: '#fff',
+        lineWidth: 2
+      }
+    }).style({
+      lineCap: 'round'
+    });
+    chart.point().position('date*amount22222').color('country1111').style({
+      lineWidth: 2
+    }).size('country1111*amount22222*date', function(country1111, amount22222, date) {
+      if (valueMap[country1111 + 'min'] === date || valueMap[country1111 + 'max'] === date) {
+        return 3;
+      }
+      return 0;
+    });
+    chart.render();
 //   });
 </script>
 </body>
 </html>
+
+<!-- 柱状图 -->
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height">
+    <title>基础柱状图</title>
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;height:100%;margin:0;}</style>
+</head>
+<body>
+<div id="mountNode"></div>
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+<script>
+  var data = [];
+  for (var i =0; i < 10; i++) {
+    data.push({
+      shop: '名店' + i,
+      amount: parseInt(Math.random() * 10)
+    })
+  }
+  var chart = new G2.Chart({
+    container: 'mountNode',
+    forceFit: true,
+    height: window.innerHeight
+  });
+  chart.source(data);
+  chart.scale('amount', {
+    tickInterval: 20
+  });
+  chart.interval().position('shop*amount');
+  chart.render();
+</script>
+</body>
+</html> -->

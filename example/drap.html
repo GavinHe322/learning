@@ -4,17 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <style></style> -->
+    <!-- <style ></style> -->
+    <!-- <style re></style> -->
+    <link rel="stylesheet" href="../../css/public.css">
+
     <title>拖拽</title>
     <style>
-        ul {
-            display: flex;
-            justify-content: center;
-        }
+    .label {
+        width: 200px;
+        margin-right: 5px;
+    }
 
-        li {
-            list-style: none;
-            margin: 0 10px;
-        }
+    .add, .del {
+        font-size: 22px;
+    }
+
+    .del {
+        transform: rotate(45deg);
+    }
+
+    *[draggable = true] {
+        -khtml-user-drag: element;
+    }
+
+    li {
+        position: relative;
+    }
+
+    .subType {
+        height: 350px;
+        overflow: hidden;
+        width: 146px;
+    }
+
+    .subType_inner {
+        overflow: auto;
+        height: 350px;
+        width: 175px;
+    }
+
+    .parent3 {
+        height: 400px;
+        overflow: auto;
+        margin: 0;
+    }
+
+    .parent3 li {
+        display: block !important;
+    }
+
+    .check1, .check2 {
+        background: #1890ff;
+        border-radius: 4px;
+        color: fff;
+    }
+
+    .parent4 {
+        height: 80px;
+        overflow: auto;
+    }
+
+    .parent2 {
+        height: 100%;
+        overflow: auto;
+    }
+
     </style>
 </head>
 <body>
@@ -34,15 +89,59 @@
     new Vue({
         el:"#app",
         data:{
-            list:[
-                {id:1,name:"乖"},
-                {id:2,name:"不乖"},
-                {id:3,name:"任性"},
-                {id:4,name:"高兴"}],
-            moveDom: "",
-            startX: 0,
-            changeDom: "",
-            endX: 0,
+            is_show_goods: true,
+           is_show_add: true,
+            // 拖拽
+           moveDom: "",
+           startX: 0,
+           changeDom: "",
+           endX: 0,
+
+           first_add: true,
+           first_text: '',
+           secend_add: false,
+           secend_text: '',
+
+           index1: 0,
+           index2: null,
+           update_child: true,
+           category: {
+                categories: [
+                    {
+                        id: 1,
+                        name: '冻品',
+                        child: [
+                            {
+                                id: '1',
+                                name: '秋刀鱼',
+                            },
+                            {
+                                id: '1',
+                                name: '秋刀鱼',
+                            }
+                        ]
+                    }
+                ],
+                products: [
+                    {
+                        id: '1',
+                        name: '无非类产品1'
+                    },
+                    {
+                        id: '1',
+                        name: '无非类产品2'
+                    },
+                    {
+                        id: '1',
+                        name: '无非类产品3'
+                    },
+                    {
+                        id: '1',
+                        name: '无非类产品4'
+                    }
+                ]
+           }
+
         },
         methods:{
             dragstart(e){
@@ -50,7 +149,6 @@
                 this.moveDom = eo.currentTarget;
                 this.startX = eo.clientX;
                 this.startY = eo.clientY;
-                // eo.dataTransfer.effectAllowed = "copy" // 设置这个属性应该配合 eo.dataTransfer来使用
             },
             a(e) {
                 var eo = e || event;
@@ -88,23 +186,26 @@
                 console.log(this.moveDom , 'moveDom', this.changeDom , 'changeDom', this.changeDom.nextSibling , 'nextSiblings', '??')
                 
 
-                if(this.endX - this.startX >= 0){
-                    this.$refs.parent.insertBefore(this.moveDom, this.changeDom.nextSibling);
-                } else {
-                    this.$refs.parent.insertBefore(this.moveDom, this.changeDom)
+            /* eslint-disable */
+                if (this.moveDom.parentNode.id == 'parent4' && this.changeDom.parentNode.id == 'parent3') {
+                } else  if (this.moveDom.parentNode.id != this.changeDom.parentNode.id) {
+                    return;
                 }
+            
+                if(this.endX - this.startX >= 0){
+                    this.$refs[parent].insertBefore(this.moveDom, this.changeDom.nextSibling);
+                } else {
+                    this.$refs[parent].insertBefore(this.moveDom, this.changeDom)
+                }
+            
             },
             drop(e){
-                const that = this;
                 var eo = e || event;
                 eo.preventDefault();
                 this.changeDom = eo.currentTarget;
-               
-                this.endX = eo.clientX;
-                if(this.endX - this.startX >= 0){
-                    this.$refs.parent.insertBefore(this.moveDom,this.changeDom.nextSibling);
-                }else{
-                    this.$refs.parent.insertBefore(this.moveDom,this.changeDom);
+            
+                if (this.changeDom.parentNode.id == 'parent1' && this.moveDom.parentNode.id == 'parent1') {
+                    this.changeCation(1, this.changeDom.parentNode.id)
                 }
             },
 
