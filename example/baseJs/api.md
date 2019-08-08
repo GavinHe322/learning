@@ -1,0 +1,40 @@
+## Array
+- concat
+- constructor
+- copyWithin
+- entries
+- every
+- fill
+- fillter
+- find
+- findIndex
+- flat
+- flatMap
+- forEach
+- inclueds
+- indexOf
+- join
+- keys
+- lastIndexOf
+- map
+- pop
+- push
+- reduce
+- reduceRight
+- reverse
+- shift
+- unshift
+- slice
+- some
+- sort
+- splice
+- toLocalString
+- toString
+- unshift
+- values
+- Symbol.iterator
+- Symbol.unscopables
+
+
+## Object
+- 
