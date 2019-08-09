@@ -119,7 +119,7 @@
 
 
 <!-- 折线图 -->
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -240,13 +240,13 @@
 //   });
 </script>
 </body>
-</html>
+</html> -->
 
 <!-- 柱状图 -->
 
 
 
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -274,10 +274,17 @@
   });
   chart.source(data);
   chart.scale('amount', {
-    tickInterval: 20
+    tickInterval: 20,
+    containerTpl: '<div class="g2-tooltip">'
+      + '<div class="g2-tooltip-title" style="margin:10px 0;"></div>'
+      + '<ul class="g2-tooltip-list"></ul></div>', // tooltip 容器模板
+      itemTpl: '<li data-index={index}><span style="background-color:{color};width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;"></span>{shop}: {amount}2355235</li>',
+      shared: true,
+      alias: '下单量',
   });
   chart.interval().position('shop*amount');
   chart.render();
+  
 </script>
 </body>
-</html> -->
+</html>
