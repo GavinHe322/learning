@@ -128,12 +128,16 @@
     <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;height:100%;margin:0;}</style>
 </head>
 <body>
-<div id="mountNode"></div>
+    <div id="app">
+        <button type="button" @click="drop">click me!</button>
+        <div v-if="mountNode" id="mountNode"></div>
+    </div>
 <script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
 <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
 <script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
 <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
 <script src="./rertility2.js"></script>
+<script src="../../../../js/vue.js"></script>
 <script>
     console.log(data)
 //   $.getJSON('https://antv.alipay.com/assets/data/fertility2.json', function(data) {
