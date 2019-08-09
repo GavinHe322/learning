@@ -1,4 +1,4 @@
-
+// 柯里化函数
 const curry = (fn, ...args) => {
     console.log(fn, args)
     return args.length < fn.length
@@ -23,6 +23,8 @@ console.log(
 )
 
 
+
+// 如果让 (a == 1 && a == 2 && a == 3)
 var a = [1, 2, 3];
 a.join = a.shift;
 console.log(
