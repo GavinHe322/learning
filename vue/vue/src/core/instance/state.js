@@ -244,3 +244,46 @@ function createGetterInvoker (fn) {
         return fn.call(this, this)
     }
 }
+
+function initMethods (vm: Component, methods: Object) {
+    const props = vm.$options.props;
+    for (const key in methods) {
+        if (process.env.NODE_EVN !== 'production') {
+            if (typeof methods[key] !== 'function') {
+                warn(
+                    `Methods "${key}" has type "${typeof methods[key]}" in the component definition.` +
+                    `Did you reference the function correctly?`,
+                    vm
+                )
+            }
+            if (props && hasOwn(props, key)) {
+                warn(
+                    `Methods "${key}" has already been defined as a prop.`,
+                    vm
+                )
+            }
+            if ((key in vm) && isReserved(key)) {
+                warn(
+                    `Methods "${key}" conflicts with an existing Vue instance method. ` +
+                    `Avoid defining component methods that start with _ or $`
+                )
+            }
+        }
+        vm[key] = typeof methods[key] !== 'function' ? noop : bind(methods[key], vm);
+    }
+}
+
+
+
+function initWatch (vm: Component, watch, Object) {
+    for (const key in watch) {
+        const handle = watch[key];
+        if (Array.isArray(handle)) {
+            for (let i = 0; i < handle.length; i++) {
+                createWatcher(vm, key, handle[i])
+            }
+        } else {
+            createWatcher(vm, key, handle)
+        }
+    }
+}
