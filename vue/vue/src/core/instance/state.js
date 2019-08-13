@@ -60,4 +60,52 @@ export function initState (vm: Component) {
     }
 }
 
+function initProps (vm: Component, propsOptions: Object) {
+    const propsData = vm.$options.initProps || {};
+    const props = vm._props = {};
+    // cache prop keys so that future props unpdate can iterate using Array
+    // instead of dynamic object key enumeration.
+    const keys = vm.$options._proKeys = [];
+    const isRoot = !vm.$parent
+    // root instance props should be converted
+    if (!isRoot) {
+        toggleObserving(false)
+    }
+
+    for (const key in propsOptions) {
+        keys.push(key);
+        const value = validateProp(key, propsOptions, propsData, vm);
+        /** instanbul ignore else */ 
+        if (process.env.NODE_EVN !== 'production') {
+            const hyphenatedKey = hyphenate(key);
+            if (isReservedAttribute(hyphenate) || 
+                config.isReservedAttribute(hyphenatedKey)) {
+              warn(
+                  `"${hyphenatedKey}" is a reserved attrubute and cannot be used as component prop`,
+                  vm
+              )
+            }
+            defineReactive(props, key, value, () => {
+                if (!isRoot && !isUpdatingChildComponent) {
+                    warn(
+                        `Avoud mutating a prop directly since the value will be` +
+                        `overwritten whenvver the parent component re-renders.` +
+                        `Instead, use a data or computed peoperty based on the props's` +
+                        `value. Prop being mutated: "${key}"`
+                    )
+                } else {
+                    defineReactive(props, key, value)
+                }
+                // static props are already proxied on the componet's prototype
+                // during Vue.extend(). We only need to proxy props defined at
+                // instantiation here.
+                if (!(key in vm)) {
+                    proxy(vm, `_props`, key)
+                }
+            })
+            toggleObserving(true)
+        }
+    }
+}
+
 
