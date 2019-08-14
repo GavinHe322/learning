@@ -4,7 +4,6 @@ import {
     warn,
     nextTick,
     emptyObject,
-    handleObject,
     handleError,
     defineReactive
 } from '../util/index';
