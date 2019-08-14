@@ -137,3 +137,102 @@ export function lifecycleMixin (Vue: Class<Component>) {
         }
     }
 }
+
+
+export function mountCompnent (
+    vm: Component,
+    el: ?Element,
+    hydrating?: boolean,
+): Component {
+    vm.$el = el;
+    if (!vm.$options.render) {
+        vm.$options.render = createEmptyNode;
+        if (process.env.NODE_ENV !== 'production') {
+            /* instanbul ignore if */
+            if (vm.$options.template && vm.$options.template.charAt(0) !== '#' ||
+                vm.$options.el || el) {
+                warn(
+                    `You are using the runtime-only build of Vue where the template` + 
+                    'compiler is not available. Either pre-compiler the templates into' +
+                    'render functions, or use the compiler-included build.',
+                    vm
+                )
+            } else {
+                warn(
+                    'Failed to mount component: template or render function not defined.',
+                    vm
+                )
+            }
+        }
+    }
+    callHook(vm, 'beforeMount');
+
+    let updateComponent;
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+        updateComponent = () => {
+            const name = vm._name;
+            const id = vm._uid;
+            const startTag = `vue-perf-start:${id}`;
+            const endTag = `vue-perf-end:${id}`;
+
+            mark(startTag);
+            const vnode = vm._render();
+            mark(endTag);
+            measure(`vue ${name} render`, startTag, endTag);
+
+            mark(startTag);
+            vm._update(vnode, hydrating);
+            mark(endTag);
+            measure(`vue ${name} patch`, startTag, endTag);
+        }
+    } else {
+        updateComponent = () => {
+            vm._update(vm._render(), hydrating);
+        }
+    }
+
+    // we set this to vm._watcher inside the watcher's constructor
+    // since the watcher's initial patch may call $forceUpadte (e.g. inside child
+    // component's mounted hook), which relies on vm._watcher being already defined
+    new Watcher(vm, updateComponent, noop, {
+        before () {
+            if (vm._isMounted && !vm._isDestroyed) {
+                callHook(vm, 'beforeUpdate');
+            }
+        }
+    }, true /* isRenderWatcher */)
+    hydrating = false;
+
+    // manually mounted instance, call mounted on self
+    // mounted is called for render-created child components in its inserted hook
+    if (vm.$vnode == null) {
+        vm._isMounted = true;
+        callHook(vm, 'mounted');
+    }
+    return vm;
+}
+
+export function updateChildComponent (
+    vm: Component,
+    propsData: ?Object,
+    listeners: ?Object,
+    parentVnode: mountCompnentVNode,
+    renderChildren: ?Array<VNode>
+) {
+    if (process.env.NODE_ENV !== 'production') {
+        isUpdatingChildComponent = true;
+    }
+
+    // determine whether component has slot children
+    // we need to do this before overwriting $options._renderChildren.
+
+    // check if there are dynamic scopeSlots (hand-written or compiled but with
+    // dynamic slot names). Static scoped slots compiled from template has the 
+    // "#stable" marker.
+    const newScopedSlots = parentVnode.data.scopedSlots;
+    const oldScopedSlots = vm.$scopedSlots;
+    const hasDynamicScopedSlot = !!(
+        (newScopedSlots && !newScopedSlots.$stalbe)
+    );
+}
