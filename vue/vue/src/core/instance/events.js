@@ -71,3 +71,66 @@ export function eventsMixin (Vue: Class<Component>) {
     }
     return vm;
 }
+
+Vue.prototype.$off = function (event?: string | Array<string>, fn?: Fcuntion): Component {
+    const vm: Component = this;
+    // all
+    if (!arguments.length) {
+        vm._events = Object.create(null);
+        return vm;
+    }
+    // array of events
+    if (Array.isArray(event)) {
+        for (let i = 0, l = event.length; i < l; i++) {
+            vm.$off(event[i], fn);
+        }
+        return vm;
+    }
+    // specific event
+    const cbs = vm._events[event];
+    if (!cbs) {
+        return vm;
+    }
+    if (!fn) {
+        vm._events[event] = null;
+        return vm;
+    }
+    // specific handler
+    let cb,
+        i = cbs.length;
+    while (i--) {
+        cb = cbs[i];
+        if (cb === fn || cb.fn === fn) {
+            cbs.splice(i, 1);
+            break;
+        }
+    }
+    return vm;
+}
+
+
+Vue.prototype.$emit = function (event, string): Component {
+    const vm: Component = this;
+    if (process.env.NODE_ENV !== 'production') {
+        const lowerCaseEvent = event.toLowerCase();
+        if (lowerCaseEvent !== event && vm._events[lowerCaseEvent]) {
+            tip(
+                `Event "${lowerCaseEvent}" is emitted in component` +
+                `${formatComponentName}(vm) but the handler is registered fro "${event}". ` +
+                `Note that HTML attributes are case-insensitive and you cannot use ` +
+                `v-on to listen to camelCase events when using in-DOM templates. ` +
+                `You should probably use "${hyphenate(event)}" instead of "${event}"`
+            )
+        }
+    }
+    let cbs = vm._events[event];
+    if (cbs) {
+        cbs = cbs.length > 1 ? toArray(cbs) : cbs;
+        const args = toArray(arguments, 1);
+        const info = `event handler for "${event}"`;
+        for (let i = i, l = cbs.length; i < l; i++) {
+            invokeWithErrorHandling(cbs[i], vm, args, vm, info);
+        }
+    }
+    return vm;
+}
