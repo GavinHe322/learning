@@ -27,3 +27,11 @@ EventEmeitter.prototype.addListener = function (type, fn) {
     }
 };
 
+class EventEmeitter {
+    constructor() {
+        this._events = this._events || new Map(); // 储存事件 / 回调键值对
+        this._maxListeners = this._maxListeners || 10;
+    }
+}
+
+// 
