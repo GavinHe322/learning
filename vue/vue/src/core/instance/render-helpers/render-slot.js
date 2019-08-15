@@ -35,6 +35,6 @@ import { extend, warn, isObject } from 'core/util/index';
  if (target) {
      return this.$createElement('template', { slot: target }, nodes);
  } else {
-     return nodes
+     return nodes;
  }
  
