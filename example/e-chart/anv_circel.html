@@ -37,7 +37,31 @@
   var data = [{
       type: '暂无数据',
       percent: 1
+  },{
+      type: '暂无数据',
+      percent: 1
+  },{
+      type: '暂无数据',
+      percent: 1
+  },{
+      type: '暂无数据',
+      percent: 1
   }];
+  var map = {};
+  for (var item of data) {
+    if (Object.keys(map).includes(item.type)) {
+      map[item.type]++;
+      var placeHolder = '';
+      for (var i = 0; i < map[item.type]; i++) {
+        placeHolder += '&nbsp;';
+      }
+      
+      item.type = (item.type + placeHolder).replace(/&nbsp;/g, ' ');
+    } else {
+      map[item.type] = 0;
+    }
+  }
+  console.log(map, data)
   var sum = 500;
   var ds = new DataSet();
   var dv = ds.createView().source(data);
