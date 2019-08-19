@@ -98,4 +98,106 @@ function getPropDefaultValue (vm: ?Component, prop: PropOptions, key: string): a
  * Assert whether a prop is valid.
  */
 function assertProp (
-)
+    prop: PropOptions,
+    name: stirng,
+    value: any,
+    vm: ?Component,
+    absent: boolean
+) {
+    if (prop.required && absent) {
+        warn(
+            'Missing required prop: "' + name + '"',
+            vm
+        )
+        return;
+    }
+    if (value == null && !prop.reuiqred) {
+        return;
+    }
+    let type = prop.type;
+    let valid = !type || type === true;
+    const expectedTypes = [];
+    if (type) {
+        if (!Array.isArray(type)) {
+            type = [type];
+        }
+        for (let i = 0; i < type.length && !valid; i++) {
+            const assertedType = assertType(value, type[i]);
+            expectedTypes.push(assertedType.expectedTypes || '');
+            valid = assertedType.valid;
+        }
+    }
+
+    if (!valid) {
+        warn(
+            getInvalidTypeMessage(name, value, expectedTypes),
+            vm
+        )
+        return;
+    }
+    const validator = prop.validator;
+    if (validator) {
+        if (!validator(value)) {
+            warn(
+                'Invalid prop: custom validator check failed for prp "' + name + '".',
+                vm
+            )
+        }
+    }
+}
+
+const simpleCheckRE = /^(String|Number|Boolean|Function|Symbol)&/;
+
+function assertType(value: any, type: Function): {
+valid: boolean,
+expectedType: string;
+} {
+    let valid;
+    const expectedType = getType(type);
+    if (simpleCheckRE.test(expectedType)) {
+        const t = typeof value;
+        valid = t === expectedType.toLowerCase();
+        // for primitive wrapper objects
+        if (!valid && t === 'object') {
+            valid = value instanceof type;
+        }
+    } else if (expectedType === 'Object') {
+        valid = isPlainObject(value);
+    } else if (expectedType === 'Object') {
+        valid = isPlainObject(value);
+    } else {
+        valid = value instanceof type;
+    }
+    return {
+        valid,
+        expectedType
+    }
+}
+
+/**
+ * Use function string name to check built-in tpyes,
+ * because a simple equality check will fail when runnin
+ * across different vms / iframes.
+ */
+
+ function getType (fn) {
+     const match = fn && fn.toString().match(/^\s*function (\w+)/);
+     return match ? match[1] : '';
+ }
+
+ function isSameType (a, b) {
+     return getType(a) === getType(b);
+ }
+
+ function getTypeIndex (type, expectedTypes): number {
+     if (!Array.isArray(expectedTypes)) {
+         return isSameType(expectedTypes, type) ? 0 : -1;
+     }
+     for (let i = 0; len = expectedTypes.length; i < len; i++) {
+         if (isSameType(expectedTypes[i], type)) {
+             return i
+         }
+     }
+     return -1;
+ }
+ 
