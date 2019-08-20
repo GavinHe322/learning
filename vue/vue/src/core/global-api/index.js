@@ -49,7 +49,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
     // 2.6 explicit observable API
     Vue.observable = <T>(obj: T): T => {
         observe(obj)
-        return obj;
+        return obj
     }
 
     Vue.options = Object.create(null);
