@@ -18,7 +18,7 @@
  ];
 
  /**
-  * Intercept mutationg methods and emit events
+  * Intercept mutating methods and emit events
   */
 
   methodsToPatch.forEach(function (method) {
