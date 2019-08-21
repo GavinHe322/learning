@@ -68,7 +68,7 @@ if (inBrowser && !isIE) {
 /**
  * Flush both queues and run the watchers.
  */
- function flushSchedulerQueue () {
+function flushSchedulerQueue () {
      currentFlushTimestamp = getNow();
      flushing = true;
      let watcher, id;
@@ -89,5 +89,101 @@ if (inBrowser && !isIE) {
         if (watcher.before) {
             watcher.before();
         }
+        id = watcher.id;
+        has[id] = null;
+        watcher.run();
+        // in dev build, check and stop circular updates.
+        if (process.env.NODE_ENV !== 'production' && has[id] !== null) {
+            circular[id] = (circular[id] || 0) + 1;
+            if (circular[id] > MAX_UPDATE_COUNT) {
+                warn(
+                    'you may have an infinite update loop ' + (
+                        watcher.user
+                            ? `in watche with expression "${watcher.expression}"`
+                            : `in a component render function.`
+                    ),
+                    watcher.vm
+                )
+                break;
+            }
+        }
+    }
+
+
+    //  keep copies of post queues before restting state
+    const activatedQueue = activatedChildren.slice();
+    const updatedQueue = queue.slice();
+
+    resetSchedulerState();
+
+    // call component updated adn activated hooks
+    callActivateHooks(activatedQueue);
+    callUpdateHooks(updatedQueue);
+
+    // devtool hook
+    /* istanbul ignore if */
+    if (devtools && config.devtools) {
+        devtools.emit('flush');
     }
  }
+
+ function callUpdateHooks (queue) {
+     let i = queue.length;
+     while (i--) {
+         const watcher = queue[i];
+         const vm = watcher.vm;
+         if (vm._watcher === watcher && vm._isMounted && !vm._isDestroyed) {
+             callHook(vm, 'updated')
+         }
+     }
+ }
+
+ /**
+  * Queue a kept-alive component that was activated during patch.
+  * The queue will be processed after the entire tree has been patched.
+  */
+export function queueActivatedComponent (vm: Component) {
+    // setting _inactive to false here so that a render function can
+    // rely on checking whether it's in an inactive treee (e.g. router-view)
+    vm._inactive = false;
+    activatedChildren.push(vm);
+}
+
+function callActivateHooks (queue) {
+    for (let i = 0; i < queue.length; i++) {
+        queue[i]._inactive = true;
+        activateChildComponent(queue[i], true /* true */)
+    }
+}
+
+/**
+ * Push a watcher into the watcher queue.
+ * Jobs with duplicate IDs will be skipped unless it's
+ * pushed when the queue is being flushed.
+ */
+export function queueWatcher (watcher: Watcher) {
+    const id = watcher.id;
+    if (has[id] === null) {
+        has[id] = true;
+        if (!flushing) {
+            queue.push(watcher)
+        } else {
+            // if already flushing, splice watcher based on its id
+            // if already past its id, it will be run next immediately.
+            let i = queue.length - 1;
+            while (i > index && queue[i].id > watcher.id) {
+                i--
+            }
+            queue.splice(i + 1, 0 ,watcher);
+        }
+        // queue the flush
+        if (!waiting) {
+            waiting = true;
+            if (process.env.NODE_ENV !== 'production' && !config.async) {
+                flushSchedulerQueue();
+                return;
+            }
+            nextTick(flushSchedulerQueue);
+        }
+    }
+}
