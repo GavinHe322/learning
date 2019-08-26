@@ -77,3 +77,43 @@ function _update (oldVnode, vnode) {
         }
     }
 }
+
+const emptyModifiers = Object.create(null);
+
+function normalizeDirectives (
+    dirs: ?Array<VNodeDirective>,
+    vm: Component
+): { [key: string]: VNodeDirective} {
+    const res = Object.create(null);
+    if (!dirs) {
+        // flow-disable-line
+        return res;
+    }
+    let i, dir;
+    for (i = 0; i < dirs.length; i++) {
+        dir = dirs[i];
+        if (!dir.modifiers) {
+            // $flow-disable-line
+            dir.modifiers = emptyModifiers;
+        }
+        res[getRawDirName(dir)] = dir;
+        dir.def = resolveAsset(vm.$options, 'directives', dir.name, true);
+    }
+    // $flow-disable-line
+    return res;
+}
+
+function getRawDirName(dir: VNodeDirective): string {
+    return dir.rawName || `${dir.name}.${Object.keys(dir.modifiers || {}).join('.')}`;
+}
+
+function callHook (dir, hook, vnode, oldVnode, isDrstroy) {
+    const fn = dir.def && dir.def[hook];
+    if (fn) {
+        try {
+            fn(vnode.elm, dir, vnode, oldVnode, isDestroy);
+        } catch (e) {
+            handleError(e, vnode.context, `directive ${dir.name} ${hook} hook`);
+        }
+    }
+}
