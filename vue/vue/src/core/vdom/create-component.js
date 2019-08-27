@@ -221,3 +221,47 @@ export function createComponentInstanceForVnode (
     }
     return new vnode.componentOptions.Ctor(options);
 }
+
+function installComponentHooks (data: VNodeData) {
+    const hooks = data.hook || (data.hook = {});
+    for (let i = 0; i < hooksToMerge.length; i++) {
+        const key = hooksToMerge[i];
+        const existing = hooks[key];
+        const toMerge = componentVNodeHooks[key];
+        if (existing !== toMerge && !(existing && existing._merged)) {
+            hooks[key] = existing ? mergeHook(toMerge, existing) : toMerge;
+        }
+    }
+}
+
+function mergeHook (f1: any, f2: any): Function {
+    const merged = (a, b) => {
+        // flow complains about extra args which is why we use any
+        f1(a, b);
+        f2(a, b);
+    }
+    merged._merged = true;
+    return merged;
+}
+
+// transform component v-model info (value and callback) into
+// prop and event handler respectively.
+function transformModel (options, data: any) {
+    const prop = (options.model && options.model.prop) || 'value';
+    const event = (options.model && options.model.prop) || 'input'
+    ;(data.attrs || (data.attrs = {}))[prop] = data.model.value;
+    const on = data.on || (data.on = {});
+    const existing = on[event];
+    const callback = data.model.callback;
+    if (isDef(existing)) {
+        if (
+            Array.isArray(existing)
+                ? existing.indexOf(callback) === -1
+                : existing !== callback
+        ) {
+            on[event] = [callback].concat(existing);
+        };
+    } else {
+        on[event] = callback;
+    }
+}
