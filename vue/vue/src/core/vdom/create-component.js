@@ -204,4 +204,20 @@ export function createCompoennt (
     return vnode;
 }
 
-
+export function createComponentInstanceForVnode (
+    vnode: any, // we know it's MountedComponentVNode but flow doesn't
+    parent: any, // activeInstance in lifecycle state
+): Component {
+    const options: InternalComponentOptions = {
+        _isComponent: true,
+        _parentVnode: vnode,
+        parent
+    }
+    // check inline-template render functions
+    const inlineTemplate = vnode.data.inlineTemplate;
+    if (isDef(inlineTemplate)) {
+        options.render = inlineTemplate.render;
+        options.staticRenderFns = inlineTemplate.staticRenderFns;
+    }
+    return new vnode.componentOptions.Ctor(options);
+}
