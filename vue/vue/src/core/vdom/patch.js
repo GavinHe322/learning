@@ -219,3 +219,58 @@
         }
      }
  }
+
+
+ function initComponent (vnode, insertedVnodeQueue) {
+     if (isDef(vnode, data.pendingInsert)) {
+         insertedVnodeQueue.push.apply(insertedVnodeQueue, vnode.data.pendingInsert);
+         vnode.data.pendingInsert = null;
+     }
+     vnode.elm = vnode.componentInstance.$el;
+     if (isPatchable(vnode)) {
+         invokeCreateHooks(vnode, insertedVnodeQueue);
+         setScope(vnode);
+     } else {
+        //  empty component root.
+        // skip all element-related modules except for ref (#3455);
+        registerRef(vnode);
+        // make sure to invoke the insert hook
+        insertedVnodeQueue.push(vnode);
+     }
+ }
+
+
+function reactivateComponent (vnode, insertedVnodeQueue, parentElm, refElm) {
+    let i;
+    // hack for #433: a reactivated component with inner transition
+    // does not trigger because the inner node's created hooks are not called
+    // again. It's not ideal to invole module-specific logic in here but
+    // there doesn't seem to be a better way to do it.
+    let innerNode = vnode;
+    while (innerNode.componentInstance) {
+        innerNode = innerNode.componentInstance._vnode;
+        if (isDef(i = innerNode.data) && isDef(i = i.transition)) {
+            for (i = 0; i < cbs.activate.length; ++i) {
+                cbs.activate[i](emptyNode, innerNode);
+            }
+            insertedVnodeQueue.push(innerNode);
+            break
+        }
+    }
+    // unlike a newly created component,
+    // a reactivated keep-alive component doesn't insert itself
+    insert(parentElm, vnode.elm, refElm);
+}
+
+function insert (parent, elm, ref) {
+    if (isDef(parent)) {
+        if (isDef(ref)) {
+            if (nodeOps.parentNode(ref) === parent) {
+                nodeOps.insertBefore(parent, elm, ref);
+            }
+        } else {
+            nodeOps.appendChild(parent, elm);
+        }
+    }
+}
+
