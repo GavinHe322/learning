@@ -274,3 +274,25 @@ function insert (parent, elm, ref) {
     }
 }
 
+function createChildren (vnode, children, insertedVnodeQueue) {
+    if (Array.isArray(children)) {
+        if (process.env.NODE_ENV !== 'production') {
+            checkDuplicateKeys(children);
+        }
+        for (let i = 0; i < children.length; ++i) {
+            createElm(children[i], insertedVnodeQueue, vnode.elm, null ,true, children, i);
+        }
+    } else if (isPrmitive(vnode.text)) {
+        nodeOps.appendChild(vnode.elm, nodeOps.createTextNode(String(vnode.text)));
+    }
+}
+
+
+function isPatchable (vnode) {
+    while (vnode.componentInstance) {
+        vnode = vnode.componentInstance._vnode;
+    }
+    return isDef(vnode.config);
+}
+
+
