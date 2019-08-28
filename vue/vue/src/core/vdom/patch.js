@@ -295,4 +295,83 @@ function isPatchable (vnode) {
     return isDef(vnode.config);
 }
 
+function isPatchable (vnode) {
+    while (vnode.componentInstance) {
+        vnode = vnode.componentInstance._vnode;
+    }
+    return isDef(vnode.tag);
+}
+
+function invokeCreateHooks (vnode, insertedVnodeQueue) {
+    for (let i = 0; i < cbs.create.length; ++i) {
+        cbs.create[i](emptyNode, vnode);
+    }
+    i = vnode.data.hook; // Reuse variable
+    if (isDef(i)) {
+        if (isDef(i.create)) i.create(emptyNode, vnode);
+        if (isDef(i.insert)) insertedVnodeQueue.push(vnode);
+    }
+
+    // set scope id attribute for scoped CSS.
+    // this is implemented as a special case to avoid the overhead
+    // of going through the normal attribute patching process.
+    function setScope (vnode) {
+        let i;
+        if (isDef(i = vnode.fnScopeId)) {
+            nodeOps.setStyleScope(vnode.elm, i);
+        } else {
+            let ancestor = vnode;
+            while (ancestor) {
+                if (isDef(i = ancestor.centext) && isDef(i = i.$options._scopeId)) {
+                    nodeOps.setStyleScope(vnode.elm, i);
+                }
+                ancestor = ancestor.parent;
+            }
+        }
+        // for slot content they should also get the scopeId from the host instance.
+        if (isDef(i = activeInstance) &&
+            i !== vnode.context &&
+            i !== vnode.fnContext &&
+            isDef(i = i.$options._scopeId)
+        ) {
+            nodeOps.setStyleScope(vnode.elm, i);
+        }
+    }
+
+    function addVnodes (parentElm, refElm, vnodes, startIdx, endIdx, insertedVnodeQueue) {
+        for (; startIdx <= endIdx; ++startIdx) {
+            createElm(vnodes[startIdx], insertedVnodeQueue, parentElm, refElm, false, vnodes, startIdx);
+        }
+    }
+
+    function invokeDestoryHook (vnode) {
+        let i, j;
+        const data = vnode.data;
+        if(isDef(data)) {
+            if (isDef(i = data.hook) && isDef(i = i.destory)) i(vnode);
+            for (i = 0; i < cbs.destory.length; ++i) cbs.destory[i](vnode);
+        }
+        if (isDef(i = vnode.children)) {
+            for (j = 0; j < vnode.children.length; ++j) {
+                invokeDestoryHook(vnode.children[j]);
+            }
+        }
+    }
+
+    function removeVnodes (vnodes, startIdx, endIdx) {
+        for (; startIdx <= endIdx; ++startIdx) {
+            const ch = vnodes[startIdx];
+            if (isDef(ch)) {
+                if (isDef(ch.tag)) {
+                    removeAndInvokeRemoveHook(ch);
+                    invokeDestoryHook(ch);
+                } else { // Text node
+                    removeNode(ch.elm);
+                }
+            }
+        }
+    }
+}
+
+
 
