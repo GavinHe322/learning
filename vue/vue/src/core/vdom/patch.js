@@ -371,6 +371,64 @@ function invokeCreateHooks (vnode, insertedVnodeQueue) {
             }
         }
     }
+
+    function removeAndInvokeRemoveHook (vnode, rm) {
+        if (isDef(rm) || isDef(vnode.data)) {
+            let i;
+            const listeners = cbs.remove.length + 1;
+            if (isDef(rm)) {
+                // we have a recursively passed down rm callback
+                // increase the listennes count
+                rm.listeners += listeners;
+            } else {
+                // directly removing
+                rm = createRmCb(vnode.elm, listeners);
+            }
+            // recursively invoke hooks on child component root node
+            if (isDef(i = vnode.componentInstance) && isDef(i = i._vnode) && isDef(i.data)) {
+                removeAndInvokeRemoveHook(i, rm);
+            }
+            if (isDef(i = vnode.data.hook) && isDef(i = i.remove)) {
+                i(vnode, rm);
+            } else {
+                rm();
+            }
+        } else {
+            removeNode(vnode.elm);
+        }
+    }
+
+    function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
+        let oldStartIdx = 0
+        let newStartIdx = 0
+        let oldEndIdx = oldCh.length - 1
+        let oldStartVnode = oldCh[0]
+        let oldEndVnode = oldCh[oldEndIdx]
+        let newEndIdx = newCh.length - 1
+        let newStartVnode = newCh[0]
+        let newEndVnode = newCh[newEndIdx]
+        let oldKeyToIdx, idxInOld, vnodeToMove, refElm;
+
+        // removeOnly is a special flag used only by <transition-group>
+        // to ensure removed elements stay in correct relative position
+        // during leaving transitions
+        const canMove = !removeOnly;
+
+        if (process.env.NODE_ENV !== 'production') {
+            checkDuplicateKeys(newCh);
+        }
+
+        while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+            if (isUndef(oldStartVnode)) {
+                oldStartVnode = oldCh[++oldStartIdx]; // Vnode has been moved left
+            } else if (isUndef(oldEndVnode)) {
+                oldEndVnode = oldCh[--oldEndIdx];
+            } else if (sameVnode(oldStartVnode, newStartVnode)) {
+                patchVnode(oldEndVnode, newE)
+            }
+        }
+    }
+
 }
 
 
