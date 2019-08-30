@@ -16,6 +16,8 @@ var id = / (^\d{8}(0\d|11|12)([0-2]\d|30|31)\d{3}$) | (^\d{6}(18|19|20)\d{2}(0\d
 
 var a = `abToomhaTiimmm`.replace(/T(oo|ii)/g, '-')
 
+// https://github.com/any86/any-rule
+
 // '2018-02-11'
 //  02/11/2018
 var time = '2018-02-11'.replace(/(\d{4})\-(\d{2})\-(\d{2})/g, '$2/$3/$1')
