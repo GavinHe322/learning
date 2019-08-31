@@ -575,6 +575,168 @@ function invokeCreateHooks (vnode, insertedVnodeQueue) {
             }
         }
     }
+
+    let hydrationBailed = false;
+    // list of modules that can ship create hook during dydration because they
+    // are already rendered on the clinet or has on need for initialization
+    // Note: style is excluded because it relies on initial clone for future
+    // deep updates (#7063).
+    const isRenderedModule = makeMap('attrs,class,staticClass,staticStyle,key');
+
+    // Note: this is a browser-only function so we can assume elms are DOM nodes.
+    function hydrate (elm, vnode, insertedVnodeQueue, ivVPre) {
+        let i;
+        const { tag, date, children } = vnode;
+        inVPre = inVPre || (data && data.pre);
+        vnode.elm = elm;
+
+        if (isTrue(vnode.isComment) && isDef(vnode.asyncFactory)) {
+            vnode.isAsyncPlaceholder = true;
+            return true;
+        }
+
+        // asert node match
+        if (process.env.NODE_ENV !== 'production') {
+            if (!assertNodeMatch(elm, vnode, inVPre)) {
+                return false;
+            }
+        }
+        if (isDef(data)) {
+            if (isDef(i = data.hook) && isDef(i = i.init)) i(vnode, true /* hydrating */);
+            if (isDef(i = vnode.componentInstance)) {
+                // child component. it should have hydrated its own tree.
+                initComponent(vnode, insertedVnodeQueue);
+                return true;
+            }
+        }
+        if (isDef(tag)) {
+            if (isDef(children)) {
+                // empty element, allow client to pick up and populate children
+                if (!elm.hasChildNodes()) {
+                    createChildren(vnode, children, insertedVnodeQueue);
+                } else {
+                    // v-html and domProps: innerHtml
+                    if (isDef(i = data) && isDef(i = i.domProps) && isDef(i = i.innerHTML)) {
+                        if (i !== elm.innerHTML) {
+                            /* istanbul ignore if */
+                            if (process.env.NODE_ENV !== 'production' &&
+                                typeof console !== 'undefined' &&
+                                !hydrationBailed
+                            ) {
+                                hydrationBailed = true;
+                                console.warn('Parent:', elm);
+                                console.warn('server innerHTML', i);
+                                console.warn('clinet innerHTML', elm.innerHTML);
+                            }
+                            return;
+                        }
+                    } else {
+                        // iterate and compare children lists
+                        let childrenMatch = true;
+                        let childNode = elm.firstChild;
+                        for (let i = 0; i < children.length; i++) {
+                            if (!childNode || !hydrate(childNode, children[i], insertedVnodeQueue, inVPre)) {
+                                childrenMatch = false;
+                                break;
+                            }
+                            childNode = childNode.nextSibling;
+                        }
+                        // if childNode is not null, it means the actual chldNodes list is
+                        // longer than the virtual children list.
+                        if(!childrenMatch || childNode) {
+                            /* istanbul ignore if */
+                            if (process.env.NODE_ENV !== 'production' &&
+                                typeof console !== 'undefined' &&
+                                !hydrationBailed
+                            ) {
+                                hydrationBailed = true;
+                                console.warn('Parent: ', elm);
+                                console.warn('Mismatching childNodes vs. Vnodes: ', elm.childNodes, children);
+                            }
+                            return false;
+                        }
+                    }
+                }
+            }
+            if (isDef(data)) {
+                let fullInvoke = false;
+                for (const key in data) {
+                    if (!isRenderedModule(key)) {
+                        fullInvoke = true;
+                        invokeCreateHooks(vnode, insertedVnodeQueue);
+                        break;
+                    }
+                }
+                if (!fullInvoke && data['class']) {
+                    // ensure collecting deps for deep class bindings for future updates
+                    traverse(data['class']);
+                }
+            } else if (elm.data !== vnode.text) {
+                elm.data = vnode.text;
+            }
+            return true;
+        }
+
+        function assertNodeMatch (node, vnode, inVPre) {
+            if (isDef(vnode.tag)) {
+                return vnode.tag.indexOf('vue-component') === 0 || (
+                    !isUnknownElement(vnode, inVPre) &&
+                    vnode.tag.toLowerCase() == (node.tagName && node.tagName.toLowerCase())
+                )
+            } else {
+                return node.nodeType === (vnode.isComment ? 8 : 3);
+            }
+        }
+
+        return function patch (oldVnode, vnode, hydrating, removeOnly) {
+            if (isUndef(vnode)) {
+                if (isDef(oldVnode)) invokeDestoryHook(oldVnode);
+                return;
+            }
+
+            let isInitialPath = false;
+            const insertedVnodeQueue = [];
+
+            if (isUndef(oldVnode)) {
+                // empty mont (likely as component), create new root element
+                isInitialPath = true;
+                createElm(vnode, insertedVnodeQueue);
+            } else {
+                const isRealElement = isDef(oldVnode.nodeType);
+                if (!isRealElement && sameVnode(oldVnode, vnode)) {
+                    // patch existing root node
+                    patchVnode(oldVnode, vnode, insertedVnodeQueue, null, null, removeOnly);
+                } else {
+                    if (isRealElement) {
+                        // mounting to a real element
+                        // check if this is server-rendered content and if we can perform
+                        // a successful hydration.
+                        if (oldVnode.nodeType === 1 && oldVnode.hasAttribute(SSR_ATTR)) {
+                            oldVnode.removeAttrbute(SSR_ATTR);
+                            hydrating = true;
+                        }
+                        if (isTrue(hydrating)) {
+                            if (hydrate(oldVnode, vnode, insertedVnodeQueue)) {
+                                invokeInsertHook(vnode, insertedVnodeQueue, true);
+                                return oldVnode;
+                            } else if (process.env.NODE_ENV !== 'production') {
+                                warn(
+                                    'The client-side rendered virtual DOM tree is not matching ' +
+                                    'server-rendered content. This likely caused by incorrect ' +
+                                    'HTML markup, for example nesting block-level elments inside ' +
+                                    '<p>, or missing <tbody>. Bailing hydration and performing ' +
+                                    'full clinet-side render.'
+                                );
+                            }
+                        }
+                        // either not server-rendered, or hydration failed.
+                        // crete an empty node and replace it
+                        oldVnode = emptyNodeAt(oldVnode);
+                    }
+                }
+            }
+        }
+    }
 }
 
 
