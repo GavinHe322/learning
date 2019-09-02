@@ -151,6 +151,6 @@ function cloneAndMarkFunctionalResult (vnode, data, contextVm, options, renderCo
 
 function mergeProps (to, from) {
     for (const key in from) {
-        to[calelize[key]] = from[key];
+        to[camelize[key]] = from[key];
     }
 }
