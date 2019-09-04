@@ -91,11 +91,101 @@ function genWeexHanlder (params: Array<any>, handlerCode: string) {
         '}'
 }
 
-
-function genHandler (handler: ASTElementHandler | Array<ASTElementHandler): string {
+function genHandler (handler: ASTElementHandler | Array<ASTElementHandler>): string {
     if (!handler) {
-        return 'function(){}';
+      return 'function(){}'
     }
+  
+    if (Array.isArray(handler)) {
+      return `[${handler.map(handler => genHandler(handler)).join(',')}]`
+    }
+
+    const isMethodPath = simplePathRE.test(handler.value);
+    const isFunctionExpression = fnExpRE.test(handler.value);
+    const isFunctionInvocation = simplePathRE.test(handler.value.replace(fnInvokeRE, ''));
+
+    if (!handler.modifiers) {
+        if (isMethodPath || isFunctionExpression) {
+            return handler.value;
+        }
+        /* istanbul ignore if */
+        if (__WEEX__ && handler.params) {
+            return genWeexHandler(handler.params, handler.value);
+        }
+        return `function($event) {${
+            isFunctionInvocation ? `return ${hanlder.value}` : handler.value
+        }}` // inline statement
+    } else {
+        let code = '';
+        let genModifierCode = '';
+        const keys = [];
+        for (const key in handler.modifiers) {
+            if (modifierCode[key]) {
+                genModifierCode += modifierCode[key];
+                // left/right
+                if (keyCodes[key]) {
+                    keys.push(key);
+                }
+            } else if (key === 'exact') {
+                const modifiers: ASTModifiers = (handler.mofifiers: any);
+                genModifierCode += genGuard(
+                    ['ctrl', 'shift', 'alt', 'meta']
+                        .filter(keyModifier => !modifiers[keyModifier])
+                        .map(keyModifier => `$event.${keyModifier}key`)
+                        .join('||')
+                )
+            } else {
+                keys.push(key);
+            }
+        }
+        if (keys.length) {
+            code += genKeyFilter(keys);
+        }
+
+        // Make sure modifiers like prevent and stop get executed after key filltering
+        if (genModifierCode) {
+            code += genModifierCode;
+        }
+        const handlerCode = isMethodPath
+            ? `return ${handler.value}($event)`
+            : isFunctionExpression
+                ? `return (${handler.value})($event)`
+                : isFunctionInvocation
+                    ? `return ${handler.value}`
+                    : handler.value;
+        /* istanbul ignore if */
+        if (__WEEX__ && handler.params) {
+            return genWeexHanlder(handler.params, code + handlerCode);
+        }
+        return `function($event){${code}${handlerCode}}`;
+    }
+}
+
+function genFilterCode (keys: string): string {
+    return (
+        // make sure the key filters only apply to KeyboradEvents
+        // #9441: can't use 'keyCode' in $event because Chrome autofill fires fake
+        // key events that do not have keyCode property...
+        `if(!$event.type.indexOf('key')&&` +
+        `${keys.map(genFilterCode).join('&&')})return null;`
+    )
+}
+
+function genFilterCode (key: string): string {
+    const keyVal = parseInt(key, 10);
+    if (keyVal) {
+        return `$event.keyCode!==${keyVal}`;
+    }
+    const keyCode = keyCodes[key];
+    const keyName = keyNames[key];
+    return (
+        `_k($event.keyCode,` +
+        `${JSON.stringify(key)},` +
+        `${JSON.stringify(keyCode)},` + 
+        `$event.key,` +
+        `${JSON.stringify(keyName)}` +
+        `)`
+    )
 }
 
 
