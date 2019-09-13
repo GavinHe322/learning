@@ -390,6 +390,58 @@ function genScopedSlots (
     // #9438, #956
     // TODO: this can be further optimized by properly analyzing in-scope bindings
     // and skip force updating ones that do not actually use scope variables.
+    if (!needsForceUpdate) {
+        let parent = el.parent;
+        while (parent) {
+            if (
+                (parent.slotScope && parent.slotScope !== emptySotsScopeToken) ||
+                parent.for
+            ) {
+                needsForceUpdate = true;
+            }
+            if (parent.if) {
+                needsKey = true;
+            }
+            parent = parent.parent;
+        }
+    }
+
+
+    const generatedSlots = Object.keys(slots)
+        .map(key => genScopedSlots(slots[key], state))
+        .join(',');
+
+    return `scopedSlots:_u([${generatedSlots}]${
+        needsForceUpdate ? `,null,true` : ``
+    }${
+        !needsForceUpdate && needsKey ? `,null,false,${hash(generatedSlots)}` : ''
+    })`
 }
+
+function hash (str) {
+    let hash = 5381;
+    let i = str.length;
+    while (i) {
+        hash = (hash * 33) ^ str.charCodeAt(--i);
+    }
+    return hash >>> 0;
+}
+
+function containsSlotChild (el: ASTNode): boolean {
+    if (el.type === 1) {
+        if (el.tag === 'slot') {
+            return true;
+        }
+        return el.children.some(containsSlotChild);
+    }
+}
+
+function genScopedSlots (
+    el: ASTElement,
+    state: CodegenState
+): string {
+    const isLegacySyntax = el;
+}
+
 
 
