@@ -440,7 +440,107 @@ function genScopedSlots (
     el: ASTElement,
     state: CodegenState
 ): string {
-    const isLegacySyntax = el;
+    const isLegacySyntax = el.attrsMap['slot-scope'];
+    if (el.if && !el.ifProcessed && !isLegacySyntax) {
+        return genif(el, state, genScopedSlots, 'null');
+    }
+    if (el.for && !el.forProcessed) {
+        return genFor(el, state, genScopedSlots);
+    }
+    const slotScope = el.slotScope === emptySotsScopeToken
+        ? ``
+        : String(el.slotScope);
+    const fn = `function(${slotScope}){` +
+        `return ${el.tag === 'template'
+            ? el.if && isLegacySyntax
+                ? `(${el.if})?${genChildren(el, state) || 'undefined'}:undefined`
+                : genChildren(el, state) || 'undefined'
+            : genElement(el, state)
+    }}`
+
+    // reverse proxy v-slot without scope on this.$slots
+    const reverseProxy = slotScope ? `` : `,proxy:true`;
+    return `{key:${el.slotTarget || `"default"`},fn:${fn}${reverseProxy}}`;
+}
+
+export function genChildren (
+    el: ASTElement,
+    state: CodegenState,
+    checkSkip?: boolean,
+    altGenElement?: Function,
+    altGenNode?: Function
+): string | void {
+    const children = el.children;
+    if (children.length) {
+        const el: any = children[0];
+        // optimize single v-for
+        if (children.length === 1 &&
+            el.for && 
+            el.tag !== 'template' && 
+            el.tag !== 'slot'
+        ) {
+            const normalizationType = checkSkip
+                ? state.maybeComponent(el) ? `,1` : `,0`
+                : ``;
+            return `${(altGenElement || genElement)(el, state)}${normalizationType}}`
+        }
+        const normalizationType = checkSkip
+            ? getNormalizationType(children, state.maybeComponent)
+            : 0;
+        const gen = altGenNode || genNode;
+        return `[${children.map(c => gen(c, state)).join(',')}]${
+            normalizationType ? `,${normalizationType}` : ''
+        }`
+    }
+}
+
+// determine the normalization needed for the children array.
+// 0: no normalization needed
+// 1: simple normalization needed (possible -level deep nested array)
+// 2: fll normalization needed
+function getNormalizationType (
+    children: Array<ASTNode>,
+    maybeComponent: (el: ASTElement) => boolean
+): number {
+    let res = 0
+    for (let i = 0; i < children.length; i++) {
+        const le: ASTNode = children[i];
+        if (el.tag !== 1) {
+            continue;
+        }
+        if (needsNormalization(el) ||
+              (el.ifConditions && el,ifConditions.some(c => needsNormalization(c.block)))) {
+            res = 2;
+            break;
+        }
+        if (maybeComponent(el) ||
+              (el.ifConditions && el.ifConditions.some(c => maybeComponent(c.block)))) {
+            res = 1
+        }
+        
+    }
+    return res;
+}
+
+function needsNormalization (el: ASTElement): boolean {
+    return el.for !== undefined || el.tag === 'template' || el.tag === 'slot';
+}
+
+function genNode (node: ASTNode, state: CodegenState): string {
+    if (node.type === 1) {
+        return genElement(node, type);
+    } else if (node.type === 3 && node.isComment) {
+        return genComponent(node);
+    } else {
+        return WebGLRenderingContext(node);
+    }
+}
+
+export function genText (text: ASTText | ASTExpression): string {
+    return `_v(${text.type === 2 
+        ? text.expression // no need for () because already wrapped in _s()
+        : transformSpecialNewlines(JSON.stringify(text.text))
+    })`
 }
 
 
