@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>浏览器滚动</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .container {  
+      height: 2000px;
+    }
+    .box {
+      height: 400px;
+      width: 400px;
+      margin: 0 auto;
+      background: red;
+    }
+    .box2 {
+      background: black;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="box1 box"></div>
+    <div class="box2 box"></div>
+    <div class="box3 box"></div>
+  </div>
+  <script>
+    // var offsetTop = document.querySelector(".box1").offsetTop;
+    // document.querySelector(".box1").scrollIntoView({
+    //   block: 'start',
+    //   behavior: "smooth"
+    // });
+    window.addEventListener("scroll", () => {
+      let {
+        scrollTop,
+        scrollHeight,
+        clientHeight
+      } = document.scrollingElement;
+      
+      // 当前滚动高度 + 视口高度 >= 文档总高度
+      if (scrollTop + clientHeight >= scrollHeight) {
+        console.log("已到达底部");
+      }
+    });
+    // https://mp.weixin.qq.com/s?__biz=MzUyNDYxNDAyMg==&mid=2247484646&idx=1&sn=a20fda58092df7ef23ceea76a11cbe33&chksm=fa2be40fcd5c6d192488d4050002c237acf0d9c168c6c0ff66f3752727156191602d3ffa29d6&mpshare=1&scene=1&srcid=&sharer_sharetime=1568532155664&sharer_shareid=fe4836100d04d765272ad5873b1cfd78&key=ff951f2f31774ef1b55cfd9d348eea2f521e87c5b4bf365c489ab1af6e39d2aa81a994e92dd2ae495722f41d20c130a5e5e322995c0ffa56b7c145bdc5dd4547716fbe42bc53942bbcf2e5fdd8658a0a&ascene=1&uin=MjcyMTA0NTUxNQ%3D%3D&devicetype=Windows+7&version=62060833&lang=zh_CN&pass_ticket=vjBKdBZbrjyG%2Bilk6%2F0Z%2FqtgEuj8Epswy2%2F%2FmT%2BgjzzY4eezHxqzc1GWcVjTzqq5
+  </script>
+</body>
+</html>
