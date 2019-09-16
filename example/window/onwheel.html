@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>onwheel</title>
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        div {
+            width: 80px;
+            height: 80px;
+            background: #cdf;
+            padding: 5px;
+            transition: transform .3s;
+        }
+    </style>
+</head>
+<body>
+    <div>Scale me with your mouse wheel.</div>
+    <script>
+        function zoom(event) {
+            event.preventDefault();
+            if (event.deltaY < 0) {
+                // 放大
+                scale *= event.deltaY * -2;
+            }
+            else {
+                // 缩小
+                scale /= event.deltaY * 2;
+            }
+            // 限制缩放
+            scale = Math.min(Math.max(.125, scale), 4);
+            // 应用缩放过渡效果
+            el.style.transform = `scale(${scale})`;
+        }
+
+        let scale = 1;
+        const el = document.querySelector('div');
+        document.onwheel = zoom;
+    </script>
+</body>
+</html>
