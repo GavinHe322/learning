@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>animationcancel</title>
+    <style>
+     :root {
+        --boxwidth:50px;
+    }
+
+    .main {
+        width: 300px;
+        height:300px;
+        border: 1px solid black;
+    }
+
+    .button {
+        cursor: pointer;
+        width: 300px;
+        border: 1px solid black;
+        font-size: 16px;
+        text-align: center;
+        margin-top: 0;
+        padding-top: 2px;
+        padding-bottom: 4px;
+        color: white;
+        background-color: darkgreen;
+        font: 14px "Open Sans", "Arial", sans-serif;
+    } 
+
+    #text {
+        width: 46px;
+        padding: 10px;
+        position: relative;
+        text-align: center;
+        align-self: center;
+        color: white;
+        font: bold 1.4em "Lucida Grande", "Open Sans", sans-serif;
+    } 
+
+    #box {
+        width: var(--boxwidth);
+        height: var(--boxwidth);
+        left: 0;
+        top: 0;
+        border: 1px solid #7788FF;
+        margin: 0;
+        position: relative;
+        background-color: #2233FF;
+        display: flex;
+        justify-content: center;
+        animation: 5s ease-in-out 0s infinite alternate both slideBox;
+    } 
+ 
+    @keyframes slideBox {
+        from {
+            left:0;
+            top:0;
+        }
+        to {
+            left:calc(100% - var(--boxwidth));
+            top:calc(100% - var(--boxwidth))
+        }
+    }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div id="box">
+            <div id="text" onanimationcancel="handleCancelEvent">Box</div>
+        </div>
+    </div>
+    <div class="button" id="toggleBox">
+        Hide the Box
+    </div>
+    <pre id="log"></pre>
+
+    <script>
+        // animationcancel是一个事件处理操作,
+        // 这个事件在CSS Animation属性意外中断时派发出来(换句话说，
+        // 任何时候animation停止运行不会发出一个animationend 事件，
+        // 比如，当animation-name改变以后，animation 就会被移除，
+        // 或者动画节点隐藏—当前元素或者任何包含的节点隐藏)—使用css时.
+        function log(msg, event) {
+            let logBox = document.getElementById("log");
+            
+            logBox.innerHTML += msg;
+            
+            if (event) {
+                logBox.innerHTML += " <code>"+ event.animationName +
+                    "</code> at time " + event.elapsedTime.toFixed(2) +
+                    " seconds.";
+            }
+            
+            logBox.innerHTML += "\n";
+        };
+        function handleCancelEvent(event) {
+            console.log(event);
+            log("Animation canceled", event);
+        }; 
+        function toggleBox() {
+            if (box.style.display == "none") {
+                box.style.display = "flex";
+                document.getElementById("toggleBox").innerHTML = "Hide the box";
+            } else {
+                box.style.display = "none";
+                document.getElementById("toggleBox").innerHTML = "Show the box";
+            }
+        }
+        document.getElementById('toggleBox').addEventListener('click', toggleBox);
+    </script>
+</body>
+</html>
