@@ -139,38 +139,38 @@
  */
 
 
- function get (params: any) {
-     return function( target: any, methodName: any, desc: any) {
-         console.log(
-            params, 'parm',
-            target, 'target',
-            methodName ,'methodName',
-            desc, 'desc'
-         )
-         target.apiUrl = 'get ---> apiUrl'
-         target.run =function() {
-             console.log('get ---> run')
-         }
-     }
- }
+//  function get (params: any) {
+//      return function( target: any, methodName: any, desc: any) {
+//          console.log(
+//             params, 'parm',
+//             target, 'target',
+//             methodName ,'methodName',
+//             desc, 'desc'
+//          )
+//          target.apiUrl = 'get ---> apiUrl'
+//          target.run =function() {
+//              console.log('get ---> run')
+//          }
+//      }
+//  }
 
- class Http {
-    public apiUrl: string | undefined
-    constructor() {
-        // this.apiUrl = 'contructor apiUrl'
-    }
-    @get('https://www.baidu.com')
-    getData() {
-        console.log(this.apiUrl)
-    }
- }
+//  class Http {
+//     public apiUrl: string | undefined
+//     constructor() {
+//         // this.apiUrl = 'contructor apiUrl'
+//     }
+//     @get('https://www.baidu.com')
+//     getData() {
+//         console.log(this.apiUrl)
+//     }
+//  }
 
-var http: any = new Http()
+// var http: any = new Http()
 
-console.log(
-    http.apiUrl
-)
-http.run()
+// console.log(
+//     http.apiUrl
+// )
+// http.run()
 
 
 
@@ -178,3 +178,23 @@ http.run()
  * 方法装饰修饰器
  * 
  */
+
+function f(): void {
+    console.log("f(): evaluated");
+    return function (target, propertyKey: string, descriptor: PropertyDescriptor): void {
+        console.log("f(): called");
+    }
+}
+
+function g(): void {
+    console.log("g(): evaluated");
+    return function (target, propertyKey: string, descriptor: PropertyDescriptor): void {
+        console.log("g(): called");
+    }
+}
+
+class C {
+    @f()
+    @g()
+    method() {}
+}

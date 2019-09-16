@@ -104,27 +104,58 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
  *  2. 成员的名字
  *  3. 成员的属性描述符。
  */
-function get(params) {
-    return function (target, methodName, desc) {
-        console.log(params, 'parm', target, 'target', methodName, 'methodName', desc, 'desc');
-        target.apiUrl = 'get ---> apiUrl';
-        target.run = function () {
-            console.log('get ---> run');
-        };
+//  function get (params: any) {
+//      return function( target: any, methodName: any, desc: any) {
+//          console.log(
+//             params, 'parm',
+//             target, 'target',
+//             methodName ,'methodName',
+//             desc, 'desc'
+//          )
+//          target.apiUrl = 'get ---> apiUrl'
+//          target.run =function() {
+//              console.log('get ---> run')
+//          }
+//      }
+//  }
+//  class Http {
+//     public apiUrl: string | undefined
+//     constructor() {
+//         // this.apiUrl = 'contructor apiUrl'
+//     }
+//     @get('https://www.baidu.com')
+//     getData() {
+//         console.log(this.apiUrl)
+//     }
+//  }
+// var http: any = new Http()
+// console.log(
+//     http.apiUrl
+// )
+// http.run()
+/**
+ * 方法装饰修饰器
+ *
+ */
+function f() {
+    console.log("f(): evaluated");
+    return function (target, propertyKey, descriptor) {
+        console.log("f(): called");
     };
 }
-var Http = /** @class */ (function () {
-    function Http() {
-        // this.apiUrl = 'contructor apiUrl'
-    }
-    Http.prototype.getData = function () {
-        console.log(this.apiUrl);
+function g() {
+    console.log("g(): evaluated");
+    return function (target, propertyKey, descriptor) {
+        console.log("g(): called");
     };
+}
+var C = /** @class */ (function () {
+    function C() {
+    }
+    C.prototype.method = function () { };
     __decorate([
-        get('https://www.baidu.com')
-    ], Http.prototype, "getData");
-    return Http;
+        f(),
+        g()
+    ], C.prototype, "method");
+    return C;
 }());
-var http = new Http();
-console.log(http.apiUrl);
-http.run();
