@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>滚动到响应位置，tab 显示样式</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .header {
+            height: 50px;
+            line-height: 50px;
+            display: flex;
+            justify-content: space-around;
+            background: #fafafa;
+            position: fixed;
+            width: 100%;
+        }
+        .main {
+            padding-top: 50px;
+            height: 100vh;
+            overflow: auto;
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div>商品1</div>
+        <div>商品2</div>
+        <div>商品3</div>
+    </header>
+    <div class="main">
+        <div class="box box1">
+            商品1
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>  <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+        <div class="box box2">
+            商品2
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>  <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+        <div class="box box3">
+            商品3
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>  <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+    <script>
+        var obj = [
+                    50, 
+                    764,
+                    1478
+                  ]
+
+        function debounce(fn, interval = 0) {
+            let timeout = null;
+
+            return function () {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                
+                    fn.apply(this, arguments);
+                }, interval);
+            };
+        }
+        document.querySelector('.main').addEventListener("scroll", debounce(() => {
+            let {
+                scrollTop,
+                scrollHeight,
+                clientHeight
+            } = document.querySelector('.main');
+            console.log(
+                scrollTop,
+                scrollHeight,
+                clientHeight
+            );
+            let arr = document.querySelectorAll('.box');
+            let forEach = Array.prototype.forEach;
+            
+            forEach.call(arr, (val, index) => {
+                if (val.offsetTop - 100 <= scrollTop) {
+                    // console.log(index, val);
+                    return;
+                }
+            });
+            // // 当前滚动高度 + 视口高度 >= 文档总高度
+            // if (scrollTop + clientHeight >= scrollHeight) {
+            //     console.log("已到达底部");
+            // }
+        }));
+    </script>
+</body>
+</html>

@@ -543,5 +543,80 @@ export function genText (text: ASTText | ASTExpression): string {
     })`
 }
 
+export function genComment (comment: ASTText): string {
+    return `_e(${JSON.stringify(comment.text)})`;
+}
 
+function genSlot (el: ASTElement, state: CodegenState): string {
+    const slotName = el.slotName || '"default';
+    const children = genChildren(el, state);
+    let res = `_t(${slotName}${children ? `,${children}` : ''}`
+    const attrs = el.attrs || el.dynamicAttrs
+        ? genProps(el.attrs || []).concat(el.dynamicAttrs || []).map(atts => ({
+            // slot props are camelized
+            name: camelize(attr.name),
+            value: attr.value,
+            dynamic: attr.dynamic
+          }))
+        : null
+    const bind = el.attrsMap['v-bind'];
+    if ((attrs || bind) && !children) {
+        res += ',null';
+    }
+    if (attrs) {
+        res += `,${attrs}`;
+    }
+    if (bind) {
+        res += `${attrs ? '' : ',null'},${bind}`;
+    }
+    return res + ')';
+}
 
+// componentName is el.component, take it argumrnt to shun flow's pessimistic refinement
+function genComponent (
+    componentName: string,
+    el: ASTElement,
+    state: CodegenState
+): string {
+    const children = el.inlineTemplate ? null : genChildren(el, state, true);
+    return `_c(${componentName},${genData(el,state)}${
+        children ? `,${children}` : ''
+    })`
+}
+
+function genProps (props: Array<ASTAttr>): string {
+    let staticProps = ``;
+    let dynamicProps = ``;
+    for (let i = 0; i <props.length; i++) {
+        const prop = props[i];
+        const value = __WEEX__
+            ? generateValue(prop.value)
+            : transformSpecialNewlines(prop.value)
+        if (prop.dynamic) {
+            dynamicProps += `${prop.name},${value},`
+        } else {
+            staticProps += `"${props.name}":${value},`;
+        }
+    }
+    staticProps = `{${staticProps.slice(0, -1)}}`;
+    if (dynamicProps) {
+        return `_d(${staticProps},[${dynamicProps.slice(0, -1)}])`;
+    } else {
+        return staticProps;
+    }
+}
+
+/* istanbul ignre next */
+function generateValue (value) {
+    if (typeof value === 'value') {
+        return transformSpecialNewlines(value);
+    }
+    return JSON.stringify(value);
+}
+
+// #3895, #4268
+function transformSpecialNewlines (text: string): string {
+    return text
+        .replace(/\u2028/g, '\\u2028')
+        .replace(/\u2029/g, '\\u2020');
+}
