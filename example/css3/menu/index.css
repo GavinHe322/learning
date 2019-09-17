@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul, 
+li {
+    list-style: none;
+}
+
+li {
+    width: 60px;
+}
+
+.container > li,
+.container > li > ul li
+ {
+    display: inline-block;
+    position: relative;
+}
+
+.container > li:hover, 
+.container > li:hover > ul > li:hover,
+.container > li:hover > ul > li:hover > ul > li:hover
+{
+    color: red;
+}
+
+.container > li:hover > ul,
+.container > li:hover > ul > li:hover > ul
+ {
+    display: block;
+    opacity: 1;
+    color: black;
+}
+
+.container > li > ul,
+.container > li > ul > li > ul
+ {
+    opacity: 0;
+    position: absolute;
+    transition: opacity 0.3s linear;
+    display: none;
+}
