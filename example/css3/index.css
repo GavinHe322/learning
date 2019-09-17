@@ -113,7 +113,7 @@
       }
 }
 
-/* zoomOutLeft */
+/* zoomOutLeft 缩小向右偏移-然后想做移动消失 */
 .zoomOutLeft {
     animation: zoomOutLeft 3s linear infinite 1s;
 }
@@ -130,3 +130,26 @@
     }
 }
 
+
+/* slideInDown 从顶部向下移动 淡入 */
+.slideInDown {
+    animation: slideInDown 1s ease-in-out infinite;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translate3d(0, -100%, 0);
+        opacity: 0;
+    }
+    80% {
+        transform: translate3d(0, -20%, 0);
+    }
+
+    to,
+    70% {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        opacity: 1;
+    }
+}
