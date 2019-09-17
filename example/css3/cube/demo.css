@@ -1,0 +1,146 @@
+* {
+	box-sizing: border-box;
+	animation: fadeIn .5s
+}
+
+body {
+	background-color: #111;
+	text-align: center
+}
+
+.content {
+	height: 600px;
+	left: 50%;
+	margin-left: -300px;
+	margin-top: -300px;
+	position: absolute;
+	top: 50%;
+	transform: scale(.25);
+	transition: all .5s ease 0s;
+	width: 600px;
+}
+
+.content:hover {
+    transform: scale(1);
+    transition: all 0.5s ease 0s;
+}
+
+/* 初始的样式 */
+.photo-cube__wrapper {
+    height: 300px;
+	left: 50%;
+	margin-left: -150px;
+	margin-top: -150px;
+	position: absolute;
+	top: 50%;
+	transform: scale(.25);
+	transform-style: preserve-3d;
+	transition: all .5s ease 0s;
+	width: 300px;
+	animation: axial-spin 10s infinite linear;
+}
+
+.photo-cube {
+	height: 300px;
+	left: 50%;
+	margin-left: -150px;
+	margin-top: -150px;
+	position: absolute;
+	top: 50%;
+	transform: rotateX(45deg) rotateY(45deg);
+	transform-style: preserve-3d;
+	transition: all .5s ease 0s;
+	width: 300px;
+}
+
+.photo-cube__panel {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    opacity: 0.45;
+    top: 0;
+    transition: all .5s ease 0s;
+    width: 100%;
+}
+
+.photo-cube__panel:nth-of-type(1) {
+	background: #e9d460;
+	transform: translateZ(150px);
+}
+
+.photo-cube__panel:nth-of-type(2) {
+	background: #f9690e;
+	transform: rotateY(-270deg) translateX(150px);
+	transform-origin: top right;
+}
+
+.photo-cube__panel:nth-of-type(3) {
+	background: #f22613;
+	transform: translateZ(-150px) rotateY(180deg) rotate(180deg);
+}
+
+.photo-cube__panel:nth-of-type(4) {
+	background: #00b16a;
+	transform: rotateY(270deg) translateX(-150px);
+	transform-origin: center left;
+}
+
+.photo-cube__panel:nth-of-type(5) {
+	background: #be90d4;
+	transform: rotateX(90deg) translateY(-150px);
+	transform-origin: top center;
+}
+
+.photo-cube__panel:nth-of-type(6) {
+	background: #8e44ad;
+	transform-origin: bottom center;
+	transform: rotateX(-90deg) translateY(150px);
+}
+
+@keyframes axial-spin {
+    from {
+        transform: rotateX(45deg) rotateY(45deg);
+    }
+    to {
+        transform: rotateX(405deg) rotateY(765deg);
+    }
+}
+
+
+/* 左箭头 */
+.photo-cube__actions--left .photo-cube__action {
+	left: -75px;
+	top: 50%;
+	transform: translateY(-50%)
+}
+
+.photo-cube__actions--left .photo-cube__action:before {
+	transform: translate(-40%,-50%) rotate(135deg)
+}
+
+.photo-cube__action {
+	animation: none;
+	background-color: #fafafa;
+	border-radius: 100%;
+	cursor: pointer;
+	height: 40px;
+	display: none;
+	opacity: .15;
+	position: absolute;
+	transition: opacity .5s ease 0s;
+	width: 40px;
+	z-index: 3
+}
+
+.photo-cube__action:before {
+	border-bottom: solid 4px #111;
+	border-right: solid 4px #111;
+	content: '';
+	display: block;
+	height: 25%;
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-70%,-50%) rotate(-45deg);
+	width: 25%
+}
