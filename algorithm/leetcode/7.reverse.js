@@ -13,6 +13,7 @@ var reverse = function(x) {
     re = 10 * re + x;
     return re;
 };
+
 console.log(
     reverse(-123)
 )
