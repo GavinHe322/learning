@@ -7,34 +7,42 @@
     <script src="../build/react.development.js"></script>
     <script src="../build/react-dom.development.js"></script>
     <script src="../build/babel.min.js"></script>
+    <script src="../build/jquery.min.js"></script>
 </head>
 <body>
     <div id="app"></div>
     <script type="text/babel">
-        class Input extends React.Component {
+        class UserGist extends React.Component {
             constructor(props) {
                 super(props)
                 this.state = {
-                    value: 'Hello!'
+                    username: '',
+                    lastGistUrl: ''
                 }
-                console.log(this)
-                this.handleChange = this.handleChange.bind(this)
             }
-            handleChange(event) {
-                this.setState({ value: event.target.value})
+
+            componentDidMount() {
+                $.get(this.props.source, function (result) {
+                    var lastGist = result[0]
+                    console.log(result)
+                    this.setState({
+                        username: lastGist.owner.login,
+                        lastGistUrl: lastGist.html_url
+                    })
+                }.bind(this));
             }
+
             render() {
-                var value = this.state.value
                 return (
                     <div>
-                    <input type="text" value={value} onChange={this.handleChange} />
-                    <p>{value}</p>
+                        {this.state.username}'s last gist is  <a href={this.state.lastGistUrl}>hree</a>.
                     </div>
                 )
             }
         }
+
         ReactDOM.render(
-            <Input></Input>,
+            <UserGist source="https://api.github.com/users/octocat/gists" />,
             document.getElementById('app')
         )
     </script>
