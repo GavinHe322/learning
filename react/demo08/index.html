@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="text/babel">
+        class LikeButton extends React.Component {
+            constructor(props) {
+                super(props)
+                this.state = {
+                    linked: false
+                }
+                this.handleClick = this.handleClick.bind(this)
+            }
+            handleClick(event) {
+                this.setState( {liked: !this.state.liked});
+            }
+            render() {
+                var text = this.state.liked ? 'like' : 'haven\'t liked';
+                return (
+                     <p onClick={this.handleClick}>
+                        You {text} this. Click to toggle.
+                    </p>
+                );
+            }
+        }
+        
+        ReactDOM.render(
+            <LikeButton />,
+            document.getElementById('app')
+        )
+    </script>
+</body>
+</html>
