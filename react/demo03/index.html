@@ -12,16 +12,51 @@
     <div id="app"></div>
 
     <script type="text/babel">
-        var arr = [
-            <h1 key="1">Hello,World!</h1>,
-            <h1 key="2">React is awesome!</h1>
-        ]
+    
+        // var arr = [
+        //     <h1 key="1">Hello,World!</h1>,
+        //     <h1 key="2">React is awesome!</h1>
+        // ]
+
+        // ReactDOM.render(
+        //     <div>
+        //         {arr}
+        //     </div>,
+        //     document.getElementById('app')
+        // )
+
+        class Toggle extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    isToggleOn: true
+                }
+                // 这边绑定是必要的，这样 'this' 才能在回调函数中使用
+                this.handleClick = this.handleClick.bind(this)
+            }
+            handleClick() {
+                this.setState(prevState => ({
+                    isToggleOn: !prevState.isToggleOn
+                }))
+            }
+            render() {
+                return (
+                    <div>
+                        <button onClick={this.handleClick}>
+                            {
+                                this.state.isToggleOn ? 'ON' : 'OFF'
+                            }
+                        </button>
+                    </div>
+                );
+            }
+        }
+
         ReactDOM.render(
-            <div>
-                {arr}
-            </div>,
+            <Toggle />,
             document.getElementById('app')
         )
+
     </script>
 </body>
 </html>
