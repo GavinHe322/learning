@@ -13,19 +13,63 @@
     <div id="app"></div>
 
     <script type="text/babel">
-        var data = 123;
+        // var data = 123;
 
-        class MyTitle extends React.Component {
-            static proTypes = {
-                title: PropTypes.string.isRequired,
-            }
-            render() {
-                return <h1> {this.props.title} </h1>
-            }
+        // class MyTitle extends React.Component {
+        //     static proTypes = {
+        //         title: PropTypes.string.isRequired,
+        //     }
+        //     render() {
+        //         return <h1> {this.props.title} </h1>
+        //     }
+        // }
+
+        // ReactDOM.render(
+        //     <MyTitle title={data} />,
+        //     document.getElementById('app')
+        // )
+        // function ActionLink() {
+        //     function handleClick(e) {
+        //         e.preventDefault();
+        //         console.log('The link was clicked.')
+        //     }
+        //     return (
+        //         <a href="#" onClick={handleClick}>
+        //             Click me!    
+        //         </a>
+        //     )
+        // }
+        //     ReactDOM.render(
+        //         <ActionLink />,
+        //         document.getElementById('app')
+        //     )
+        // class Toggle extends React.Component {
+        //     constructor(props) {
+        //         super(props);
+        //         this.state = {
+        //             isToggleOn: t
+        //         }
+        //     }
+        // }
+
+        function NumberList(props) {
+            const numbers = props.numbers
+            const listItems = numbers.map(number => {
+                return (
+                    <li key={number.toString()}>
+                        {number}
+                    </li>
+                )
+            })
+            return (
+                <ul>
+                    {listItems}
+                </ul>
+            )
         }
-
+        const numbers = [1, 2, 3, 4, 5, 6]
         ReactDOM.render(
-            <MyTitle title={data} />,
+            <NumberList numbers={numbers} />,
             document.getElementById('app')
         )
     </script>
