@@ -10,9 +10,9 @@
 </head>
 <body>
     <div id="app"></div>
-
+    <div id="root"></div>
     <script type="text/babel">
-    
+
         // var arr = [
         //     <h1 key="1">Hello,World!</h1>,
         //     <h1 key="2">React is awesome!</h1>
@@ -57,6 +57,26 @@
             document.getElementById('app')
         )
 
+        function Welcome(props) {
+            return (
+                <div>
+                    <h1>Hello, {props.name}</h1>
+                </div>
+            )
+        }
+        function  App() {
+            return (
+                <div>
+                    <Welcome name="Sara"/>
+                    <Welcome name="Cahal"/>
+                    <Welcome name="Edite"/>
+                </div>
+            )
+        }
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        )
     </script>
 </body>
 </html>
