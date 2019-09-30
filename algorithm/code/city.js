@@ -72,29 +72,30 @@ for (i1 in data) {
 
 }
 
-console.log(result)
+// console.log(result)
 
 var arr = []
 
-for (var i = 0; i < 100000; i++) {
-    arr.push(i)
+var arr = []
+
+for (i1 = 0; i1 < 100000; i1++) {
+
+    // 这种情况 for in 快...
+    arr.push({
+        i1: i1
+    })
+    // 这种 for of 快...
+    // arr.push(i1)
 }
-console.log(arr)
 
 console.time('1.forin')
 for (var i in arr) {
-
+    // console.log(i)
 }
 console.timeEnd('1.forin')
 
 console.time('1.forof')
 for (var i of arr) {
-    
+    // console.log(i)
 }
 console.timeEnd('1.forof')
-
-console.time('for')
-for (var i = 0; i < arr.length; i++) {
-
-}
-console.timeEnd('for')
