@@ -53,15 +53,13 @@ for (i1 in data) {
         let map = {};
         let mapChildren = [];
         for (i2 = 0; i2 < children.length; i2++) {
-            debugger
-            // if (!map[children[i2].name]) {
-            if (map[children[i2].name] == undefined) {
-                map[children[i2].name] = i2 + ''
+            if (map[children[i2].name] === undefined) {
+                map[children[i2].name] = i2
                 mapChildren.push(
                     children[i2]
                 )
             } else {
-                debugger
+                // debugger
                 mapChildren[map[children[i2].name]].children = mapChildren[map[children[i2].name]].children.concat(
                     children[i2].children
                 )
