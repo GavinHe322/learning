@@ -74,4 +74,27 @@ for (i1 in data) {
 
 console.log(result)
 
+var arr = []
 
+for (var i = 0; i < 100000; i++) {
+    arr.push(i)
+}
+console.log(arr)
+
+console.time('1.forin')
+for (var i in arr) {
+
+}
+console.timeEnd('1.forin')
+
+console.time('1.forof')
+for (var i of arr) {
+    
+}
+console.timeEnd('1.forof')
+
+console.time('for')
+for (var i = 0; i < arr.length; i++) {
+
+}
+console.timeEnd('for')
