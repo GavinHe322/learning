@@ -28,7 +28,7 @@ const data = [
 
 const result = []
 
-let i1, i2, i3
+let i1, i2
 for (i1 in data) {
     let {province, city, area} = data[i1]
     let obj = {
@@ -44,43 +44,29 @@ for (i1 in data) {
             }
         ]
     }
-    if (!result.length) {
-        result.push(obj)
-        continue
-    }
 
     var res = result.findIndex(arr => {
         return arr.name == province
     })
     if (res !== -1) {
-        // result[res].children = 
         let children = obj.children.concat(result[res].children)
-        // let hahah = []
-        console.log(children, 'chidl')
-        // children.forEach((item, index, arr) => {
-        //    if (arr[index + 1] && item.name == arr[index + 1].name) {
-        //         item.children = item.children.concat(arr[index + 1].children)
-        //         // arr.splice(index + 1, 1)
-        //    }
-        // })
         let map = {};
         let mapChildren = [];
         for (i2 = 0; i2 < children.length; i2++) {
-            if (!map[children[i2].name]) {
-                map[children[i2].name] = i2
+            debugger
+            // if (!map[children[i2].name]) {
+            if (map[children[i2].name] == undefined) {
+                map[children[i2].name] = i2 + ''
                 mapChildren.push(
                     children[i2]
                 )
             } else {
-                var a = mapChildren[map[children[i2].name]]
-                debugger;
-                mapChildren[map[children[i2].name]] = children[i2].children.concat(
-                    mapChildren[map[children[i2].name]].children
+                debugger
+                mapChildren[map[children[i2].name]].children = mapChildren[map[children[i2].name]].children.concat(
+                    children[i2].children
                 )
-                map[children[i2].name] = i2
             }
         }
-        console.log(mapChildren)
         result[res].children = mapChildren
     } else {
         result.push(obj)
