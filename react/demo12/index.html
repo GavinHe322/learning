@@ -49,16 +49,15 @@
                 })
             }
             addList() {
-                console.log(
-                    this.refs.input
-                )
-                this.refs.input.focus();
+                if (!this.state.text) return;
+
                 let list = this.state.list;
                 list.push(this.state.text)
                 this.setState({
                     list,
                     text: ''
                 })
+                this.refs.input.focus();
 
             }
             handleChange(e) {
