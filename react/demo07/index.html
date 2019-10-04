@@ -11,28 +11,70 @@
 <body>
     <div id="app"></div>
     <script type="text/babel">
-        class MyComponent extends React.Component {
-            constructor (props) {
-                super(props)
-                this.myTextInput = React.createRef()
-                this.handleClick = this.handleClick.bind(this)
+        // class MyComponent extends React.Component {
+        //     constructor (props) {
+        //         super(props)
+        //         this.myTextInput = React.createRef()
+        //         this.handleClick = this.handleClick.bind(this)
+        //     }
+        //     handleClick() {
+        //         this.myTextInput.current.focus()
+        //     }
+        //     render() {
+        //         return (
+        //             <div>
+        //                 <input type="text" ref={this.myTextInput} />
+        //                 <input type="button" value="Focus the text input" onClick={this.handleClick} />
+        //             </div>
+        //         )
+        //     }
+        // }
+        // ReactDOM.render(
+        //     <MyComponent />,
+        //     document.getElementById('app')
+        // )
+        function WarningBanner(props) {
+            if (!props.warn) {
+                return null
             }
-            handleClick() {
-                this.myTextInput.current.focus()
+            return (
+                <div className="warning">
+                    Warning!
+                </div>
+            )
+        }
+
+        class Page extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    showWarning: true
+                }
+                this.handleToggleClick = this.handleToggleClick.bind(this)
             }
+            handleToggleClick() {
+                this.setState(state => ({
+                    showWarning: !state.showWarning
+                }))
+            }
+
             render() {
                 return (
                     <div>
-                        <input type="text" ref={this.myTextInput} />
-                        <input type="button" value="Focus the text input" onClick={this.handleClick} />
+                        <WarningBanner warn={this.state.showWarning}/>
+                        <button onClick={this.handleToggleClick}>
+                            {
+                                this.state.showWarning ? 'Hide' : 'Show'
+                            }    
+                        </button>
                     </div>
                 )
             }
         }
         ReactDOM.render(
-            <MyComponent />,
+            <Page />,
             document.getElementById('app')
-        )
+        );
     </script>
 </body>
 </html>
