@@ -41,10 +41,12 @@
                 super(props);
                 this.state = {
                     value: '',
-                    area: ''
+                    area: '',
+                    select: ['grapefruit', 'lime']
                 }
                 this.handleChangeInput = this.handleChangeInput.bind(this)
                 this.handleChangeArea = this.handleChangeArea.bind(this)
+                this.handleChangeSelect = this.handleChangeSelect.bind(this)
                 this.handleSubmit = this.handleSubmit.bind(this)
 
             }
@@ -55,6 +57,22 @@
                 })
             }
 
+            handleChangeSelect(event) {
+                let arr = this.state.select
+                var value = event.target.value
+              
+                if (arr.includes(value)) {
+                    arr.splice(
+                        arr.indexOf(value), 1
+                    )
+                } else {
+                    arr.push(value)
+                }
+                this.setState({
+                    select: arr
+                })
+                
+            }
             handleChangeArea(event) {
                 this.setState({
                     area: event.target.value
@@ -62,7 +80,9 @@
             }
             handleSubmit(event) {
                 event.preventDefault();
-                alert('A name was submitted: ' + this.state.value)
+                console.log(
+                    this.state
+                )
             }
 
             render() {
@@ -78,6 +98,12 @@
                             other: &nbsp;
                             <textarea value={this.state.area} onChange={this.handleChangeArea}></textarea>
                         </div>
+                        <select value={this.state.select} onChange={this.handleChangeSelect} placeholder="请选择" multiple={true}>
+                            <option value="">请选择</option>
+                            <option value="grapefruit">grapefruit</option>    
+                            <option value="lime">lime</option>    
+                            <option value="cocount">cocount</option>    
+                        </select>
                         <input type="submit" value="submit" />
                     </form>
                 )
