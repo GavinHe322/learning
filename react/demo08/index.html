@@ -11,29 +11,81 @@
 <body>
     <div id="app"></div>
     <script type="text/babel">
-        class LikeButton extends React.Component {
+        // class LikeButton extends React.Component {
+        //     constructor(props) {
+        //         super(props)
+        //         this.state = {
+        //             linked: false
+        //         }
+        //         this.handleClick = this.handleClick.bind(this)
+        //     }
+        //     handleClick(event) {
+        //         this.setState( {liked: !this.state.liked});
+        //     }
+        //     render() {
+        //         var text = this.state.liked ? 'like' : 'haven\'t liked';
+        //         return (
+        //              <p onClick={this.handleClick}>
+        //                 You {text} this. Click to toggle.
+        //             </p>
+        //         );
+        //     }
+        // }
+        
+        // ReactDOM.render(
+        //     <LikeButton />,
+        //     document.getElementById('app')
+        // )
+        class NameForm extends React.Component {
             constructor(props) {
-                super(props)
+                super(props);
                 this.state = {
-                    linked: false
+                    value: '',
+                    area: ''
                 }
-                this.handleClick = this.handleClick.bind(this)
+                this.handleChangeInput = this.handleChangeInput.bind(this)
+                this.handleChangeArea = this.handleChangeArea.bind(this)
+                this.handleSubmit = this.handleSubmit.bind(this)
+
             }
-            handleClick(event) {
-                this.setState( {liked: !this.state.liked});
+
+            handleChangeInput(event) {
+                this.setState({
+                    value: event.target.value
+                })
             }
+
+            handleChangeArea(event) {
+                this.setState({
+                    area: event.target.value
+                })
+            }
+            handleSubmit(event) {
+                event.preventDefault();
+                alert('A name was submitted: ' + this.state.value)
+            }
+
             render() {
-                var text = this.state.liked ? 'like' : 'haven\'t liked';
-                return (
-                     <p onClick={this.handleClick}>
-                        You {text} this. Click to toggle.
-                    </p>
-                );
+                return  (
+                    <form onSubmit={this.handleSubmit}>
+                        <div>
+                            <label>
+                                Name: &nbsp;
+                                <input type="text" value={this.state.value} onChange={this.handleChangeInput} />
+                            </label>    
+                        </div>
+                        <div style={{marginTop: 20}}>
+                            other: &nbsp;
+                            <textarea value={this.state.area} onChange={this.handleChangeArea}></textarea>
+                        </div>
+                        <input type="submit" value="submit" />
+                    </form>
+                )
             }
         }
-        
+
         ReactDOM.render(
-            <LikeButton />,
+            <NameForm />,
             document.getElementById('app')
         )
     </script>
