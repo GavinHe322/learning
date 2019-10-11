@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>二级分类</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            text-align: center;
+            -webkit-overflow-scrolling: touch;
+        }
+        .container {
+            display: flex;
+        }
+        .parent {
+            width: 30%;
+            height: 100vh;
+            overflow: scroll;
+        }
+        .parent li {
+            height: 30px;
+            border-right: 1px solid #ccc;
+            line-height: 30px;
+        }
+        .products {
+            flex: 1;
+            height: 100vh;
+            overflow: scroll;
+        }
+
+        .title {
+            background: #fafafa;
+            padding: 10px 0;
+        }
+
+        .acParent {
+            background: #fafafa;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <ul class="parent">
+                <li v-for="(val, i) in data" @click="toTitle(i)" :class="{'acParent': scrollTop == i}">
+                    {{val.title}}
+                </li>
+            </ul>
+            <ul class="products" ref="products" @scroll="scroll">
+                <li v-for="(val1) in data">
+                    <div class="title">
+                        {{val1.title}}
+                    </div>
+                    <ul v-for="(val2) in val1.children">
+                        <li>
+                            {{val2.title}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="../../../js/vue.js"></script>
+    <script>
+        var data = [];
+        for (var i = 0; i < 30; i++) {
+            let obj = {
+                title: 'title' + i,
+                children: []
+            }
+            for (var j = 0; j < 20; j++) {
+                obj.children.push({
+                    title: 'product' + i + j,
+                })
+            }
+            data.push(obj)
+
+        }
+        new Vue({
+            data() {
+                return {
+                    data,
+                    heightArr: [],
+                    scrollTop: 0,
+                }
+            },
+            mounted() {
+                var heightArr = []
+                var products = document.querySelectorAll('.products > li')
+                Array.prototype.forEach.call(products, (val) => {
+                    heightArr.push(
+                        val.offsetTop
+                    )
+                })
+                this.heightArr = heightArr
+            },
+            methods: {
+                toTitle(i) {
+                    this.$refs.products.scrollTo({
+                        top: this.heightArr[i],
+                        behavior: 'smooth'
+                    })
+                },
+                scroll(e) {
+                    this.scrollTop = e.target.scrollTop;
+                    for (var i = 0; i < this.heightArr.length; i++) {
+                        if (this.scrollTop <= this.heightArr[i]) {
+                            this.scrollTop = i - 1
+                            break
+                        } else if (
+                            this.heightArr[i + 1] &&
+                            this.scrollTop > this.heightArr[i] && 
+                            this.scrollTop < this.heightArr[i + 1]
+                        ) {
+                            this.scrollTop = i + 1
+                        }
+                    }
+                }
+            }
+        }).$mount('#app')
+    </script>
+</body>
+</html>
