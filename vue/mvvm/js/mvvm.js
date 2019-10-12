@@ -12,6 +12,7 @@ function MVVM(options) {
     // 代理Computed
     this._initComputed()
 
+    observer(data, this)
     // 
 }
 
@@ -30,6 +31,7 @@ MVVM.prototype = {
                 return vm._data[key]
             },
             set: function proxySetter(newVal) {
+                console.log(newVal, 'change')
                 vm._data[key] = newVal
             }
         })
@@ -38,9 +40,6 @@ MVVM.prototype = {
     _initComputed: function () {
         var vm = this
         var computed = this.$options.computed
-        console.log(
-            computed
-        )
         if (typeof computed === 'object') {
             Object.keys(computed).forEach(function(key) {
                 Object.defineProperty(vm, key, {
