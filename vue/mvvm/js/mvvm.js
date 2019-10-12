@@ -2,9 +2,7 @@ function MVVM(options) {
     this.$options = options || {}
     var data = this._data = this.$options.data
     var vm = this
-    console.log(
-        options
-    )
+  
     //  代理data
     Object.keys(data).forEach(function(key) {
         console.log(key)
@@ -13,10 +11,15 @@ function MVVM(options) {
 
     // 代理Computed
     this._initComputed()
+
+    // 
 }
 
 MVVM.prototype = {
     constructor: MVVM,
+    $watch: function(key, cb, options) {
+        new Watcher(this, key, cb)
+    },
     _proxyData: function(key, setter, getter) {
         var vm = this
         setter = setter ||
