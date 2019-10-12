@@ -8,16 +8,18 @@
 </head>
 <body>
     <div id='app'>
-
+        <input type="text" v-model="message">
     </div>
+    <script src="./js/compiler.js"></script>
     <script src="./js/observer.js"></script>
     <script src="./js/watcher.js"></script>
     <script src="./js/mvvm.js"></script>
     <script>
         var vm = new MVVM({
-            el: "#mvvm-app",
+            el: "#app",
             data: {
-                string: 'hello'
+                string: 'hello',
+                message: 'message'
             },
             computed: {
                 total() {

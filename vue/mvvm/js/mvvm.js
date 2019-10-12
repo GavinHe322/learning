@@ -12,8 +12,11 @@ function MVVM(options) {
     // 代理Computed
     this._initComputed()
 
+    // watch && notify
     observer(data, this)
+
     // 
+    this.$compile = new Compile(options.el || document.body, this)
 }
 
 MVVM.prototype = {
