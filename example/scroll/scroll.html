@@ -106,16 +106,30 @@
                 this.heightArr = heightArr
                 var products = document.querySelector('.products')
                
-                products.addEventListener('scroll',this.debounce(this.scroll, 1000))
+                products.addEventListener('scroll',this.debounce(this.scroll, 300))
             },
             methods: {
-                debounce(fn, wait) {
-                    var timer
-                    return function() {
-                        if (timer != null) {
-                            clearTimeout(timer)
+                // 1、定时器节流
+                // 只执行一次
+                // debounce(fn, wait) {
+                //     var timer
+                //     return function() {
+                //         if (timer != null) {
+                //             clearTimeout(timer)
+                //         }
+                //         timer = setTimeout(fn, wait)
+                //     }
+                // },
+                // 2.时间戳节流
+                debounce(fn, delay) {
+                    var prev = Date.now()
+                    return function (e) {
+                        var context = this
+                        var now = Date.now()
+                        if (now - prev >= delay) {
+                            fn.apply(context, arguments)
+                            prev = Date.now()
                         }
-                        timer = setTimeout(fn, wait)
                     }
                 },
                 toTitle(i) {
