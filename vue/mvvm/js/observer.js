@@ -1,41 +1,42 @@
 function Observer(data) {
     this.data = data
     this.walk(data)
+    console.log(data)
 }
+
 
 Observer.prototype = {
     constructor: Observer,
-    walk: function(data) {
+    walk(data) {
         var vm = this
-        Object.keys(data).forEach(function(key) {
+        Object.keys(data).forEach(key => {
             vm.convert(key, data[key])
         })
     },
-    convert: function(key, val) {
+    convert(key, val) {
         this.defineReactive(this.data, key, val)
     },
-
-    defineReactive: function(data, key, val) {
+    
+    defineReactive(data, key, val) {
         var dep = new Dep()
+        var childObj = observe(val)
 
         Object.defineProperty(data, key, {
-            enumerable: true, // 可枚举
-            configurable: false, // 不能再define
-            get: function() {
-                console.log(1)
+            enumerable: true, 
+            configurable: false,
+            get() {
                 if (Dep.target) {
                     dep.depend()
                 }
                 return val
             },
-            set: function(newVal) {
-                if (newVal === val) {
+            set(newVal) {
+                if (newVal == val) {
                     return
                 }
                 val = newVal
-                // 新的值是 object 的话，进行监听
-                console.log(val, 'change, observer')
-                childObj = observer(newVal)
+                // 是的值是 object 的话， 进行监听
+                childObj = observe(newVal)
                 // 通知订阅者
                 dep.notify()
             }
@@ -43,14 +44,14 @@ Observer.prototype = {
     }
 }
 
-function observer(value, vm) {
+function observe(value, vm) {
     if (!value || typeof value !== 'object') {
         return
     }
     return new Observer(value)
 }
 
-var uid = 0
+var uid 
 
 function Dep() {
     this.id = uid++
@@ -58,24 +59,24 @@ function Dep() {
 }
 
 Dep.prototype = {
-    addSub: function(sub) {
+    addSub(sub) {
         this.subs.push(sub)
     },
 
-    depend: function() {
-        Dep.target.addSub(this)
+    depend() {
+        Dep.target.addDep(this)
     },
-    
-    removeSub: function(sub) {
+
+    removeSub(sub) {
         var index = this.subs.indexOf(sub)
+
         if (index != -1) {
             this.subs.splice(index, 1)
         }
     },
 
-    notify: function() {
-        this.subs.forEach(function(sub) {
-            console.log(sub)
+    notify() {
+        this.subs.forEach(sub => {
             sub.update()
         })
     }
