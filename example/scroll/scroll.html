@@ -121,12 +121,37 @@
                 //     }
                 // },
                 // 2.时间戳节流
+                // debounce(fn, delay) {
+                //     var prev = 0
+                //     return function (e) {
+                //         if (Date.now() - prev >= delay) {
+                //             fn.apply(this, arguments)
+                //             prev = Date.now()
+                //         }
+                //     }
+                // },
+                // 3. 时间戳节流配合定时器
                 debounce(fn, delay) {
-                    var prev = Date.now()
+                    var prev = 0
+                    var timer = null
+                    return function (...args) {
+                        if (Date.now() - prev >= delay) {
+                            clearTimeout(timer)
+                            timer = null
+                            prev = Date.now()
+                            fn.apply(this, args)
+                        } else {
+                            timer = setTimeout(() => {
+                                fn.apply(this, args)
+                            }, delay)
+                        }
+                    }
+                },
+                debounce(fn, delay) {
+                    var prev = 0
                     return function (e) {
                         var context = this
-                        var now = Date.now()
-                        if (now - prev >= delay) {
+                        if (Date.now() - prev >= delay) {
                             fn.apply(context, arguments)
                             prev = Date.now()
                         }
@@ -139,7 +164,7 @@
                     })
                 },
                 scroll(e) {
-                    this.scrollTop = document.querySelector('.products').scrollTop;
+                    this.scrollTop = e.target.scrollTop;
 
                     if (this.scrollTop === 0) {
                         return;
