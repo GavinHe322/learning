@@ -147,16 +147,6 @@
                         }
                     }
                 },
-                debounce(fn, delay) {
-                    var prev = 0
-                    return function (e) {
-                        var context = this
-                        if (Date.now() - prev >= delay) {
-                            fn.apply(context, arguments)
-                            prev = Date.now()
-                        }
-                    }
-                },
                 toTitle(i) {
                     this.$refs.products.scrollTo({
                         top: this.heightArr[i],
