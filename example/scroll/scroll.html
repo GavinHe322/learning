@@ -106,7 +106,7 @@
                 this.heightArr = heightArr
                 var products = document.querySelector('.products')
                
-                products.addEventListener('scroll',this.debounce(this.scroll, 300))
+                products.addEventListener('scroll',this.debounce(this.scroll, 500))
             },
             methods: {
                 // 1、定时器节流
@@ -132,20 +132,35 @@
                 // },
                 // 3. 时间戳节流配合定时器
                 debounce(fn, delay) {
-                    var prev = 0
-                    var timer = null
+                    let pre = 0;
+                    let timer = null;
                     return function (...args) {
-                        if (Date.now() - prev >= delay) {
-                            clearTimeout(timer)
-                            timer = null
-                            prev = Date.now()
-                            fn.apply(this, args)
-                        } else {
+                        if (Date.now() - pre > delay) {
+                            clearTimeout(timer);
+                            timer = null;
+                            pre = Date.now();
+                            fn.apply(this, args);
+                        } else if (!timer) {
                             timer = setTimeout(() => {
-                                fn.apply(this, args)
-                            }, delay)
+                                console.log(1,' laster', args)
+                                fn.apply(this, args);
+                            }, delay);
                         }
                     }
+                    // var prev = 0
+                    // var timer = null
+                    // return function (...args) {
+                    //     if (Date.now() - prev >= delay) {
+                    //         clearTimeout(timer)
+                    //         timer = null
+                    //         prev = Date.now()
+                    //         fn.apply(this, args)
+                    //     } else if (!timer){
+                    //         timer = setTimeout(() => {
+                    //             fn.apply(this, args)
+                    //         }, delay)
+                    //     }
+                    // }
                 },
                 toTitle(i) {
                     this.$refs.products.scrollTo({
@@ -156,12 +171,14 @@
                 scroll(e) {
                     this.scrollTop = e.target.scrollTop;
 
-                    if (this.scrollTop === 0) {
+                    if (this.scrollTop == 0) {
+                        this.changeParent()
                         return;
                     }
                     for (var i = 0; i < this.heightArr.length; i++) {
                         if (this.scrollTop <= this.heightArr[i]) {
                             this.scrollTop = i - 1
+                            console.log(this.scrollTop, '???')
                             break
                         } else if (
                             this.heightArr[i + 1] &&
@@ -169,6 +186,7 @@
                             this.scrollTop < this.heightArr[i + 1]
                         ) {
                             this.scrollTop = i
+                            console.log('else??')
                             break;
                         }
                     }
