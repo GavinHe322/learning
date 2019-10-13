@@ -56,7 +56,8 @@
                     {{val.title}}
                 </li>
             </ul>
-            <ul class="products" ref="products" @scroll="scroll">
+            <!--  @scroll="scroll" -->
+            <ul class="products" ref="products">
                 <li v-for="(val1) in data">
                     <div class="title">
                         {{val1.title}}
@@ -103,8 +104,20 @@
                     )
                 })
                 this.heightArr = heightArr
+                var products = document.querySelector('.products')
+               
+                products.addEventListener('scroll',this.debounce(this.scroll, 1000))
             },
             methods: {
+                debounce(fn, wait) {
+                    var timer
+                    return function() {
+                        if (timer != null) {
+                            clearTimeout(timer)
+                        }
+                        timer = setTimeout(fn, wait)
+                    }
+                },
                 toTitle(i) {
                     this.$refs.products.scrollTo({
                         top: this.heightArr[i],
@@ -112,7 +125,8 @@
                     })
                 },
                 scroll(e) {
-                    this.scrollTop = e.target.scrollTop;
+                    this.scrollTop = document.querySelector('.products').scrollTop;
+
                     if (this.scrollTop === 0) {
                         return;
                     }
