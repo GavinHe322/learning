@@ -56,7 +56,8 @@
                     {{val.title}}
                 </li>
             </ul>
-            <ul class="products" ref="products" @scroll="scroll">
+            <!--  @scroll="scroll" -->
+            <ul class="products" ref="products">
                 <li v-for="(val1) in data">
                     <div class="title">
                         {{val1.title}}
@@ -103,8 +104,64 @@
                     )
                 })
                 this.heightArr = heightArr
+                var products = document.querySelector('.products')
+               
+                products.addEventListener('scroll',this.debounce(this.scroll, 500))
             },
             methods: {
+                // 1、定时器节流
+                // 只执行一次
+                // debounce(fn, wait) {
+                //     var timer
+                //     return function() {
+                //         if (timer != null) {
+                //             clearTimeout(timer)
+                //         }
+                //         timer = setTimeout(fn, wait)
+                //     }
+                // },
+                // 2.时间戳节流
+                // debounce(fn, delay) {
+                //     var prev = 0
+                //     return function (e) {
+                //         if (Date.now() - prev >= delay) {
+                //             fn.apply(this, arguments)
+                //             prev = Date.now()
+                //         }
+                //     }
+                // },
+                // 3. 时间戳节流配合定时器
+                debounce(fn, delay) {
+                    let pre = 0;
+                    let timer = null;
+                    return function (...args) {
+                        if (Date.now() - pre > delay) {
+                            clearTimeout(timer);
+                            timer = null;
+                            pre = Date.now();
+                            fn.apply(this, args);
+                        } else if (!timer) {
+                            timer = setTimeout(() => {
+                                console.log(1,' laster', args)
+                                fn.apply(this, args);
+                            }, delay);
+                        }
+                    }
+                    // var prev = 0
+                    // var timer = null
+                    // return function (...args) {
+                    //     if (Date.now() - prev >= delay) {
+                    //         clearTimeout(timer)
+                    //         timer = null
+                    //         prev = Date.now()
+                    //         fn.apply(this, args)
+                    //     } else if (!timer){
+                    //         timer = setTimeout(() => {
+                    //             fn.apply(this, args)
+                    //         }, delay)
+                    //     }
+                    // }
+                },
                 toTitle(i) {
                     this.$refs.products.scrollTo({
                         top: this.heightArr[i],
@@ -113,12 +170,15 @@
                 },
                 scroll(e) {
                     this.scrollTop = e.target.scrollTop;
-                    if (this.scrollTop === 0) {
+
+                    if (this.scrollTop == 0) {
+                        this.changeParent()
                         return;
                     }
                     for (var i = 0; i < this.heightArr.length; i++) {
                         if (this.scrollTop <= this.heightArr[i]) {
                             this.scrollTop = i - 1
+                            console.log(this.scrollTop, '???')
                             break
                         } else if (
                             this.heightArr[i + 1] &&
@@ -126,6 +186,7 @@
                             this.scrollTop < this.heightArr[i + 1]
                         ) {
                             this.scrollTop = i
+                            console.log('else??')
                             break;
                         }
                     }
