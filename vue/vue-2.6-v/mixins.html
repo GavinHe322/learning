@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>混入</title>
+</head>
+<body>
+    <div id="app">
+        <p>
+            Mixins是为Vue组件分发可重用功能的灵活方式。
+            mixin对象可以包含任何组件选项。
+            当组件使用mixin时，mixin中的所有选项将“混合”到组件自己的选项中。
+        </p>
+        <div>
+            {{data}}
+        </div>
+    </div>
+    <script>
+        // define a mixin object 
+        var mixin = {
+            data() {
+                return {
+                    message: 'hellow',
+                    foo: 'abc'
+                }
+            },
+            created() {
+                this.hellow()
+                console.log('mixin 先执行?') //yes
+            },
+            methods: {
+                hellow() {
+                    console.log(`hellow from mixin!`);
+                    this.data = 'hellow from mixin!'
+                }
+            },
+        }
+        var vue = new Vue({
+
+            mixins: [mixin],
+
+            el: "#app",
+            data() {
+                return {
+                    data: '',
+                    message: 'goodbye',
+                    bar: 'def'
+                }
+            },
+            methods: { 
+                // 那些期望对象的值，例如选项methods，components并且directives，
+                // 将被合并到同一个对象。当这些对象中存在冲突的键时，组件的选项将优先：
+                // 所以这里的data 会被修改为 form new vue
+                hellow() {
+                    console.log(`hellow from new Vue`);
+                    this.data = 'hellow from new Vue'
+                }
+            },
+            created() {
+                // 当mixin和组件本身包含重叠选项时，它们将使用适当的策略“合并”。
+                // 例如，数据对象经历递归合并，组件的数据在发生冲突时优先。
+                console.log(this.$data) // boodye def abc
+                console.log('vue 先执行?') //no
+            }
+        })
+// -----------------------分界线-------------------------------------------------------------------------------
+
+        // Global Mixin
+        // 您也可以在全球范围内应用mixin。谨慎使用！全局应用mixin后，
+        // 它将影响之后创建的每个 Vue实例。如果使用得当，这可以用于为自定义选项注入处理逻辑：
+        // inject a handler for `myOption` custom option
+            Vue.mixin({
+                created: function () {
+                    var myOption = this.$options.myOption
+                    if (myOption) {
+                        console.log(myOption)
+                    }
+                }
+            })
+            new Vue({
+                myOption: 'hello!'     
+            })
+            // => "hello!"
+
+        // Vue.config.optionMergeStrategies
+    </script>
+</body>
+</html>

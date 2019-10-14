@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>过渡组件</title>
+        <style>
+          .fade-enter-active, .fade-leave-active {
+            transition: opacity .5s;
+            }
+            .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+            opacity: 0;
+            }
+      </style>
+</head>
+<body>
+    <div id='app'>
+        <h2>transtion</h2>
+        <pre>          event
+                before-enter
+                before-leave
+                before-appear
+                enter
+                leave
+                appear
+                after-enter
+                after-leave
+                after-appear
+                enter-cancelled
+                leave-cancelled（v-show只）
+                appear-cancelled
+
+                <!-- 使用条件 -->
+                条件渲染（使用v-if）
+                条件显示（使用v-show）
+                动态组件
+                组件根节点
+        </pre>
+        <button v-on:click="isHide">
+                Toggle
+        </button>
+        <transition name="fade">
+            <p v-if="show">hello</p>
+        </transition>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                show: true
+            },
+            methods: {
+                isHide() {
+                    this.show = !this.show;
+                }
+            },
+        })
+    </script>
+    
+
+</body>
+</html>
