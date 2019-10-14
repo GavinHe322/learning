@@ -14,6 +14,13 @@
   - 
 - vue
   - vue (vue 源码书写板)
+  - MVVM 
+    - new Vue 实例
+    - defineProperty 数据劫持
+    - proxy 代理属性
+    - Observer 订阅
+    - notify 发布
+    - child.update
   - 基础语法
   - 组件通讯
 - React
