@@ -51,7 +51,7 @@ function observe(value, vm) {
     return new Observer(value)
 }
 
-var uid 
+var uid = 0
 
 function Dep() {
     this.id = uid++
@@ -76,6 +76,7 @@ Dep.prototype = {
     },
 
     notify() {
+        debugger
         this.subs.forEach(sub => {
             sub.update()
         })
