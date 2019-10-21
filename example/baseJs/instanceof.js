@@ -1,5 +1,6 @@
 /**
  * instanceof
+ * 主要是判断 __proto__  prototype
  */
 
  function Instanceof(L, R) {
@@ -13,8 +14,6 @@
          }
          L = L.__proto__
      }
-    console.log(prototype, L)
-
  }
 
  function Aoo() {
