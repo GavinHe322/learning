@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -171,5 +171,76 @@
         myChart.setOption(option);
 
     </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+      <link rel="stylesheet" href="https://gw.alipayobjects.com/os/rmsportal/PqLCOJpqoOUfuPRacUzE.css" />
+    <title>分级统计图</title>
+    <style> ::-webkit-scrollbar{display:none;}html,body{overflow:hidden;margin:0;}
+    	#map {width:50%;height: 80%; position: absolute; top: 0}
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/ document.body.clientHeight; </script>
+<script src="https://webapi.amap.com/maps?v=1.4.8&key=6d880b6e6743e09dccff35d23f549cb9&plugin=Map3D"></script>
+<script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.l7-1.3.0-beta.4/build/L7-min.js"></script>
+<script>
+  var scene = new L7.Scene({
+    id: 'map',
+    mapStyle: 'light', // 样式URL
+    center: [104.838088, 34.075889],
+    pitch: 0,
+    zoom: 4.5
+  });
+  window.scene = scene;
+
+//   // 标记
+//   const Marker = new L7.Marker({
+//     offset: [113.264385, 23.129112]
+//   })
+
+  scene.on('loaded', function() {
+    var colors = ["#FFF5B8", "#FFDC7D", "#FFAB5C", "#F27049", "#D42F31", "#730D1C"];
+    $.getJSON('https://gw.alipayobjects.com/os/rmsportal/JToMOWvicvJOISZFCkEI.json', function(city) {
+      console.log(city)
+    //   city.features.splice(0, 1)
+    // city = []
+      scene.PolygonLayer().source(city)
+        //.color('pm2_5_24h',["#FFF5B8","#FFDC7D","#FFAB5C","#F27049","#D42F31","#730D1C"])
+        .color('area', function(p) {
+            console.log(p)
+            return '#F27049'
+        }).shape('fill').active(true).style({
+          opacity: .5
+        }).render();
+      scene.PolygonLayer().source(city).shape('line').color('#fff').style({
+        opacity: 0.1
+      }).render();
+    //   new L7.Marker({
+    //     color: 'red'
+    //     }).setLnglat(
+    //         [113.264385, 23.129112]
+    //     ).addTo(scene);
+    //   new L7.Marker().setLnglat([114, 36]).addTo(scene);
+    var el = document.createElement('label');
+       el.className = 'lableclass';
+       el.textContent = '年后';
+       el.style.background = 'blue';
+       new L7.Marker({
+         element: el
+       })
+       .setLnglat(
+        [113.264385, 23.129112]
+       )
+        .addTo(scene);
+    });
+  });
+</script>
 </body>
 </html>
