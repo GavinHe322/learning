@@ -1,5 +1,5 @@
 // Don't do this!
-var fetchData = require('../src/fetchData')
+var fetchData = require('../src/2.fetchData')
 
 // test('the data is peanut butter', () => {
 //     function callback(data) {

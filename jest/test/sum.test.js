@@ -1,4 +1,4 @@
-var sum = require('../src/sum');
+var sum = require('../src/1.sum');
 
 // 1. toBe 等于
 test('adds 1 + 2 to equal 3', () => {
