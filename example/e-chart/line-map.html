@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>e-chart-map</title>
+</head>
+
+<body>
+
+  <div id="main" style="width: 100vw;height:100vh;"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
+  <script src="https://gallerybox.echartsjs.com/dep/echarts/map/js/china.js"></script>
+  <script>
+
+    var myChart = echarts.init(
+      document.getElementById('main')
+    );
+
+    var geoCoordMap = {
+      '广东': [113.280637, 23.125178],
+      '北京': [116.407387, 39.904179],
+    };
+
+    var data = [
+      {name: '北京', value: 180 },
+      {name: '广东', value: 180 },
+    ]
+
+    var moveLine = [
+      {
+        'coords': [ [113.280637, 23.125178], [116.407387, 39.904179] ]
+      }
+    ]
+
+
+    var convertData = function (data) {
+      var res = [];
+      for (var i = 0; i < data.length; i++) {
+        var geoCoord = geoCoordMap[data[i].name];
+        if (geoCoord) {
+          res.push({
+            name: data[i].name,
+            value: geoCoord.concat(data[i].value)
+          });
+        }
+      }
+      return res;
+    };
+
+    var color = ['#3ed4ff', '#ffa022', '#a6c84c'];
+
+    var series = [
+        {
+          name: 'light',
+          type: 'scatter',
+          coordinateSystem: 'geo',
+          data: convertData(data),
+          symbolSize: function (val) {
+            return val[2] / 10;
+          },
+          label: {
+            normal: {
+              formatter: '{b}',
+              position: 'right',
+              show: true
+            },
+            emphasis: {
+              show: true
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: '#F4E925'
+            }
+          }
+        },
+        {
+          type: 'map',
+          map: 'jiangxi',
+          geoIndex: 0,
+          aspectScale: 0.75, //长宽比
+          showLegendSymbol: false, // 存在legend时显示
+          label: {
+            normal: {
+              show: false
+            },
+            emphasis: {
+              show: false,
+              textStyle: {
+                color: '#fff'
+              }
+            }
+          },
+          roam: true,
+          itemStyle: {
+            normal: {
+              areaColor: '#031525',
+              borderColor: '#FFFFFF',
+            },
+            emphasis: {
+              areaColor: '#2B91B7'
+            }
+          },
+          animation: false,
+          data: data
+        },
+        {
+          name: '线路',
+          type: 'lines',
+          coordinateSystem: 'geo',
+          zlevel: 2,
+          large: true,
+          effect: {
+            show: true,
+            constantSpeed: 30,
+            symbol: 'arrow',//ECharts 提供的标记类型包括 'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
+            symbolSize: 0,
+            trailLength: 0,
+          },
+
+          lineStyle: {
+            normal: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                      offset: 0, color: '#58B3CC'
+                  }, {
+                      offset: 1, color: '#F58158'
+              }], false),
+              width: 2,
+              opacity: 1.0,
+              curveness: 0.15
+            }
+          },
+          data: moveLine
+        },
+        {
+          name: 'Top 5',
+          type: 'effectScatter',
+          coordinateSystem: 'geo',
+          data: convertData(data.sort(function (a, b) {
+            return b.value - a.value;
+          }).slice(0, 5)),
+          symbolSize: function (val) {
+            console.log(val)
+            return val[2] / 10;
+          },
+          showEffectOn: 'render',
+          rippleEffect: {
+            brushType: 'stroke'
+          },
+          hoverAnimation: true,
+          label: {
+            normal: {
+              formatter: '{b}',
+              position: 'right',
+              show: true
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: '#F4E925',
+              shadowBlur: 10,
+              shadowColor: '#05C3F9'
+            }
+          },
+          zlevel: 1
+        },
+      ]
+
+    option = {
+      backgroundColor: '#080a20',
+      title: {
+        text: '模拟迁徙',
+        subtext: '数据纯属虚构',
+        left: 'left',
+        textStyle: {
+          color: '#fff'
+        }
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        orient: 'vertical',
+        top: 'bottom',
+        left: 'right',
+        data: ['北京 Top10', '上海 Top10', '广州 Top10'],
+        textStyle: {
+          color: '#fff'
+        },
+        selectedMode: 'single'
+      },
+      geo: {
+        map: 'china',
+        label: {
+          emphasis: {
+            show: false
+          }
+        },
+        roam: true,
+        itemStyle: {
+          normal: {
+            areaColor: '#132937',
+            borderColor: '#0692a4'
+          },
+          emphasis: {
+            areaColor: '#0b1c2d'
+          }
+        }
+      },
+      series: series
+    };
+
+    myChart.setOption(option);
+
+  </script>
+</body>
+
+</html>
