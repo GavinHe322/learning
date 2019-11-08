@@ -77,6 +77,46 @@ main() {
   Map<String, int> colorMap3 = Map.fromIterables(colorKeys, colorValues);
   print(colorMap3); // 合并
 
-  // 集合常用的操作符
+  // 4. 集合常用的操作符
+  List<String> colorList3 = ['red', 'yellow', 'blue', 'green'];
   
+  // forEach 箭头函数遍历
+  colorList3.forEach((color) => print(color));
+
+  // map函数的作用
+  print(colorList.map((color) => '$color').join(','));
+
+  // every return bool
+  print(colorList.every((color) => color == 'red'));
+
+  // sort 函数使用
+  List<int> numbers1 = [0, 2, 1, 5, 3, 7, 1];
+  numbers1.sort((num1, num2) => num1 - num2); // 正序
+  print(numbers1);
+  numbers1.sort((num1, num2) => num2 - num1); // 倒序
+  print(numbers1);
+
+  // where函数使用 filter
+  print(numbers1.where((num) => num > 6));
+
+  // firstWhere 函数的使用，相当于 find 操作符，返回符合条件的第一个袁术，如果没有 返回默认值.
+  print(numbers1.firstWhere((num) => num == 5, orElse: () => -1));  // 如果没有找到， 则执行 orElse，返回默认值
+
+  print(numbers1.singleWhere((num) => num == 4, orElse: () => -1)); 
+
+  //take(n)、skip(n)函数的使用，take(n)表示取当前集合前n个元素, skip(n)表示跳过前n个元素，然后取剩余所有的元素
+  print(numbers1.take(6).skip(2));
+
+  // 相当于 clone 一个新的集合.
+  print(List.from(numbers1));
+
+  // expand 函数的使用，扁平化数组
+  var pair = [
+    [1, 2],
+    [3, 4]
+  ];
+  print('flatten list: ${pair.expand((f) => f)}');
+
+  var inputs = [1, 2, 3];
+  print('duplicated list: ${inputs.expand((number) => [numbers1,numbers1,])}');
 }
