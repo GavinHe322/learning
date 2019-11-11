@@ -17,7 +17,7 @@
   <div id="container">
     <div>
       <p>1.地图</p>
-      <div id="main" style="width: 100vw;height: 100vh"></div>
+      <div id="main" style="width: 400px;height: 400px"></div>
     </div>
     <div>
       <p>2.柱形图</p>
@@ -237,7 +237,7 @@
           emphasis: {
             areaColor: '#0b1c2d'
           }
-        }
+        },
       },
       series: series
     };
@@ -736,14 +736,6 @@
       xAxis: {
         type: 'category',
         boundaryGap: true,
-        // axisLine: {
-        //   lineStyle: {
-        //     color: '#4bbbf8',
-        //     shadowColor: 'rgba(75, 211, 255, 0.5)',
-        //     shadowBlur: 5
-        //   }
-        // },
-        // interval: 5,
         axisLabel: {
           textStyle: {
             color: '#fff',
@@ -755,31 +747,11 @@
           }
 
         },
-        // splitLine: {
-        //   show: false
-        // },
         show: true,
       },
       yAxis: [{
         show: false,
         min: 0,
-        // axisLine: {
-        //   lineStyle: {
-        //     color: '#4bbbf8',
-        //     shadowColor: 'rgba(75, 211, 255, 0.5)',
-        //     shadowBlur: 5
-        //   }
-        // },
-        // axisLabel: {
-        //   color: '#fff',
-        //   fontSize: 12
-        // },
-        // splitLine: {
-        //   lineStyle: {
-        //     color: 'rgba(75, 211, 255, 0.2)',
-        //     type: 'dashed'
-        //   }
-        // }
       }],
       series: [{
         name: '数量',
@@ -806,6 +778,27 @@
     };
 
     myChart.setOption(option);
+
+    // 水滴圆圈
+    // https://gallery.echartsjs.com/editor.html?c=xr1NbmrIZQ
+
+    // 百分比圆
+    // clockWise 逆时针旋转
+    // https://gallery.echartsjs.com/editor.html?c=x3GHqfOgql
+    // https://gallery.echartsjs.com/editor.html?c=xHk0QMuaQ7
+
+    // 柱子顶部有圆圈
+    // https://gallery.echartsjs.com/editor.html?c=xOUXVt698w
+
+    // 立体圆柱
+    // https://gallery.echartsjs.com/editor.html?c=xc3dnHP_uU
+
+    // 柱子阴影
+    // https://gallery.echartsjs.com/editor.html?c=xkZFtowaDl
+
+    // 柱子 clip样式
+    // https://gallery.echartsjs.com/editor.html?c=xB17pRWoXf
+
 
 
   </script>
