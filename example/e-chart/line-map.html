@@ -168,9 +168,9 @@
         // },
         itemStyle: {
           normal: {
-            color: '#F4E925',
+            color: 'red',
             shadowBlur: 10,
-            shadowColor: '#05C3F9'
+            shadowColor: 'red'
           }
         },
         zlevel: 1
@@ -185,14 +185,14 @@
           trailLength: 0,
           symbol: planePath,
           symbolSize: 15,
-          
+
         },
         lineStyle: {
-            color: 'yellow',
-            width: 2.5,
-            opacity: 0.4,
-            curveness: 0.14,
-            // type: 'dashed'
+          color: 'yellow',
+          width: 2.5,
+          opacity: 0.4,
+          curveness: 0.14,
+          // type: 'dashed'
         },
         data: moveLine
       },
@@ -209,7 +209,21 @@
         }
       },
       tooltip: {
-        trigger: 'item'
+        trigger: 'item',
+        formatter(params) {
+          if (params.seriesName == '圆点') {
+            console.log(params)
+            return '圆点'
+          }
+          console.log(params.seriesName)
+          if (params.seriesName == '移动的线') {
+            console.log(params, '移动的线')
+            return '移动的线'
+          }
+
+          // return 1
+        }
+
       },
       legend: {
         orient: 'vertical',
@@ -245,7 +259,7 @@
     myChart.setOption(option);
 
     myChart.on('click', 'series.lines', function (params) {
-     console.log(params);
+      console.log(params);
     });
 
     // 2.柱形图
@@ -336,7 +350,7 @@
       value: 611
     },
     ];
-    
+
     arrValue = getArrayValue(data, "value");
 
     sumValue = eval(arrValue.join('+'));
@@ -672,7 +686,7 @@
       document.getElementById('main6')
     );
 
-   
+
     // 颜色
     var lightBlue = {
       type: 'linear',
@@ -707,14 +721,14 @@
 
 
     var data = [
-      {value: 4.01},
-      {value: 4.07},
-      {value: 0},
-      {value: 3.52},
-      {value: 3.55},
-      {value: 0},
-      {value: 4.10},
-      {value: 4.19},
+      { value: 4.01 },
+      { value: 4.07 },
+      { value: 0 },
+      { value: 3.52 },
+      { value: 3.55 },
+      { value: 0 },
+      { value: 4.10 },
+      { value: 4.19 },
     ]
     // 指定图表的配置项和数据
     var option = {
