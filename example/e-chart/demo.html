@@ -1,175 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>demo 01</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>demo 01</title>
 </head>
+
 <body>
-    <div id="main" style="width: 700px;height:500px;"></div>
+  <div id="main" style="width: 100vw;height:100vh;"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
 
-    <script>
-        var myChart = echarts.init(
-            document.getElementById('main')
-        );
+  <script>
+    var myChart = echarts.init(
+      document.getElementById('main')
+    );
 
-        // 指定图表的配置项和数据
-        var option = {
-            title: {
-                text: 'ECharts 入门示例',
-                subtext: 'subtext title',
-                top: 100,  // position 
-                backgroundColor: '#ccc',
-                textStyle: {
-                    color: '#f40',
-                    fontWeight: 'bold',
-                    fontSize: 25,
-                    formatter: [
-                            '{a|这段文本采用样式a}',
-                            '{b|这段文本采用样式b}这段用默认样式{x|这段用样式x}'
-                        ].join('\n'),
-                    rich: {
-                        a: {
-                            color: 'red',
-                            lineHeight: 10
-                        },
-                        b: {
-                            backgroundColor: {
-                                image: 'http://192.168.31.128:9000/public/images/step_right.png'
-                            },
-                            height: 40
-                        },
-                        x: {
-                            fontSize: 18,
-                            fontFamily: 'Microsoft YaHei',
-                            borderColor: '#449933',
-                            borderRadius: 4
-                        },
-                    }
-                },
-            },
-            toolbox: {
-                orient: 'vertical',
-                feature: {
-                    dataZoom: {
-                        yAxisIndex: 'none'
-                    },
-                    dataView: {readOnly: false},
-                    magicType: {type: ['line', 'bar']},
-                    restore: {},
-                    saveAsImage: {
-                        title: '自定义 title'
-                    },
-                    left:　"50px"
-                }
-            },
-            // 提示工具
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    label: {
-                        show: true,
-                        formatter: 'some text {value} some text',
-                        color: '#f40',
-                        fontStyle: 'italic',
-                        fontSize: 12
-                    }
-                }
-            },
-            // 动画
-            animation: true,
-            // 动画效果
-            animationEasing: 'elasticOut',
-            // 动画的阈值，当每个系列大于这个 阈值时，就会关闭动画
-            // animationThreshold: 1000,
-            animationDelayUpdate: function(idx) {
+    var upColor = '#00da3c';
+    var downColor = '#ec0000';
+   
 
+    var categoryData = ['2', '2', '4', '5', 6]
+    var values = ['2', '2', '4', '5', 6]
+    var volumes = ['2', '2', '4', '5', 6]
+    
+    var data = {
+      categoryData: categoryData,
+      values: values,
+      volumes: volumes,
+    };
+
+    myChart.setOption(option = {
+      animation: false,
+      legend: {
+        bottom: 10,
+        left: 'center',
+        data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross'
+        },
+        backgroundColor: 'rgba(245, 245, 245, 0.8)',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 10,
+        textStyle: {
+          color: '#000'
+        },
+        position: function (pos, params, el, elRect, size) {
+          var obj = { top: 10 };
+          obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+          return obj;
+        }
+      },
+      // axisPointer: {
+      //   link: { xAxisIndex: 'all' },
+      //   label: {
+      //     backgroundColor: '#777'
+      //   }
+      // },
+      grid: [
+        {
+          left: '10%',
+          right: '8%',
+          height: '50%'
+        },
+        {
+          left: '10%',
+          right: '8%',
+          top: '63%',
+          height: '16%'
+        }
+      ],
+      xAxis: [
+        {
+          type: 'category',
+          data: data.categoryData,
+          scale: true,
+          boundaryGap: false,
+          axisLine: { onZero: false },
+          splitLine: { show: false },
+          splitNumber: 20,
+          min: 'dataMin',
+          max: 'dataMax',
+          axisPointer: {
+            z: 100
+          }
+        },
+        {
+          type: 'category',
+          gridIndex: 1,
+          data: data.categoryData,
+          scale: true,
+          boundaryGap: false,
+          axisLine: { onZero: false },
+          axisTick: { show: false },
+          splitLine: { show: false },
+          axisLabel: { show: false },
+          splitNumber: 20,
+          min: 'dataMin',
+          max: 'dataMax'
+        }
+      ],
+      yAxis: [
+        {
+          scale: true,
+          splitArea: {
+            show: true
+          }
+        },
+        {
+          scale: true,
+          gridIndex: 1,
+          splitNumber: 2,
+          axisLabel: { show: false },
+          axisLine: { show: false },
+          axisTick: { show: false },
+          splitLine: { show: false }
+        }
+      ],
+      dataZoom: [
+        {
+          type: 'inside',
+          xAxisIndex: [0, 1],
+          start: 0,
+          end: 100
+        },
+        {
+          show: true,
+          xAxisIndex: [0, 1],
+          type: 'slider',
+          top: '85%',
+          start: 0,
+          end: 100
+        }
+      ],
+      series: [
+      {
+            name: "上座人数",
+            type: "line",
+            smooth: true,
+            symbol: "none",
+            sampling: "average",
+            itemStyle: {
+              color: "rgb(255, 70, 131)"
             },
-            // 
-            // 对应 series 的 name
-            legend: {
-                data:['销量1', '销量2']
-            },
-            // 直角 x 轴
-            xAxis: {
-                id: '1',
-                // show : true,
-                data: [
-                    {
-                        value: '衬衫',
-                        // 突出第一个
-                        textStyle: {
-                            fontSize: 20,
-                            color: 'red'
-                        }
-                    }, 
-                    '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子'
-                ],
-                // 坐标系类型
-                // type: 'log',
-                nameTextStyle: {
-                    color: '#f40'
-                },
-                axisPointer: {
-                    label: 'label'
-                }
-            },
-            yAxis: {},
-            aria: {
-                show: true
-            },
-            series: [
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
-                    name: '销量1',
-                    type: 'line',
-                    data: [
-                        30, 1, 40, 20, 70, 50
-                        // { 
-                        //     value: 335, name: '直接访问',
-                        //     value: 300, name: '邮件营销',
-                        //     value: 200, name: '联盟广告',
-                        //     value: 100, name: '视频',
-                        //     value: 150, name: '直接访问',
-                        // }
-                    ],
-                    symbol: 'circle',
-                    markPoint: {
-                        data: [
-                            {
-                                type: 'max', name: '最大值'
-                            },
-                            {
-                                type: 'min', name: '最小值'
-                            }
-                        ]
-                    },
+                  offset: 0,
+                  color: "rgb(255, 158, 68)"
                 },
                 {
-                    name: '销量2',
-                    type: 'bar',
-                    data: [
-                        5, 20, 36, 10, 10, 20
-                    ],
-                    markPoint: {
-                        data: [
-                            {
-                                type: 'max', name: '最大值'
-                            },
-                            {
-                                type: 'min', name: '最小值'
-                            }
-                        ]
-                    },
+                  offset: 1,
+                  color: "rgb(255, 70, 131)"
                 }
-            ]
-        };
+              ])
+            },
+            data: data.volumes
+          },
+        {
+          name: 'Volume',
+          type: 'bar',
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          data: data.volumes
+        }
+      ]
+    }, true);
 
-        myChart.setOption(option);
 
-    </script>
+  </script>
 </body>
+
 </html>
