@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>D3 关系图练习</title>
+</head>
+
+<body>
+  <h1>Bar Chart using D3.js</h1>
+
+  <svg class="bar-chart"></svg>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="../../../js/jquery-3.4.1.js"></script>
+  <script>
+    // index.js
+    // d3.select();
+    // d3.selectAll();
+
+    // d3.select('body').append('h1').style('color', 'red')
+    //   .attr('class', 'heading')
+    //   .text('Updated h1 tag');
+
+    // d3.select('body').append('p').text('First Paragraph');
+    // d3.select('body').append('p').text('Second Paragraph');
+    // d3.select('body').append('p').text('Third Paragraph');
+
+    // // d3.selectAll('p').style('')
+
+    // 柱状图
+    // var dataset = [1, 2, 3, 4, 5]
+    // d3.select('body')
+    //   .selectAll('p')
+    //   .data(dataset)
+    //   .enter()
+    //   .append('p')
+    //   .text(function(a) {
+    //     return 'd3 is awesome' + a
+    //   })
+    //   .style('color', 'red')
+    //   .style('font-weight', 'bold')
+
+    // // 创建一个简单的柱状图
+    // var dataset = [50, 20, 50, 100, 300, 60, 79]
+
+    // var svgWidth = 500, svgHeight = 300, barPadding = 5
+    // // 通过图形计算每个图形的宽度
+    // var barWidth = (svgWidth / dataset.length)
+
+    // // 绘制图形
+    // var svg = d3.select('svg')
+    //   .attr('width', svgWidth)
+    //   .attr('height', svgHeight)
+
+    // // rect 长方形
+    // let barChart = 
+    //   svg.selectAll('rect')
+    //   .data(dataset)
+    //   .enter()
+    //   .append('rect') // 添加足够数量的矩形
+    //   .attr('y', d => svgHeight - d) // d 为数据集的每一项的值， 取 y 坐标
+    //   .attr('height', d => d) // 设定宽度
+    //   .attr('width', barWidth - barPadding)
+    //   .attr('transform', (d, i) => {
+    //     let translate = [barWidth * i, 0]
+    //     return `translate(${translate})`
+    //   })
+
+    //   // 需要对上诉代码创建 svg 的text 文本
+    //   let text = 
+    //     svg.selectAll('text')
+    //     .data(dataset)
+    //     .enter()
+    //     .append('text')
+    //     .text(d => d)
+    //     .attr('y', (d, i) => svgHeight - d - 2)
+    //     .attr('x', (d, i) => barWidth * i)
+    //     .attr('fill', 'red')
+
+
+    let dataset = [1, 2, 3, 4, 5];
+
+    let svgWidth = 500, svgHeight = 300, barPadding = 5;
+    let barWidth = (svgWidth / dataset.length);
+
+
+    let svg = d3.select('svg')
+      .attr("width", svgWidth)
+      .attr("height", svgHeight);
+
+    let yScale = d3.scaleLinear()
+      .domain([0, d3.max(dataset)])
+      .range([0, svgHeight]);
+
+    let barChart = svg.selectAll("rect")
+      .data(dataset)
+      .enter()
+      .append("rect")
+      .attr("y", d => svgHeight - yScale(d))
+      .attr("height", d => yScale(d))
+      .attr("width", barWidth - barPadding)
+      .attr("transform", (d, i) => {
+        let translate = [barWidth * i, 0];
+        return "translate(" + translate + ")";
+      });
+
+
+
+  </script>
+</body>
+
+</html>

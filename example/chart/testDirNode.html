@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Tutorial Demo</title>
+</head>
+
+<body>
+  <!-- <svg width='300' height='300'> -->
+
+  </svg>
+  <div id="container"></div>
+  <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.1.0/build/g6.js"></script>
+  <script>
+    G6.registerNode('diamond', {
+      draw(cfg, group) {
+        const shape = group.addShape('path', {
+          attrs: {
+            path: this.getPath(cfg),
+            stroke: cfg.color
+          }
+        })
+
+        if (cfg.label) {
+          group.addShape('text', {
+            attrs: {
+              x: 0,
+              y: 0,
+              textAlign: 'center',
+              textBaseline: 'middle',
+              text: cfg.label,
+              fill: '#666'
+            }
+          })
+        }
+        return shape
+      },
+      // 返回菱形的路径
+      getPath(cfg) {
+        const size = cfg.size || [40, 40]
+        const width = size[0]
+        const height = size[1]
+        // / 1 \
+        // 4    2
+        // \ 3  /
+        const path = [
+          ['M', 0, 0 - height / 2], // 上部定点
+          ['L', width / 2, 0],  // 右侧顶点
+          ['L', 0, height / 2],  // 下部顶点
+          ['L', -width / 2, 0],  // 左侧顶点
+          ['Z'], // 封闭
+        ]
+        
+        console.log(path)
+
+        return path
+      }
+    })
+    const data = {
+      nodes: [
+        { x: 40, y: 40, shape: 'diamond', color: 'green'}, // 最简单的
+        { x: 150, y: 100, shape: 'diamond',color: 'purple', size: [50, 100] }, // 添加宽高
+        { x: 250, y: 100, color: 'red', shape: 'diamond' }, // 添加颜色
+        { x: 350, y: 100, label: '菱形',color: 'pink', shape: 'diamond' }, // 附加文本
+      ],
+    };
+    const graph = new G6.Graph({
+      container: 'container',
+      width: 500,
+      height: 500,
+      renderer: 'svg',
+    })
+    graph.data(data)
+    graph.render()
+  </script>
+</body>
+
+</html>

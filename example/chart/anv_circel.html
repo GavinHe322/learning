@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Tutorial Demo</title>
+</head>
+
+<body>
+  <!-- <svg width='300' height='300'> -->
+
+  </svg>
+  <div id="container"></div>
+  <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.1.0/build/g6.js"></script>
+  <script>
+
+
+    // 自定义标注点节点
+    G6.registerNode('stacked-bar-node', {
+      draw(cfg, group) {
+        /*
+          G：
+          Fan
+          x: 扇形圆心的 x 坐标
+          y: 扇形圆心的 y 坐标
+          rs: 内圈半径
+          re: 外圈半径
+          startAngle: 起点弧度
+          endAngle: 终点弧度
+          clockwise: 为true时顺时针渲染，为false时逆时针渲染
+        */
+        const baseR = 30;
+        let nowAngle = 0;
+
+        const everyIncAngle = 2 * Math.PI * (360 / 3 / 3) / 360;
+
+
+        // cfg.details.forEach(cat => {
+        //   cat.values.forEach(item => {
+        //     const baseNbr = Math.ceil(item / 10);
+        //     const baseIncR = 7;
+        //     let nowStartR = baseR;
+        //     const last = item % 10;
+        //     const endAngle = nowAngle + everyIncAngle;
+        var fn1 = group.addShape('fan', {
+          attrs: {
+            x: 0,
+            y: 0,
+            rs: 30,
+            re: 60,
+            startAngle: 0,
+            endAngle: 4,
+            clockwise: false,
+            stroke: 'darkgray',
+            fill: 'pink'
+          }
+        });
+        fn1.on('mouseenter', function() {
+          fn1.animate({
+            re: 80,
+            repeat: false
+          }, 300)
+        })
+        fn1.on('mouseleave', function() {
+          fn1.animate({
+            re: 60,
+            repeat: false,
+          }, 300)
+        })
+        // group.addShape('fan', {
+        //   attrs: {
+        //     x: 0,
+        //     y: 0,
+        //     rs: 30,
+        //     re: 60,
+        //     startAngle: 0.25,
+        //     endAngle:  1.8,
+        //     clockwise: false,
+        //     stroke: 'darkgray',
+        //     fill: 'pink'
+        //   }
+        // });
+        // group.addShape('fan', {
+        //   attrs: {
+        //     x: 0,
+        //     y: 0,
+        //     rs: 30,
+        //     re: 60,
+        //     startAngle: Math.PI * 2 - Math.PI * 2 / 3,
+        //     endAngle:  Math.PI * 2,
+        //     clockwise: false,
+        //     stroke: 'darkgray',
+        //     fill: 'pink'
+        //   }
+        // });
+
+        group.addShape('text', {
+          attrs: {
+            text: '编辑',
+            x: 0,
+            y: -30,
+            fill: 'red',
+            textAlign: 'center',
+          }
+        })
+
+        group.addShape('text', {
+          attrs: {
+            text: '新增',
+            x: -30,
+            y: 15,
+            fill: 'red',
+            textAlign: 'right',
+          }
+        })
+
+        group.addShape('text', {
+          attrs: {
+            text: '删除',
+            x: 25,
+            y: 30,
+            fill: 'red',
+            textAlign: 'left',
+          }
+        })
+
+        group.addShape('circle', {
+          // attrs: style
+          attrs: {
+            x: 0, // 居中
+            y: 0,
+            r: baseR,
+            fill: cfg.centerColor,
+            stroke: 'darkgray'
+          }
+        });
+        if (cfg.label) {
+          group.addShape('text', {
+            // attrs: style
+            attrs: {
+              x: 0, // 居中
+              y: 0,
+              textAlign: 'center',
+              textBaseline: 'middle',
+              text: cfg.label,
+              fill: 'white',
+              fontStyle: 'bold'
+            }
+          });
+        }
+        return group;
+      }
+    });
+
+    const width = document.getElementById('container').scrollWidth;
+    const height = document.getElementById('container').scrollHeight || 500;
+    const graph = new G6.Graph({
+      container: 'container',
+      width,
+      height
+    });
+
+    const data = {
+      nodes: [
+        {
+          id: 'nodeF',
+          x: 150,
+          y: 150,
+          label: 'StackedBar1',
+          shape: 'stacked-bar-node',
+          anchorPoints: [
+            [0, 0.5], [1, 0.5]
+          ],
+          details: [
+            { cat: 'pv', values: [20, 30, 40, 30, 30], color: '#5B8FF9' },
+            { cat: 'dal', values: [40, 30, 20, 30, 50], color: '#5AD8A6' },
+          ],
+          centerColor: '#5b8ff9'
+        }
+      ],
+      edges: [
+        {
+          source: 'nodeF',
+          target: 'nodeF2'
+        }
+      ]
+    };
+
+    graph.data(data)
+    graph.render()
+
+  </script>
+</body>
+
+</html>
