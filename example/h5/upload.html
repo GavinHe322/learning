@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <input type="file" @change="beforeUpload">
+  </div>
+  <script src="../../../js/vue.js"></script>
+  <script>
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          fileList: null
+        }
+      },
+      beforeCreate() {
+        // 读取文件
+        FileReader.prototype.reading = function () {
+          let bytes = new Uint8Array(this.result);    //无符号整型数组
+          let text = new TextDecoder('UTF-8').decode(bytes);
+          return text;
+        };
+        /* 重写readAsBinaryString函数 */
+        FileReader.prototype.readAsBinaryString = function (f) {
+          if (!this.onload)       //如果this未重写onload函数，则创建一个公共处理方式
+            this.onload = e => {  //在this.onload函数中，完成公共处理
+              let rs = this.reading();
+            };
+          this.readAsArrayBuffer(f);  //内部会回调this.onload方法
+        };
+      },
+      methods: {
+        beforeUpload(e) {
+          console.log('选择了文件beforeUpload', e.target.files[0])
+          // 读取数据
+          this.read(e.target.files[0]);
+          return false
+        },
+        read(f) {
+          let rd = new FileReader();
+          rd.onload = function () {
+            //this.readAsArrayBuffer函数内，会回调this.onload函数。在这里处理结果
+            let cont = rd.reading();
+            console.log(this.result, cont)
+            let formerData = this.textData;
+            this.textData = formerData + "\n" + cont;
+
+          };
+          rd.readAsBinaryString(f);
+        }
+      }
+
+    })
+  </script>
+</body>
+
+</html>

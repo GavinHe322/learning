@@ -3,74 +3,108 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>图表决策</title>
+  <title>Interactively Add</title>
 </head>
 
 <body>
-  <div id='container' style="width: 100vw; height: 100vh;"></div>
+  <!-- <select id="selector" value='addNode'>
+    <option value="default">Default mode</option>
+    <option value="addNode">Add Node (by clicking canvas)</option>
+    <option value="addEdge">Add Edge (by clicking two end nodes)</option>
+  </select> -->
+  <div id="container" style="height: 100vh;width: 100vw"></div>
 
   <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.1.0/build/g6.js"></script>
   <script>
 
-const width = document.getElementById('container').scrollWidth;
-const height = document.getElementById('container').scrollHeight || 500;
-const graph = new G6.Graph({
-  container: 'container',
-  width,
-  height,
-  fitView: true,
-  layout: {
-    type: 'force',
-    preventOverlap: true,
-    nodeStrength: -60,
-    linkDistance: 200,
-    nodeSpacing: 10
-      // edgeStrength: 3000
+    const width = document.getElementById('container').scrollWidth;
+    const height = document.getElementById('container').scrollHeight || 500;
+    const graph = new G6.Graph({
+      container: 'container',
+      width,
+      height,
+      layout: {
+        type: "force",
+        nodeStrength: -40,
+        preventOverlap: true,
+        linkDistance: 220,
+        nodeSize: 40
+      },
+      modes: {
+          default: ["drag-canvas", "zoom-canvas"],
+      },
+      defaultNode: {
+          size: 40,
+          style: {
+            lineWidth: 1,
+            stroke: "#5B8FF9",
+            fill: "#C6E5FF"
+          }
+        },
+        defaultEdge: {
+          size: 1,
+          color: "#666",
+          style: {
+            endArrow: {
+              path: "M 4,0 L -4,-4 L -4,4 Z",
+              d: 4
+            }
+          }
+        }
+    });
 
-  },
-  defaultNode: {
-    size: 45,
-    color: '#5B8FF9',
-    style: {
-      lineWidth: 2,
-      fill: '#C6E5FF',
-      
+    fetch('https://gw.alipayobjects.com/os/antvdemo/assets/data/relations.json')
+      .then(res => res.json())
+      .then(data => {
+        const nodes = data.nodes;
+
+        // console.log(data)
+
+        // var nodes = []
+        // var edges = []
+        var len = 300
+        for (var i = 0; i < len; i++) {
+          data.nodes.push({
+            label: 'name' + i,
+            id: 'name' + i
+          })
+          data.edges.push({
+            source: nodes[i].id,
+            target: nodes[0].id
+          })
+        }
+
+        console.log(data)
+        
+        graph.data({
+          nodes,
+          edges: data.edges.map(function (edge, i) {
+            edge.id = 'edge' + i;
+            return Object.assign({}, edge);
+          })
+        });
+        graph.render();
+
+        graph.on('node:dragstart', function (e) {
+          graph.layout();
+          refreshDragedNodePosition(e);
+        });
+        graph.on('node:drag', function (e) {
+          refreshDragedNodePosition(e);
+          
+        });
+        graph.on('node:dragend', function(e) {
+          // e.item.get('model').fx = null;
+          // e.item.get('model').fy = null;
+        });
+      });
+
+    function refreshDragedNodePosition(e) {
+      const model = e.item.get('model');
+      model.fx = e.x;
+      model.fy = e.y;
     }
-  },
-  // defaultEdge: {
-  //   size: 1,
-  //   color: '#e2e2e2'
-  // }
-});
 
-fetch('https://gw.alipayobjects.com/os/antvdemo/assets/data/relations.json')
-  .then(res => res.json())
-  .then(data => {
-    graph.data({
-      nodes: data.nodes,
-      edges: data.edges.map(function(edge, i) {
-        edge.id = 'edge' + i;
-        return Object.assign({}, edge);
-      })
-    });
-    graph.render();
-
-    graph.on('node:dragstart', function(e) {
-      graph.layout();
-      refreshDragedNodePosition(e);
-    });
-    graph.on('node:drag', function(e) {
-      refreshDragedNodePosition(e);
-    });
-  });
-
-  function refreshDragedNodePosition(e) {
-    const model = e.item.get('model');
-    model.fx = e.x;
-    model.fy = e.y;
-  }
 
   </script>
 </body>

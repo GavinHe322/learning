@@ -1,240 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+  #container {
+    /* position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: red; */
+    background-color: red;
+    height: 100vh;
+  }
+</style>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>地图线路图</title>
-</head>
 
 <body>
-
-  <div id="main" style="width: 100vw;height:100vh;"></div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
-
-  <script>
-
-    var myChart = echarts.init(
-      document.getElementById('main')
-    );
-
-    data = [{
-      name: "使用中资源量",
-      value: 754
-    },
-    {
-      name: "维修中资源量",
-      value: 611
-    },
-    {
-      name: "保养中资源量",
-      value: 400
-    },
-    {
-      name: "已损坏资源量",
-      value: 200
-    }
-    ];
-    arrName = getArrayValue(data, "name");
-    arrValue = getArrayValue(data, "value");
-    sumValue = eval(arrValue.join('+'));
-    objData = array2obj(data, "name");
-    optionData = getData(data)
-
-    function getArrayValue(array, key) {
-      var key = key || "value";
-      var res = [];
-      if (array) {
-        array.forEach(function (t) {
-          res.push(t[key]);
-        });
-      }
-      return res;
-    }
-
-    function array2obj(array, key) {
-      var resObj = {};
-      for (var i = 0; i < array.length; i++) {
-        resObj[array[i][key]] = array[i];
-      }
-      return resObj;
-    }
-
-    function getData(data) {
-      var res = {
-        series: [],
-        yAxis: []
-      };
-      for (let i = 0; i < data.length; i++) {
-        // console.log([70 - i * 15 + '%', 67 - i * 15 + '%']);
-        res.series.push({
-          name: '',
-          type: 'pie',
-          clockWise: false, //顺时加载
-          hoverAnimation: false, //鼠标移入变大
-          radius: [73 - i * 15 + '%', 68 - i * 15 + '%'],
-          center: ["30%", "55%"],
-          label: {
-            show: false
-          },
-          itemStyle: {
-            label: {
-              show: false,
-            },
-            labelLine: {
-              show: false
-            },
-          },
-          data: [{
-            value: data[i].value,
-            name: data[i].name
-          }, {
-            value: sumValue - data[i].value,
-            name: '',
-            itemStyle: {
-              color: "rgba(0,0,0,0)",
-              borderWidth: 0
-            },
-            tooltip: {
-              show: false
-            },
-            hoverAnimation: false
-          }]
-        });
-        res.series.push({
-          name: '',
-          type: 'pie',
-          silent: true,
-          z: 1,
-          clockWise: false, //顺时加载
-          hoverAnimation: false, //鼠标移入变大
-          radius: [73 - i * 15 + '%', 68 - i * 15 + '%'],
-          center: ["30%", "55%"],
-          label: {
-            show: false
-          },
-          itemStyle: {
-            label: {
-              show: false,
-            },
-            labelLine: {
-              show: false
-            },
-            borderWidth: 5,
-          },
-          data: [{
-            value: 7.5,
-            itemStyle: {
-              color: "rgb(3, 31, 62)",
-              borderWidth: 0
-            },
-            tooltip: {
-              show: false
-            },
-            hoverAnimation: false
-          }, {
-            value: 2.5,
-            name: '',
-            itemStyle: {
-              color: "rgba(0,0,0,0)",
-              borderWidth: 0
-            },
-            tooltip: {
-              show: false
-            },
-            hoverAnimation: false
-          }]
-        });
-        res.yAxis.push((data[i].value / sumValue * 100).toFixed(2) + "%");
-      }
-      return res;
-    }
-
-    option = {
-      title: {
-        text: '环比增长',
-        subtext: '0.1%',
-        bottom: 20,
-        textAlign: 'center',
-        textStyle: {
-          color: '#fff',
-        },
-        subtextStyle: {
-          color: 'red',
-        },
-      },
-      backgroundColor: '#000',
-      // legend: {
-      //   show: true,
-      //   icon: "circle",
-      //   top: "center",
-      //   left: '70%',
-      //   data: arrName,
-      //   width: 50,
-      //   padding: [0, 5],
-      //   itemGap: 25,
-      //   formatter: function (name) {
-      //     return "{title|" + name + "}\n{value|" + (objData[name].value) + "}  {title|项}"
-      //   },
-
-      //   textStyle: {
-      //     rich: {
-      //       title: {
-      //         fontSize: 16,
-      //         lineHeight: 15,
-      //         color: "rgb(0, 178, 246)"
-      //       },
-      //       value: {
-      //         fontSize: 18,
-      //         lineHeight: 20,
-      //         color: "#fff"
-      //       }
-      //     }
-      //   },
-      // },
-      tooltip: {
-        show: true,
-        trigger: "item",
-        formatter: "{a}<br>{b}:{c}({d}%)"
-      },
-      color: ['rgb(24, 183, 142)', 'rgb(1, 179, 238)', 'rgb(22, 75, 205)', 'rgb(52, 52, 176)'],
-      grid: {
-        top: '16%',
-        bottom: '53%',
-        left: "30%",
-        containLabel: false
-      },
-      yAxis: [{
-        type: 'category',
-        inverse: true,
-        axisLine: {
-          show: false
-        },
-        axisTick: {
-          show: false
-        },
-        axisLabel: {
-          interval: 0,
-          inside: true,
-          textStyle: {
-            color: "#fff",
-            fontSize: 16,
-          },
-          show: true
-        },
-        data: optionData.yAxis
-      }],
-      xAxis: [{
-        show: false
-      }],
-      series: optionData.series
-    };
-
-    myChart.setOption(option);
-    
-  </script>
+　　<div id="container">
+     <div id="content" style="margin:0 auto;height:45%;width:80%px; background:orange;">
+　　　　<button id="btn">全屏</button>
+　　　　<button id="close">退出</button>
+　　　　<h1>js控制页面部分区域的全屏展示和退出全屏显示</h1>
+　　　</div>
+　　</div>
 </body>
+<script language="JavaScript">
+  var btn = document.getElementById("btn");
+  btn.onclick = function () {
+    var elem = document.getElementById("content");
+    requestFullScreen(elem);
+  };
+
+
+  var close = document.getElementById("close");
+  close.onclick = function () {
+    exitFullscreen();
+  };
+
+
+  function requestFullScreen(element) {
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+    if (requestMethod) {
+      requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") {
+      var wscript = new ActiveXObject("WScript.Shell");
+      if (wscript !== null) {
+        wscript.SendKeys("{F11}");
+      }
+    }
+  }
+
+  function exitFullscreen() {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+
+
+</script>
+
 
 </html>
