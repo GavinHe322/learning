@@ -1,0 +1,68 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+  #container {
+    /* position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: red; */
+    background-color: red;
+    height: 100vh;
+  }
+</style>
+
+
+<body>
+　　<div id="container">
+     <div id="content" style="margin:0 auto;height:45%;width:80%px; background:orange;">
+　　　　<button id="btn">全屏</button>
+　　　　<button id="close">退出</button>
+　　　　<h1>js控制页面部分区域的全屏展示和退出全屏显示</h1>
+　　　</div>
+　　</div>
+</body>
+<script language="JavaScript">
+  var btn = document.getElementById("btn");
+  btn.onclick = function () {
+    var elem = document.getElementById("content");
+    requestFullScreen(elem);
+  };
+
+
+  var close = document.getElementById("close");
+  close.onclick = function () {
+    exitFullscreen();
+  };
+
+
+  function requestFullScreen(element) {
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+    if (requestMethod) {
+      requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") {
+      var wscript = new ActiveXObject("WScript.Shell");
+      if (wscript !== null) {
+        wscript.SendKeys("{F11}");
+      }
+    }
+  }
+
+  function exitFullscreen() {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+
+
+</script>
+
+
+</html>

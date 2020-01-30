@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+
+<body>
+  <div id="main" style="width: 100vw;height:100vh;"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
+
+  <script>
+    var myChart = echarts.init(
+      document.getElementById('main')
+    );
+    var data = {
+      data: [],
+      links: [],
+    };
+    for (var i = 0; i < 10; i++) {
+      let obj = {
+        name: '你好' + i,
+        value: 20 * i,
+        label: {
+          show: true,
+          position: [0, 0],
+          formatter: [
+            '{a|编辑}',
+            '新增'
+          ].join('\n'),
+
+          rich: {
+            a: {
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              color: 'yellow'
+            },
+            b: {
+              backgroundColor: {
+                image: 'xxx/xxx.jpg'
+              },
+              height: 40
+            },
+            x: {
+              fontSize: 18,
+              fontFamily: 'Microsoft YaHei',
+              borderColor: '#449933',
+              borderRadius: 4
+            },
+          }
+        }
+      }
+      data.data.push(obj)
+    }
+    var option = {
+      title: {
+        text: 'nihao'
+      },
+      animationDuration: 1500,
+      animationEasingUpdate: 'quinticInOut',
+      series: [
+        {
+          name: 'hello',
+          type: 'graph',
+          layout: 'force',
+          roam: true,
+          force: {
+            //   repulsion: 1000
+          },
+          data: data.data,
+          links: data.links
+        }
+      ]
+    }
+
+
+    myChart.setOption(option)
+
+  </script>
+</body>
+
+</html>
