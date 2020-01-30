@@ -7,34 +7,107 @@
     <script src="../build/react.development.js"></script>
     <script src="../build/react-dom.development.js"></script>
     <script src="../build/babel.min.js"></script>
+    <title>合成</title>
 </head>
 <body>
     <div id="app"></div>
     <script type="text/babel">
-        class Input extends React.Component {
+        // class Input extends React.Component {
+        //     constructor(props) {
+        //         super(props)
+        //         this.state = {
+        //             value: 'Hello!'
+        //         }
+        //         console.log(this)
+        //         this.handleChange = this.handleChange.bind(this)
+        //     }
+        //     handleChange(event) {
+        //         this.setState({ value: event.target.value})
+        //     }
+        //     render() {
+        //         var value = this.state.value
+        //         return (
+        //             <div>
+        //             <input type="text" value={value} onChange={this.handleChange} />
+        //             <p>{value}</p>
+        //             </div>
+        //         )
+        //     }
+        // }
+      
+        function FancyBorder(props) {
+            console.log(
+                props
+            )
+            return (
+                <div className={'FancyBorder'}>
+                    {props.children}
+                </div>
+            )
+        }
+        function WelcomeDialog() {
+            return (
+                <FancyBorder>
+                    <h1 className="Dialog-titl">
+                        Welcome    
+                    </h1>    
+                    <p className="Dialog-message">
+                        Thank you for visiting our spacecraft!
+                    </p>
+                </FancyBorder>
+            )
+        }
+
+        function Dialog(props) {
+            return (
+                <FancyBorder color="blue">
+                    <h1 className="Dialog-title">
+                        {props.title}
+                    </h1>
+                    <p className="Dialog-message">
+                        {props.message}
+                    </p>
+                    {props.children}
+                </FancyBorder>
+            )
+        }
+
+        class SignUpDialog extends React.Component {
             constructor(props) {
-                super(props)
-                this.state = {
-                    value: 'Hello!'
-                }
-                console.log(this)
+                super(props);
                 this.handleChange = this.handleChange.bind(this)
-            }
-            handleChange(event) {
-                this.setState({ value: event.target.value})
+                this.handleSignUp = this.handleSignUp.bind(this)
+                this.state = {
+                    login: ''
+                }
             }
             render() {
-                var value = this.state.value
                 return (
-                    <div>
-                    <input type="text" value={value} onChange={this.handleChange} />
-                    <p>{value}</p>
-                    </div>
+                    <Dialog title="Mars Exploration program"
+                        message="how should we reder to you?"
+                    >
+                    <input type="text" vlaue={this.state.login} onChange={this.handleChange} />
+                    <button onClick={this.handleSignUp}>
+                        Sign me up!
+                    </button>
+
+                    </Dialog>
                 )
             }
+            handleChange(e) {
+                this.setState({
+                    login: e.target.value
+                })
+            }
+            handleSignUp() {
+                alert(`Welcome aboard, ${this.state.login}`)
+            }
+            
         }
+    
         ReactDOM.render(
-            <Input></Input>,
+            // <WelcomeDialog></WelcomeDialog>,
+            <SignUpDialog ></SignUpDialog >,
             document.getElementById('app')
         )
     </script>

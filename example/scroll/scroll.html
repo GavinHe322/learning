@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>二级分类</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            text-align: center;
+            -webkit-overflow-scrolling: touch;
+        }
+        .container {
+            display: flex;
+        }
+        .parent {
+            width: 30%;
+            height: 100vh;
+            overflow: scroll;
+            
+        }
+        .parent::-webkit-scrollbar { 
+            width: 0 !important ;
+        }
+
+        .parent li {
+            height: 30px;
+            border-right: 1px solid #ccc;
+            line-height: 30px;
+        }
+        .products {
+            flex: 1;
+            height: 100vh;
+            overflow: scroll;
+        }
+
+        .title {
+            background: #fafafa;
+            padding: 10px 0;
+        }
+
+        .acParent {
+            background: skyblue;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <ul class="parent" ref="parent">
+                <li v-for="(val, i) in data" @click="toTitle(i)" :class="{'acParent': scrollTop == i}">
+                    {{val.title}}
+                </li>
+            </ul>
+            <!--  @scroll="scroll" -->
+            <ul class="products" ref="products">
+                <li v-for="(val1) in data">
+                    <div class="title">
+                        {{val1.title}}
+                    </div>
+                    <ul v-for="(val2) in val1.children">
+                        <li>
+                            {{val2.title}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="../../../js/vue.js"></script>
+    <script>
+        var data = [];
+        for (var i = 0; i < 30; i++) {
+            let obj = {
+                title: 'title' + i,
+                children: []
+            }
+            for (var j = 0; j < 20; j++) {
+                obj.children.push({
+                    title: 'product' + i + j,
+                })
+            }
+            data.push(obj)
+
+        }
+        new Vue({
+            data() {
+                return {
+                    data,
+                    heightArr: [],
+                    scrollTop: 0,
+                }
+            },
+            mounted() {
+                var heightArr = []
+                var products = document.querySelectorAll('.products > li')
+                Array.prototype.forEach.call(products, (val) => {
+                    heightArr.push(
+                        val.offsetTop
+                    )
+                })
+                this.heightArr = heightArr
+                var products = document.querySelector('.products')
+               
+                products.addEventListener('scroll',this.debounce(this.scroll, 500))
+            },
+            methods: {
+                // 1、定时器节流
+                // 只执行一次
+                // debounce(fn, wait) {
+                //     var timer
+                //     return function() {
+                //         if (timer != null) {
+                //             clearTimeout(timer)
+                //         }
+                //         timer = setTimeout(fn, wait)
+                //     }
+                // },
+                // 2.时间戳节流
+                // debounce(fn, delay) {
+                //     var prev = 0
+                //     return function (e) {
+                //         if (Date.now() - prev >= delay) {
+                //             fn.apply(this, arguments)
+                //             prev = Date.now()
+                //         }
+                //     }
+                // },
+                // 3. 时间戳节流配合定时器
+                debounce(fn, delay) {
+                    let pre = 0;
+                    let timer = null;
+                    return function (...args) {
+                        if (Date.now() - pre > delay) {
+                            clearTimeout(timer);
+                            timer = null;
+                            pre = Date.now();
+                            fn.apply(this, args);
+                        } else if (!timer) {
+                            timer = setTimeout(() => {
+                                console.log(1,' laster', args)
+                                fn.apply(this, args);
+                            }, delay);
+                        }
+                    }
+                    // var prev = 0
+                    // var timer = null
+                    // return function (...args) {
+                    //     if (Date.now() - prev >= delay) {
+                    //         clearTimeout(timer)
+                    //         timer = null
+                    //         prev = Date.now()
+                    //         fn.apply(this, args)
+                    //     } else if (!timer){
+                    //         timer = setTimeout(() => {
+                    //             fn.apply(this, args)
+                    //         }, delay)
+                    //     }
+                    // }
+                },
+                toTitle(i) {
+                    this.$refs.products.scrollTo({
+                        top: this.heightArr[i],
+                        behavior: 'smooth'
+                    })
+                },
+                scroll(e) {
+                    this.scrollTop = e.target.scrollTop;
+
+                    if (this.scrollTop == 0) {
+                        this.changeParent()
+                        return;
+                    }
+                    for (var i = 0; i < this.heightArr.length; i++) {
+                        if (this.scrollTop <= this.heightArr[i]) {
+                            this.scrollTop = i - 1
+                            console.log(this.scrollTop, '???')
+                            break
+                        } else if (
+                            this.heightArr[i + 1] &&
+                            this.scrollTop > this.heightArr[i] && 
+                            this.scrollTop < this.heightArr[i + 1]
+                        ) {
+                            this.scrollTop = i
+                            console.log('else??')
+                            break;
+                        }
+                    }
+                    this.changeParent();
+                },
+                changeParent() {
+                    this.$refs.parent.scrollTo({
+                        top: this.scrollTop * 20,
+                        behavior: 'smooth',
+                    })
+                }
+            }
+        }).$mount('#app')
+    </script>
+</body>
+</html>
