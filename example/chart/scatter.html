@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="main" style="height: 100vh; width: 100vw;"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
+  <script>
+    var chart = echarts.init(document.getElementById('main'))
+    var option = {
+      xAxis: {
+        scale: true,
+        name: 'X轴名称',
+        nameLocation: 'end'
+      },
+      yAxis: {
+        scale: true,
+        name: 'Y轴名称',
+        nameLocation: 'end'
+      },
+      toolbox: {
+          feature: {
+            dataZoom: {},
+            saveAsImage: {}
+          }
+        },
+      legend: {
+        data: [
+          {name: '系列1'},
+          {name: '系列2'},
+          {name: '系列3'},
+        ],
+      },
+      series: [
+        {
+          name: '系列1',
+          type: 'scatter',
+          data: [
+            { name: 'nihao1', value: 12 },
+            { name: 'nihao2', value: 22 },
+            { name: 'nihao3', value: 32 },
+            { name: 'nihao4', value: 42 },
+          ]
+        },
+        {
+          name: '系列2',
+          type: 'line',
+          data: [
+            { name: 'nihao1', value: 12 },
+            { name: 'nihao2', value: 22 },
+            { name: 'nihao3', value: 32 },
+            { name: 'nihao4', value: 42 },
+          ]
+        },
+        {
+          name: '系列3',
+          type: 'bar',
+          data: [
+            { name: 'nihao1', value: 12 },
+            { name: 'nihao2', value: 22 },
+            { name: 'nihao3', value: 32 },
+            { name: 'nihao4', value: 42 },
+          ]
+        }
+      ]
+    }
+    chart.setOption(option)
+  </script>
+</body>
+
+</html>
