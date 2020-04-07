@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>demo 01</title>
+</head>
+
+<body>
+  <div style="height: 50vh; width: 100%; position: relative;background: pink;">
+    <object id="object" type="text/html" data="about:blank" style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden;opacity: 0; pointer-events: none; z-index: -1;"></object>
+  </div>
+  <div id="main" style="width: 100%;height:100vh;"></div>
+
+  <script src="../../../js/echarts.min.js"></script>
+  <script src="./divResize.js"></script>
+  <script>
+    var main = document.getElementById('main')
+
+    var myChart = echarts.init(
+      main
+    );
+
+    var option = {
+      baseOption: {
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        calculable : true,
+        series: [{
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line'
+        }]
+      },
+      media: [
+        {
+          option: {
+            xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        calculable : true,
+        series: [{
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line'
+        }]
+          }
+        }
+      ]
+    }
+    myChart.setOption(option)
+
+
+    EleResize.on(main, myChart.resize)
+
+    
+    setTimeout(() => {
+      EleResize.off(main, myChart.resize)
+    }, 3000)
+
+  </script>
+</body>
+
+</html>

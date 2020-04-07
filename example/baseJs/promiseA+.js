@@ -102,3 +102,9 @@ function resolvePromise(promise, x, resolve, reject) {
     }
   }
 }
+
+var a = new myPromise((resove, reject) => {
+  resove('msg')
+}).then(res => {
+  console.log(res)
+})

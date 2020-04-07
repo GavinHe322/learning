@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="../../../js/vue.js"></script>
+  <script src="../../../js/vuex.js"></script>
+  
+  <script>
+    const user = {
+      state: {
+        name: 'user'
+      },
+      getters: {
+        name(state) {
+          return state.name
+        }
+      }
+    }
+    const store = new Vuex.Store({
+      state: {
+        count: 0
+      },
+      mutations: {
+        increment(state) {
+          state.count++
+        }
+      },
+      actions: {
+        increment(context) {
+          context.commit('increment')
+          return 1
+        }
+      },
+      modules: {
+        user
+      }
+    })
+    console.log(store)
+    new Vue({
+      data() {
+        return {
+          name: 'rootName'
+        }
+      },
+      store,
+      mounted() {
+        console.log(this.$store)
+        // this.$store.commit('increment', 'commit')
+        this.$store.dispatch('increment', 'dispatch').then(res => {
+          console.log(res, 'res??')
+        })
+      }
+    }).$mount('#app')
+  </script>
+</body>
+</html>

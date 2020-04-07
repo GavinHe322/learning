@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>div resize</title>
+  <style>
+    .item {
+      height: 200px;
+      background: pink;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="item" ref='chart' @click="handleClick" :style="{'min-width': width + 'px'}"></div>
+  </div>
+  <script src="../../../js/vue.js"></script>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          width: 200
+        }
+      },
+      methods: {
+        handleClick() {
+          this.width = parseInt(Math.random() * 300)
+        }
+      },
+      mounted() {
+        let MutationObserver = window.MutationObserver ||
+            window.WebKitMutationObserver ||
+            window.MozMutationObserver
+        var ele = this.$refs.chart
+        this.observer = new MutationObserver(mutationList => {
+          console.log(mutationList, '??')
+        })
+        this.observer.observe(ele, { attributes: true, attributeOldValue: true })
+      }
+    })
+    
+  </script>
+</body>
+</html>

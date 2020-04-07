@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,36 +12,37 @@
         }
     </style>
 </head>
+
 <body>
     <input id="input1" oninput="aa(event)">
     <ul></ul>
     <script>
         let list = [
-                {
-                    id: 1,
-                    address: '上海野生动物园'
-                },
-                {
+            {
+                id: 1,
+                address: '上海野生动物园'
+            },
+            {
                 id: 2,
                 address: '上饶野生动物园'
-                },
-                {
+            },
+            {
                 id: 3,
                 address: '北京巷子'
-                },
-                {
+            },
+            {
                 id: 4,
                 address: '上海中心'
-                },
-                {
+            },
+            {
                 id: 5,
                 address: '上海黄埔江'
-                },
-                {
+            },
+            {
                 id: 6,
                 address: '迪士尼上海'
-                },
-                {
+            },
+            {
                 id: 7,
                 address: '陆家嘴上海中心'
             },
@@ -52,12 +54,10 @@
             })
 
             let my_ul = document.querySelector('ul')
-                my_ul.childNodes.forEach(item => {
+            my_ul.childNodes.forEach(item => {
                 item.parentNode.removeChild(item)
             })
-
             filter_list.forEach(item => {
-
                 let li_node = document.createElement('li')
                 let index1 = item.address.indexOf(value)
                 let index2 = value.length
@@ -65,12 +65,11 @@
                 let string1 = item.address.slice(0, index1)
                 let string2 = item.address.slice(index1, index1 + index2)
                 let string3 = item.address.slice(index1 + index2)
-                
                 li_node.innerHTML = string1 + '<b>' + string2 + '</b>' + string3
-
                 my_ul.appendChild(li_node)
             })
         }
     </script>
 </body>
+
 </html>
