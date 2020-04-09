@@ -1,0 +1,59 @@
+<script>
+    /**
+     * 窗口移动
+     * @param {string} s
+     * @return {number}
+     */
+    // var lengthOfLongestSubstring = function (s) {
+    //     let res = 0,
+    //         i = 0,
+    //         temp = [];
+    //     while (i < s.length) {
+    //         // debugger
+    //         if (!temp.includes(s[i])) {
+    //             temp.push(s[i])
+    //         } else {
+    //             temp.shift();
+    //             continue;
+    //         }
+    //         res = Math.max(res, temp.length)
+    //         i++;
+    //     }
+    //     return res;
+    // };
+
+    // console.log(
+    //     lengthOfLongestSubstring("bbbbb"),
+    //     lengthOfLongestSubstring("abcabcbb"),
+    // )
+    
+    /**
+     * 窗口移动
+     * @param {string} s
+     * @return {number}
+     */
+
+     var lengthOfLongestSubstring = function (s) {
+         let num = 0, 
+             res = 0,
+             m = ''
+            debugger
+         for (n of s) {
+             if (m.indexOf(n) === -1) {
+                 m += n
+                 num++
+                 res = Math.max(res, num)
+             } else {
+                 m += n
+                 m = m.slice(m.indexOf(n) + 1)
+                 num = m.length
+             }
+         }
+         return res
+     }
+
+    console.log(
+        lengthOfLongestSubstring("bbbbb"),
+        lengthOfLongestSubstring("abcabcbb"),
+    )
+</script>
