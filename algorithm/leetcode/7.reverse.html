@@ -1,0 +1,61 @@
+<script>
+/**
+ * @param {number} x
+ * @return {number}
+ */
+ var reverse = function(x) {
+    var re = 0;
+    debugger
+    while (parseInt(x / 10)) {
+        re = 10 * re + x - 10 * parseInt(x / 10);
+        x = parseInt(x / 10);
+    }
+    if (re > 214748364 || re < -214748364) return 0;
+    if ((re === 214748364 && x > 7) || (re == 214748364 && x < -8)) return 0;
+    re = 10 * re + x;
+    return re;
+};
+
+
+/**
+ * @param {number} x
+ * @return {number}
+ */
+// var reverse = function (x) {
+
+//     const max = Math.pow(2, 31) - 1
+//     const min = Math.pow(-2, 31)
+
+//     let isNag = x < 0
+//     x = isNag ? -x : x
+//     let result = 0
+//     while (x > 0) {
+//         let num = x % 10
+//         if (result > (max - num) / 10) return 0
+//         if (isNag && result < (min - num) / 10) {
+//             return 0
+//         }
+//         result = result * 10 + num
+//         x = (x / 10) | 0
+//     }
+//     return isNag ? -result : result
+// }
+
+/**
+ * @param {number} x
+ * @return {number}
+ */
+// var reverse = function (x) {
+//     const border = Math.pow(2, 31)
+//     const max = border - 1
+//     const min = -border
+
+//     const result = (x > 0 ? 1 : -1) * String(x).split('').filter(x => x !== '-').reverse().join('')
+//     return result > max || result < min ? 0 : result
+// }
+
+console.log(
+    reverse(-123)
+)
+
+</script>
