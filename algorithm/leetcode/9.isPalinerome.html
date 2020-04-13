@@ -1,8 +1,9 @@
+<script>
 /**
  * @param {number} x
  * @return {boolean}
  */
-var isPalindrome = function(x) {
+ var isPalindrome = function(x) {
    const xs = Math.abs(x) + ''
    const xl = x + ''
    let iso, length
@@ -10,6 +11,7 @@ var isPalindrome = function(x) {
    if (x < 0) {
        ise = true
    }
+   debugger
    (xl.length) % 2 == 0 ? iso = true : ise = false;
 
    if (iso) {
@@ -33,3 +35,5 @@ var isPalindrome = function(x) {
 console.log(
     isPalindrome(10)
 );
+
+</script>
