@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>简单的实例</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- xmlns 如果不写，则会被当做 xml 解析，但不写也不会影响 -->
+  <svg
+    xmlns='http://www.w3.or/2000/svg'
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+  >
+    <rect x='0' y='0' height='100' width='100' style="stroke: pink; fill: red;"></rect>
+  </svg>
+
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 50 50"
+  >
+    <circle cx="64" cy="64" r="64" style="fill: #00ccff;"></circle>
+  </svg>
+
+  <svg xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <svg x="10">
+    <rect x="10" y="10" height="100" width="100"
+        style="stroke:#ff0000; fill: #0000ff"/>
+  </svg>
+  <svg x="200">
+    <rect x="10" y="10" height="100" width="100"
+        style="stroke:#009900; fill: #00cc00"/>
+  </svg>
+
+</svg>
+
+</body>
+</html>
