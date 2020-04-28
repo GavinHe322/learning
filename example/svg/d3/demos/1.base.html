@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>基础</title>
+</head>
+<body>
+  <script src="./d3.js"></script>
+  <script>
+    var svg = d3.select('body')
+      .append('svg')
+      .attr('height', 1000)
+      .attr('width', 1000)
+    
+    var head = svg.append('g')
+      .attr('id', 'head')
+      .attr('transform', 'translate(60, 80)')
+
+    head.append('rect')
+      .attr('width', 100)
+      .attr('height', 60)
+      .attr('stroke', 'pink')
+      .attr('stroke-width', 3)
+      .attr('fill', 'yellow')
+
+    head.append('circle')
+      .attr('cx', 20)
+      .attr('cy', 20)
+      .attr('r', 10)
+      .attr('fill', 'purple')
+
+    head.append('circle')
+      .attr('cx', 80)
+      .attr('cy', 20)
+      .attr('r', 10)
+      .attr('fill', 'purple')
+    
+    head.append('circle')
+      .attr('cx', 50)
+      .attr('cy', 50)
+      .attr('r', 5)
+      .attr('fill', '#529fca')
+
+    svg.append('path')
+      .attr('d', 'M65 80 L80 60 L95 80 Z')
+      .attr('fill', '#fff')
+      .attr('stroke', '#000')
+    
+    svg.append('path')
+      .attr('d', 'M125 80 L140 60 L155 80 Z')
+      .attr('fill', '#fff')
+      .attr('stroke', '#000')
+    
+    const body = svg.append('g')
+      .attr('id', 'body')
+      .attr('transform', 'translate(110, 110)')
+
+    body.append('rect')
+      .attr('width', 120)
+      .attr('height', 60)
+      .attr('stroke-width', 1)
+      .attr('stroke', '#000')
+      .attr('fill', '#fff')
+
+    // 四只脚
+    svg.append('line')
+      .attr('x1', 110)
+      .attr('y1', 170)
+      .attr('x2', 100)
+      .attr('y2', 200)
+      .attr('stroke', '#000')
+      .attr('stroke-width', 1.5)
+    
+    svg.append('line')
+      .attr('x1', 130)
+      .attr('y1', '170')
+      .attr('x2', 140)
+      .attr('y2', 200)
+      .attr('stroke', '#000')
+      .attr('stroke-width', 1.5)
+
+    svg.append('line')
+      .attr('x1', 210)
+      .attr('y1', 170)
+      .attr('x2', 200)
+      .attr('y2', 200)
+      .attr('stroke', '#000')
+      .attr('stroke-width', 1.5)
+
+    svg.append('line')
+      .attr('x1', 230)
+      .attr('y1', 170)
+      .attr('x2', 240)
+      .attr('y2', 200)
+      .attr('stroke', '#000')
+      .attr('stroke-width', 1.5)
+
+    // 尾巴
+    svg.append('path')
+      .attr('d', 'M230 140 L250 140 L250 120 L270 120 L270 100')
+      .attr('fill', '#fff')
+      .attr('stroke', '#000')
+
+    svg.append('circle')
+      .attr('cx', 270)
+      .attr('cy', 95)
+      .attr('r', 5)
+      .attr('fill', '#fff')
+      .attr('stroke', '#000')
+
+    body.append('polygon')
+      .attr('points', '9.9, 1.1, 3.3, 21.78, 19.8, 8.58, 0, 8.58, 16.5, 21.78')
+      .attr('transform', 'translate(80, 20)')
+  </script>
+</body>
+</html>
