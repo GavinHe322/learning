@@ -1,0 +1,40 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permute = function(nums) {
+  let res = []
+  perm(nums, 0, nums.length - 1, res)
+  return res
+}
+
+function perm (arr, p, q, res) {
+  debugger
+  if (p === q) {
+    console.log('当前已全部排列完', arr)
+    res.push([...arr])
+  } else {
+    for (let i = p; i <= q; i++) {
+      console.log(`这是要对${arr[p]}(下标${p}) - ${arr[q]}(下标${q}) 进行全排列，当前arr ${arr}`)
+      swap(arr, i, p)
+      console.log(`交换了 ${arr[i]}(下标 ${i}) 和 ${arr[p]}(下标 ${p}) 的位置, 当前 arr ${arr}`)
+      perm(arr, p + 1, q, res)
+      console.log(`再次交换 ${arr[i]}(下标 ${i}) 和 ${arr[p]}(下标 ${p}) 的位置, 当前 arr ${arr}`)
+      // 这里再次交换是为了保证arr的相对一致
+      swap(arr, i, p)
+    }
+  }
+}
+
+function swap (arr, p, q) {
+  let temp = arr[p]
+  arr[p] = arr[q]
+  arr[q] = temp
+}
+
+console.log(
+  permute([1, 2, 3])
+)
+
+</script>
