@@ -1,0 +1,29 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var rob = function(nums) {
+  const len = nums.length
+  if(len == 0) return 0
+  const dp = new Array(len + 1)
+  dp[0] = 0
+  dp[1] = nums[0]
+  for(let i = 2; i <= len; i++) {
+    // i = 2
+    // 4                 1         0   + 4
+    // i = 3
+    // 6                 4         1   + 5
+    // i = 4
+    // 11                6         4   + 7
+    // i = 5
+    // 16                11        6  + 10 
+    dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i - 1])
+  }
+  return dp[len]
+}
+
+console.log(
+  rob([1, 4, 5, 7, 10])
+)
+</script>
