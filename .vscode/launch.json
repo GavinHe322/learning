@@ -6,6 +6,12 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - MulArray",
+      "request": "launch",
+      "mainClass": "MulArray"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - SortArray",
       "request": "launch",
       "mainClass": "SortArray"
