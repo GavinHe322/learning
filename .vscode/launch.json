@@ -6,6 +6,12 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - Command",
+      "request": "launch",
+      "mainClass": "Command"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - MulArray",
       "request": "launch",
       "mainClass": "MulArray"
