@@ -6,6 +6,7 @@
   "configurations": [
     {
       "type": "java",
+<<<<<<< HEAD
       "name": "CodeLens (Launch) - Enum",
       "request": "launch",
       "mainClass": "Enum",
@@ -17,6 +18,23 @@
       "request": "launch",
       "mainClass": "Str",
       "projectName": "learning_17872120"
+=======
+      "name": "CodeLens (Launch) - Command",
+      "request": "launch",
+      "mainClass": "Command"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - MulArray",
+      "request": "launch",
+      "mainClass": "MulArray"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - SortArray",
+      "request": "launch",
+      "mainClass": "SortArray"
+>>>>>>> 2422f0ed289a1d88765865a949d2a29c1fa722af
     },
     {
       "name": "(gdb) 启动",
