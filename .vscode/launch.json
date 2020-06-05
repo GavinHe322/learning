@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - Enum",
+      "request": "launch",
+      "mainClass": "Enum",
+      "projectName": "learning_17872120"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - Str",
       "request": "launch",
       "mainClass": "Str",
