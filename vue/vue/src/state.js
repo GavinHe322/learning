@@ -14,6 +14,33 @@ function initData(vm) {
         ? data.call(vm, vm)
         : data || {}
     
-    console.log(data)
-    // observe(data)
+    // proxy data on instance
+    const keys = Object.keys(data)
+    let i = keys.length
+    while (i --) {
+        const key = keys[i]
+        proxy(vm, `_data`, key)
+    }
+    
+    // observe data
+    observe(data)
+}
+
+
+const noop = () => {}
+const sharedPropertyDefinition = {
+    enumerable: true,
+    configurable: true,
+    get: noop,
+    set: noop
+}
+
+function proxy(target, sourceKey, key) {
+    sharedPropertyDefinition.get = function proxyGetter() {
+        return this[sourceKey][key]
+    }
+    sharedPropertyDefinition.set = function proxyGetter(val) {
+        this[sourceKey][key] = val
+    }
+    Object.defineProperty(target, key, sharedPropertyDefinition)
 }
