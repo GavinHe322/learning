@@ -7,11 +7,15 @@
 </head>
 <body>
     <div id="app">
-        {{ name }}
+        <span class="name" :class="{'class': 'class'}">
+            {{ name }}
+        </span>
     </div>
     
     <script src="./src/observe.js"></script>
     <script src="./src/state.js"></script>
+    <script src="./src/compiler/parseHTML.js"></script>
+    <script src="./src/compiler/parse.js"></script>
     <script src="./src/compiler/createCompileToFunctionFn.js"></script>
     <script src="./src/compiler/createCompiler.js"></script>
     <script src="./src/compiler/index.js"></script>

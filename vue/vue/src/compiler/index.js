@@ -6,7 +6,8 @@ function $mount(el) {
     const options = this.$options
 
     if (template) {
-        template = template.innerHTML
+        template = template.outerHTML
+        console.log(template, 'innerHtml')
         compileToFunctions(template)
     }
 

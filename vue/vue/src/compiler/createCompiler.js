@@ -17,10 +17,11 @@ function createCompilerCreator(baseCompile) {
 }
 
 const createCompiler = createCompilerCreator(function baseCompile(template) {
-    // const ast = parse(template.trim())
-    // return {
-    //     ast
-    // }
+    const ast = parse(template.trim())
+    console.log(ast)
+    return {
+        ast
+    }
 })
 
 const { compile, compileToFunctions } = createCompiler()
