@@ -6,13 +6,21 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="app">
+        {{ name }}
+    </div>
+    
     <script src="./src/observe.js"></script>
     <script src="./src/state.js"></script>
+    <script src="./src/compiler/createCompileToFunctionFn.js"></script>
+    <script src="./src/compiler/createCompiler.js"></script>
+    <script src="./src/compiler/index.js"></script>
     <script src="./src/init.js"></script>
     <script src="./src/index.js"></script>
 
     <script>
         var vue = new Vue({
+            el: '#app',
             data() {
                 return {
                     name: '1'
