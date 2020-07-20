@@ -5,6 +5,9 @@ function parse(template) {
     let root
     let currentParent
     
+    function closeElement(element) {
+        // tri
+    }
 
     parseHTML(template, {
         start: function start(tag, attrs, unary, start, end) {
@@ -41,6 +44,30 @@ function parse(template) {
 
             element.end = end
             closeElement(element)
+        },
+        chars: function(text, start, end) {
+            const children = currentParent.children
+            
+            if (text.trim()) {
+                var res
+                var child
+
+                if (text !== ' ' && (res = parseText(text))) {
+                    child = {
+                        type: 2,
+                        expression: res.expression,
+                        tokens: res.tokens,
+                        text
+                    }
+                }
+                if (child) {
+                    child.start = start
+                    child.end = end
+                    children.push(child)
+                }
+                debugger
+            }
+
         }
     })
     return root
