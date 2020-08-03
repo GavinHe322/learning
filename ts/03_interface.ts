@@ -180,3 +180,33 @@ me.eat('大餐')
 
 me.work()
 
+
+// 混合类型
+
+interface Counter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+}
+
+function getCounter(): Counter {
+    let counter = <Counter>function (start: number) {
+    }
+    counter.interval = 123
+    counter.reset = function() {
+        counter.interval = 0
+    }
+    return counter
+}
+
+let counter = getCounter()
+console.log(
+    counter(10), 'counter1'
+)
+console.log(counter, 'counter2')
+counter.reset()
+console.log(counter, 'counter3')
+counter.interval = 5.0
+console.log(counter, 'counter4')
+
+

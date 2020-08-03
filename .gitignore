@@ -1,1 +1,5 @@
 .vscode
+
+
+# ts 编译的js文件
+ts/*.js
