@@ -210,3 +210,29 @@ counter.interval = 5.0
 console.log(counter, 'counter4')
 
 
+// 定义class 接口
+interface IClock {
+    new (msg: string): ITips;
+}
+
+interface ITips {
+    tips(): string
+}
+
+function createTips(clock: IClock, msg: string): ITips {
+    return new clock(msg)
+}
+
+class Clock {
+    constructor(public msg: string) {
+    }
+    tips(): string {
+        return this.msg
+    }
+}
+
+var tips = createTips(Clock, 'message???')
+
+console.log(
+    tips.tips()
+)
