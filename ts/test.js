@@ -2,11 +2,10 @@
 // unSure = '124'
 // unSure = undefined
 // unSure = null
-function printLabel(labelledObj) {
-    console.log(labelledObj.label);
-}
-var myobj = {
-    size: 14,
-    label: 'size 10 object'
+var SquareOptions = {
+    color: '1',
+    width: 1,
+    name: '1',
+    age: 1
 };
-printLabel(myobj);
+console.log(SquareOptions);

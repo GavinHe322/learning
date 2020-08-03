@@ -23,18 +23,33 @@
 
 // 普通接口
 
-interface labelledValue {
-    label: string
+// interface labelledValue {
+//     label: string
+// }
+
+// function printLabel(labelledObj: labelledValue): void {
+//     console.log(labelledObj.label)
+// }
+
+
+// let myobj = {
+//     size: 14,
+//     label: 'size 10 object'
+// }
+
+// printLabel(myobj)
+
+interface SquareConfig {
+    color?: string;
+    width?: number;
+    [propName: string]: any;
 }
 
-function printLabel(labelledObj: labelledValue): void {
-    console.log(labelledObj.label)
+const SquareOptions: SquareConfig = {
+    color: '1',
+    width: 1,
+    name: '1',
+    age: 1
 }
 
-
-let myobj = {
-    size: 14,
-    label: 'size 10 object'
-}
-
-printLabel(myobj)
+console.log(SquareOptions)
