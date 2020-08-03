@@ -223,7 +223,7 @@ function createTips(clock: IClock, msg: string): ITips {
     return new clock(msg)
 }
 
-class Clock {
+class Clock implements ITips {
     constructor(public msg: string) {
     }
     tips(): string {
