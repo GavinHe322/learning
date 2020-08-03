@@ -201,3 +201,22 @@
 
 // // 生成的代码中，枚举类型被编译成一个对象，它包含了正想映射（name-> value) 和反向映射（value -> name）。
 // // 引用枚举成员总会
+
+interface a {
+  a1: 'a1';
+  a2: 'a2';
+  a3: 'a3';
+}
+
+type values = a[keyof a]
+
+interface IA {
+  [key: string]: values
+}
+
+
+var aaa: IA = {
+  a: 'a1',
+  b: 'a2',
+  c: 'a3'
+}
