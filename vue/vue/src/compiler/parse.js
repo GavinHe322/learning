@@ -6,14 +6,31 @@ function parse(template) {
     let currentParent
     
     function closeElement(element) {
-        // tri
+       trimEndingWhitespace(element)
+       // debugger
+       // loading...
     }
+
+    function trimEndingWhitespace(el) {
+        // remove trailing whitespace node
+        var lastNode
+        while (
+            (lastNode = el.children[el.children.length - 1]) &&
+            lastNode.type === 3 &&
+            lastNode.text === ' '
+        ) {
+            el.children.pop() 
+        }
+
+    }
+
+
 
     parseHTML(template, {
         start: function start(tag, attrs, unary, start, end) {
             
             var element = createASTElement(tag, attrs, currentParent)
-            debugger
+            // debugger
             element.start = start
             element.end = end
             element.rawAttrsMap = element.attrsList.reduce(function(cumulated, attr) {
@@ -65,7 +82,7 @@ function parse(template) {
                     child.end = end
                     children.push(child)
                 }
-                debugger
+                // debugger
             }
 
         }

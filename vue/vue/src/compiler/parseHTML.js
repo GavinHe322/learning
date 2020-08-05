@@ -16,7 +16,7 @@ function parseHTML(html, options) {
 
     while (html) {
         last = html
-        debugger
+        // debugger
 
         if (!lastTag || !isPlainTextElement(lastTag)) {
             var textEnd = html.indexOf('<')

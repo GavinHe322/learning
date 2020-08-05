@@ -1,7 +1,7 @@
 let defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g
 
 function parseText(text) {
-  debugger
+  // debugger
   const tagRE = defaultTagRE
 
   if (!tagRE.test(text)) {
