@@ -1,7 +1,7 @@
 let defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g
 
 function parseText(text) {
-  // debugger
+  debugger
   const tagRE = defaultTagRE
 
   if (!tagRE.test(text)) {
@@ -18,7 +18,7 @@ function parseText(text) {
     // push text token
     if (index > lastIndex) {
       rawTokens.push(tokenValue = text.slice(lastIndex, index))
-      tokens.push(JSON.stringify(tokens))
+      tokens.push(JSON.stringify(tokenValue))
     }
     // tag token
     // 此处原来是 parseFilters

@@ -4,11 +4,14 @@ function parse(template) {
     var stack = []
     let root
     let currentParent
-    
+
     function closeElement(element) {
-       trimEndingWhitespace(element)
-       // debugger
-       // loading...
+        trimEndingWhitespace(element)
+        // debugger
+
+        if (currentParent /* && 不是 style script... */) {
+            currentParent.children.push(element)
+        }
     }
 
     function trimEndingWhitespace(el) {
@@ -19,27 +22,25 @@ function parse(template) {
             lastNode.type === 3 &&
             lastNode.text === ' '
         ) {
-            el.children.pop() 
+            el.children.pop()
         }
-
     }
 
 
 
     parseHTML(template, {
         start: function start(tag, attrs, unary, start, end) {
-            
+
             var element = createASTElement(tag, attrs, currentParent)
             // debugger
             element.start = start
             element.end = end
-            element.rawAttrsMap = element.attrsList.reduce(function(cumulated, attr) {
+            element.rawAttrsMap = element.attrsList.reduce(function (cumulated, attr) {
                 cumulated[attr.name] = attr
                 return cumulated
             }, {})
 
             //  一堆验证
-
 
             if (!root) {
                 root = element
@@ -62,9 +63,9 @@ function parse(template) {
             element.end = end
             closeElement(element)
         },
-        chars: function(text, start, end) {
+        chars: function (text, start, end) {
             const children = currentParent.children
-            
+
             if (text.trim()) {
                 var res
                 var child
