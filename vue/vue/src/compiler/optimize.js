@@ -12,7 +12,7 @@ function optimize (root, options) {
   // 标记所有非静态节点
   markStatic(root)
   // second pass: mark static roots
-  console.log(root, 'root')
+  markStaticRoots(root)
 }
 
 function markStatic (node) {
@@ -34,7 +34,6 @@ function markStatic (node) {
   }
 }
 
-
 function isStatic (node) {
   if (node.type === 2) { // expression
     return false
@@ -53,4 +52,28 @@ function isStatic (node) {
       // Object.keys(node).every(isStaticKey)
     )
   )
+}
+
+function markStaticRoots(node) {
+  if (node.type === 1) {
+    // if (node.static || node.once) {
+    //   node.staticInFor = isInFor
+    // }
+  
+    if (node.static && node.children.length && !(
+      node.children.length === 1 &&
+      node.children[0].type === 3
+    )) {
+      node.staticRoot = true
+      return
+    } else {
+      node.staticRoot = false
+    }
+
+    if (node.children) {
+      for (var i = 0, l = node.children.length; i < l; i++) {
+        markStaticRoots(node.children[i])
+      }
+    }
+  }
 }
