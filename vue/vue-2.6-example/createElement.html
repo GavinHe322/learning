@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>createElement</title>
+</head>
+<body>
+  <div id="app">
+    <div @click="onClick">
+      {{ msg }}
+    </div>
+    <my-button @click="onClick" text="nihao a!" :msg="msg" color="#333">
+      <slot v-slot="props">
+        {{ props }}
+      </slot>
+    </my-button>
+  </div>
+  <script src="../../../js/vue.js"></script>
+  <script>
+
+    function emit(ctx, eventName) {
+      let listeners = ctx.listeners[eventName]
+
+      listeners.apply(void 0, arguments)
+    }
+
+    const Button = function Button(h, props, slots, ctx) {
+      // debugger
+      var _ref
+      
+      var color = props.color
+      var style = {}
+
+      if (color) {
+        style.color = color
+      }
+
+      function onClick(event) {
+        emit(ctx, 'click', event)
+      }
+
+      function Content() {
+        var content = []
+
+        let text
+
+        text = slots.default ? slots.default() : props.msg
+        console.log(slots, 'slot', text)
+
+        content.push(h('span', {
+          'class': 'my-class'
+        }, [text]))
+
+        return content
+      }
+
+      return h('button', {
+          'style': style,
+          'class': ['class'],
+          'attrs': {
+            'disabled': false
+          },
+          'on': {
+            'click': onClick
+          }
+        },
+        [Content()]
+      )
+    }
+
+    function unifySlots(context) {
+      var scopedSlots = context.scopedSlots || context.data.scopedSlots || {}
+      return scopedSlots
+    }
+
+    function transformFunctionComponent(pure) {
+      return {
+        functional: true,
+        props: pure.props,
+        model: pure.model,
+        render: function render(h, context) {
+          return pure(h, context.props, unifySlots(context), context)
+        }
+      }
+    }
+    var MyButton = transformFunctionComponent(Button)
+
+    new Vue({
+      el: '#app',
+      components: {
+        MyButton
+      },
+      data() {
+        return {
+          msg: '1'
+        }
+      },
+      methods: {
+        onClick(e) {
+          console.log('parent click')
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -101,7 +101,6 @@ function parseHTML(html, options) {
             }
             
             if (end) {
-                match.unarySlash = end[1]
                 advance(end[0].length)
                 match.end = index
                 return match
@@ -111,7 +110,6 @@ function parseHTML(html, options) {
 
     function handleStartTag(match) {
         var tagName = match.tagName
-        var unarySlash = match.unarySlash
 
         var l = match.attrs.length
         var attrs = new Array(l)

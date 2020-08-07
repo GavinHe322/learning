@@ -16,12 +16,18 @@ function createCompilerCreator(baseCompile) {
     }
 }
 
-const createCompiler = createCompilerCreator(function baseCompile(template) {
+const createCompiler = createCompilerCreator(function baseCompile(template, options) {
     const ast = parse(template.trim())
     console.log(ast)
+    return
     optimize(ast)
+    
+    var code = generate(ast, options)
+    console.log(code)
     return {
-        ast
+        ast,
+        render: code.render,
+        staticRenderFns: code.staticRenderFns
     }
 })
 
