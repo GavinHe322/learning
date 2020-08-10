@@ -8,9 +8,56 @@ function parse(template) {
     function closeElement(element) {
         trimEndingWhitespace(element)
         // debugger
+        if (!element.processed) {
+            element = processElement(element)
+        }
 
         if (currentParent /* && 不是 style script... */) {
             currentParent.children.push(element)
+        }
+    }
+
+    function processElement(element) {
+        processAttrs(element)
+
+        return element
+    }
+
+    function processAttrs(el) {
+        var list = el.attrsList
+        debugger
+        var i, l, name, rawName, value, modifiers, syncGen, isDynamic
+        for (i = 0, l = list.length; i < l; i++) {
+            name = rawName = list[i].name
+            value = list[i].value
+            /**
+             * 一堆逻辑
+             * 指令
+             * model
+             * tag
+             * ...
+             */
+            addAttr(el, name, JSON.stringify(value), list[i])
+        }
+    }
+
+    function addAttr(el, name, value, range, dynamic) {
+        var attrs = dynamic
+            ? (el.dynamicAttrs || (el.dynamicAttrs = []))
+            : (el.attrs || (el.attrs = []))
+        attrs.push(rangeSetItem({ name: name, value: value, dynamic: dynamic}, range))
+        el.plain = false
+    }
+
+    function rangeSetItem(item, range) {
+        if (range) {
+            if (range.start != null) {
+                item.start = range.start
+            }
+            if (range.end != null) {
+                item.end = range.end
+            }
+            return item
         }
     }
 
