@@ -7,8 +7,8 @@ function $mount(el) {
 
     if (template) {
         template = template.outerHTML
-        console.log(template, 'innerHtml')
-        compileToFunctions(template)
+        const { render, staticRenderFns } = compileToFunctions(template)
+        console.log(render, staticRenderFns)
     }
 
 }

@@ -54,6 +54,7 @@ function genProps(props) {
   var dynamicProps = ''
   for (var i = 0, l = props.length; i < l; i++) {
     var prop = props[i]
+    var value = prop.value
     if (prop.dynamic) {
       dynamicProps += (prop.name) + ',' + value + ','
     } else {

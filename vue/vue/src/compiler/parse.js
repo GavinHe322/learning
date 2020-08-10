@@ -25,7 +25,6 @@ function parse(template) {
 
     function processAttrs(el) {
         var list = el.attrsList
-        debugger
         var i, l, name, rawName, value, modifiers, syncGen, isDynamic
         for (i = 0, l = list.length; i < l; i++) {
             name = rawName = list[i].name
@@ -77,9 +76,7 @@ function parse(template) {
 
     parseHTML(template, {
         start: function start(tag, attrs, unary, start, end) {
-
             var element = createASTElement(tag, attrs, currentParent)
-            // debugger
             element.start = start
             element.end = end
             element.rawAttrsMap = element.attrsList.reduce(function (cumulated, attr) {
