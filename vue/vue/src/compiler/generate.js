@@ -26,7 +26,6 @@ function genElement(el, state) {
   var data = genData(el, state)
 
   var children = genChildren(el, state, true)
-
   code = `_c('${el.tag}'${
     data ? `,${data}` : '' // data
   }${
@@ -38,7 +37,6 @@ function genElement(el, state) {
 
 function genData(el, state) {
   var data = '{'
-
   // attributes
   if (el.attrs) {
     data += `attrs:(${genProps(el.attrs)}),`
@@ -58,7 +56,7 @@ function genProps(props) {
     if (prop.dynamic) {
       dynamicProps += (prop.name) + ',' + value + ','
     } else {
-      staticProps += '\'' + (prop.name) + '\":' + value + ','
+      staticProps += "\"" + (prop.name) + "\":" + value + ","
     }
   }
   staticProps = '{' + (staticProps.slice(0, -1)) + '}'

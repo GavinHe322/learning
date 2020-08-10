@@ -9,8 +9,16 @@ function $mount(el) {
         template = template.outerHTML
         const { render, staticRenderFns } = compileToFunctions(template)
         console.log(render, staticRenderFns)
-    }
 
+        options.render = render
+        options.staticRenderFns = staticRenderFns
+    }
+    /**
+     * 这里原先两个逻辑，
+     * runtime-only
+     * runtime-compiler
+     */
+    mountComponent(this, el)
 }
 
 

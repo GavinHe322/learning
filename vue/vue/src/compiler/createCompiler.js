@@ -22,7 +22,6 @@ const createCompiler = createCompilerCreator(function baseCompile(template, opti
     optimize(ast)
     
     var code = generate(ast, options)
-    console.log(code)
     return {
         ast,
         render: code.render,

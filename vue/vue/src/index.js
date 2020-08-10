@@ -5,6 +5,6 @@ function Vue(options) {
 }
 
 initMixin(Vue)
-
+renderMixin(Vue)
 // 挂载 mount
 Vue.prototype.$mount = $mount
