@@ -3,7 +3,6 @@ function createCompileToFunctionFn(compile) {
 
         const compiled = compile(template)
         compiled.render = createFunction(compiled.render)
-        console.log(compiled.render, 'compiled.render')
         return compiled
     }
 }

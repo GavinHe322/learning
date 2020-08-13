@@ -1,6 +1,4 @@
 function parse(template) {
-    console.log(template, 'tee')
-
     var stack = []
     let root
     let currentParent

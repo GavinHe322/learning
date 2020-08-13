@@ -1,8 +1,6 @@
 function createCompilerCreator(baseCompile) {
-    console.log(1)
     return function createCompiler() {
         function compile(template) {
-            console.log(template)
 
             const compiled = baseCompile(template.trim())
 
@@ -18,7 +16,6 @@ function createCompilerCreator(baseCompile) {
 
 const createCompiler = createCompilerCreator(function baseCompile(template, options) {
     const ast = parse(template.trim())
-    console.log(ast)
     optimize(ast)
     
     var code = generate(ast, options)

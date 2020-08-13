@@ -8,8 +8,6 @@ function $mount(el) {
     if (template) {
         template = template.outerHTML
         const { render, staticRenderFns } = compileToFunctions(template)
-        console.log(render, staticRenderFns)
-
         options.render = render
         options.staticRenderFns = staticRenderFns
     }

@@ -39,7 +39,6 @@ function defineReactive(obj, key) {
         configurable: true,
         get: function reactiveGetter() {
             const value = getter ? getter.call(obj) : val
-            console.log('get??', value)
             return value
         },
         set: function reactiveSetter(newVal) {
