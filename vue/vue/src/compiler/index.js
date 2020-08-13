@@ -1,7 +1,7 @@
 
 function $mount(el) {
     
-    let template = query(el)
+    let template = el = query(el)
 
     const options = this.$options
 
