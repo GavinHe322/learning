@@ -19,6 +19,7 @@ function lifecycleMixin(Vue) {
 
     if (!prevVnode) {
       vm.$el = vm.__patch__(vm.$el, vnode)
+      console.log('patch after', vm.$el)
     }
 
   }
