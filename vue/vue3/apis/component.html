@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>component</title>
+</head>
+<body>
+  <div id="app">
+    <custom-input v-model="modelValue"></custom-input>
+    <button @click="log(modelValue)">
+      console
+    </button>
+  </div>
+
+  <!-- <script src="https://unpkg.com/vue@next"></script> -->
+  <script src="../../../../js/vue.global.js"></script>
+  <script>
+    const { createApp } = Vue
+    const log = console.log
+
+    const options = {
+      data() {
+        return {
+          modelValue: 100,
+          log
+        }
+      }
+    }
+    const app = createApp(options)
+
+    app.component('custom-input', {
+      props: ['modelValue'],
+      template: `
+        <input v-model="value">
+      `,
+      computed: {
+        value: {
+          get() {
+            return this.modelValue
+          },
+          set(value) {
+            this.$emit('update:modelValue', value)
+          }
+        }
+      }
+    })
+
+    app.mount('#app')
+
+  </script>
+</body>
+</html>
