@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>config</title>
+</head>
+<body>
+  <div id="app">
+   {{ author }}
+  </div>
+
+  <!-- <script src="https://unpkg.com/vue@next"></script> -->
+  <script src="../../../../js/vue.global.js"></script>
+  <script>
+    const { createApp } = Vue
+    const options = {
+      mounted() {
+        console.log(this.$options.author, this.author, 'log')
+      }
+    }
+    const app = createApp(options)
+
+    /**
+     * globalProperties
+     * before ↓
+     * Vue.prototype.$http = () => {}
+     * now
+     * app.config.globalProperties.$http = () => {}
+     */
+    app.config.globalProperties.author = 'global gavin'
+
+    /**
+     * optionMergeStrategies
+     */
+    app.mixin({
+      data() {
+        return {
+          author: 'mixin gavin'
+        }
+      }
+    })
+    
+    app.mount('#app')
+
+  </script>
+</body>
+</html>
