@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>global Apis</title>
+</head>
+<body>
+  <div id="app">
+    <hello-world-option></hello-world-option>
+    <title-component></title-component>
+  </div>
+  <script src="../../../../js/vue.global.js"></script>
+  <script>
+    const { createApp, h, defineComponent, ref } = Vue
+    console.log(h)
+
+    /*
+     * createApp
+     * returns an application instance
+     */
+
+    /*
+     * defineComponent
+     */
+    // options api
+    const HelloWorldOption = defineComponent({
+      data() {
+        return {
+          count: 1
+        }
+      },
+      template: `
+        <div>
+          {{ count }}
+          <button @click="count++">
+            increment++
+          </button>
+        </div>
+      `
+    })
+    // compisition api
+    const HelloWorldSetup = defineComponent(function HelloWorldSetUp() {
+      const count = ref(0)
+      console.log('hello-world-setup')
+      return {
+        count
+      }
+    })
+
+    const options = {
+      components: {
+        HelloWorldOption,
+        HelloWorldSetup
+      }
+    }
+
+    const app = createApp(options)
+
+    /**
+      createElement
+    */
+    app.component('title-component', {
+      render() {
+        return h('h1', {}, 'same title')
+      }
+    })
+
+    app.mount('#app')
+  </script>
+</body>
+</html>
