@@ -8,6 +8,10 @@
 <body>
   <div id="app">
    {{ author }}
+
+   <todo-list>
+     <todo-list-statistis></todo-list-statistis>
+   </todo-list>
   </div>
 
   <!-- <script src="https://unpkg.com/vue@next"></script> -->
@@ -40,7 +44,67 @@
         }
       }
     })
-    
+
+
+    /**
+     * provide && inject
+     */
+    app.component('todo-list', {
+      data() {
+        return {
+          // 引用类型会改变
+          todos: ['Feed a cat', 'Buy tickets'],
+          // 基础类型不会改变
+          author: 'Gavin'
+        }
+      },
+      provide() {
+        return {
+          user: this.author,
+          todos: this.todos
+        }
+      },
+      created() {
+        console.log(this.user, '??', this)
+      },
+      methods: {
+        handleChange() {
+          this.author = Math.random() * 10 < 4 ?'lucy' : 'gavin'
+          console.log(this.author)
+        },
+        handleAdd() {
+          this.todos.push(this.author)
+        }
+      },
+      template: `
+        <div>
+          {{ todos.length }}
+          <input v-model="author" />
+          <button @click="handleChange">
+            change author
+          </button>
+          <button @click="handleAdd">
+            handle add
+          </button>
+          <slot />
+        </div>
+      `
+    })
+    app.component('todo-list-statistis', {
+      inject: ['user', 'todos'],
+      created() {
+        console.log('inject property: user', this.user)
+      },
+      template: `
+        <div>
+          is change ? {{ user }}
+          <p v-for="val in todos" :key="val">
+            {{ val }}
+          </p>
+        </div>
+      `
+    })
+
     app.mount('#app')
 
   </script>
