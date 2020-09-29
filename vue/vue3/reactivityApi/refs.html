@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>refs apis</title>
+</head>
+<body>
+  <div id="app">
+    <h2>ref</h2>
+    <div>
+      <p>{{ count }}</p>
+      <button @click="handleCount">++</button>
+    </div>
+    <h2>toRef</h2>
+    <div>
+      <p>{{ fooRef }}</p>
+      <button @click="handleFooRef">++</button>
+    </div>
+    <h2>toRefs</h2>
+    <div>
+      <p>{{ stateAsRefs }}</p>
+      <p>{{ stateAsRefs.foo }}</p>
+    </div>
+    <h2>customRef</h2>
+    <input type="text" v-model="text">
+    <h2>shallowRef triggerRef</h2>
+    <div>
+      <p>
+        {{ shallow }}
+      </p>
+      <button @click="handleShallow">change shallow</button>
+    </div>
+  </div>
+  <script src="../../../../js/vue.global.js"></script>
+  <script>
+    const { createApp, ref, toRef, toRefs, reactive, isRef, customRef, shallowRef, triggerRef } = Vue
+    const { log } = console
+
+    const refs = {
+      setup() {
+        log('接受一个内部值并返回一个响应式且可变的 ref 对象。ref 对象具有指向内部值的单个 property.value')
+        /*
+         * __v_isRef: true
+         * _rawValue: 0
+         * _shallow: false
+         * _value: _reactive 
+         * value: reactive
+         */
+        let count = ref(0)
+        log(count)
+        const handleCount = () => {
+          count.value++
+        }
+
+        log('用来为源响应式对象的 property 创建一个ref, 然后将 ref 传递出去，从而保持对其源 property 的响应式链接')
+        const stateRef = reactive({
+          foo: 1,
+          bar: 2
+        })
+        const fooRef = toRef(stateRef, 'foo')
+        stateRef.foo++ // 响应式链接
+
+        const handleFooRef = () => {
+          fooRef.value++
+          log(stateRef.foo)
+          log(fooRef.value)
+        }
+
+        const stateRefs = reactive({
+          foo: 1,
+          bar: 1
+        })
+        const stateAsRefs = toRefs(stateRefs)
+        stateRefs.foo++
+        stateRefs.bar++
+        log(stateAsRefs)
+
+        stateAsRefs.bar.value++
+        log(stateRefs)
+
+        log('checks if a value a ref object')
+        log(isRef(fooRef))
+        log(isRef(stateAsRefs))
+
+        log('创建一个自定义的 ref')
+        const useDebouncedRef = (value, delay = 200) => {
+          let timeout
+          return customRef((track, trigger) => {
+            return {
+              get() {
+                log('get')
+                track()
+                return value
+              },
+              set(newValue) {
+                clearTimeout(timeout)
+                log('clear')
+                timeout = setTimeout(() => {
+                  value = newValue
+                  log('trigger set')
+                  trigger()
+                }, delay)
+              }
+            }
+          })
+        }
+
+        log('triggerRef')
+        const shallow = shallowRef({
+          greet: 'hello, world!'
+        })
+
+        log(shallow, 'log')
+        const handleShallow = () => {
+          shallow.value.greet = 'nihao ya' // 无效
+          triggerRef(shallow) // trigger
+        }
+
+        return {
+          count,
+          handleCount,
+          fooRef,
+          handleFooRef,
+          stateAsRefs,
+          text: useDebouncedRef('hello'),
+          shallow,
+          handleShallow
+        }
+      }
+    }
+
+    const app = createApp(refs)
+    const vm = app.mount('#app')
+  </script>
+</body>
+</html>
