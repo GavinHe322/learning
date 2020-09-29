@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>computed && watch</title>
+</head>
+<body>
+  <div id="app">
+    <h2>computed</h2>
+    <div>
+      <p>count: {{ count }}</p>
+      <p>plusOne: {{ plusOne }}</p>
+    </div>
+    <input type="text" :value="plusOne" @input="inputChangeCount">
+  </div>
+  <script src="../../../../js/vue.global.js"></script>
+  <script>
+    const { createApp, ref, computed, watchEffect, watch } = Vue
+    const { log } = console
+    const vm = createApp({
+      setup() {
+        const count = ref(1)
+        // const plusOne = computed(() => count.value + 1)
+        const plusOne = computed({
+          get: () => count.value + 1,
+          set: val => {
+            console.log('set?')
+            count.value = val - 1
+          }
+        })
+        /*
+         * __v_isReadonly: false
+         * __v_isRef: true
+         * _dirtry: false
+         * _setter: () => {...}
+         * _value: 1
+         * value: _1
+         */
+        log(plusOne)
+        
+        plusOne.value = 1
+        log(count.value)
+
+        log('在响应式地跟踪其依赖项时立即运行一个函数，并在更改依赖项时重新运行它。')
+        watchEffect(() => {
+          log(count.value, 'immediate?')
+        })
+
+        log('跟 v2.6x 一样, 惰性，即在值改变才执行')
+        // watch(value, callback, { immediate: true, deep: true, handle })
+        watch(count, (pre, now) => {
+          log('pre', pre)
+          log('now', now)
+        }, {
+          immediate: true
+        })
+
+        const inputChangeCount = (e) => {
+          plusOne.value = e.target.value * 1
+        }
+
+        return {
+          count,
+          plusOne,
+          inputChangeCount
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>
