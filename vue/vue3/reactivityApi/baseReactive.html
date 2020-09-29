@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base Reactivity Apis</title>
+</head>
+<body>
+  <div id="app">
+    <h2>reactive</h2>
+    <div>
+      <p>original object {{ original.count }}</p>
+      <p>copy object {{ copy.count }}</p>
+    </div>
+    <h2>shallowReactive</h2>
+    <div>
+      <p>
+        {{ shallowObj }}
+        <button @click="handleAdd">
+          ++
+        </button>
+      </p>
+    </div>
+  </div>
+
+  <script src="../../../../js/vue.global.js"></script>
+  <script>
+    const { createApp, reactive, readonly, isProxy, isReactive, isReadonly, toRaw, markRaw, shallowReactive } = Vue
+    const { log } = console
+    const composition = {
+      setup() {
+        // 深度 proxy object
+        const original = reactive({
+          count: 0
+        })
+        // 深度 proxy object 只读
+        const copy = readonly({
+          count: 0
+        })
+        // that's right
+        original.count++
+        // that's warn: target is readlonly
+        copy.count++
+
+        // 普通对象
+        const normalObj = {
+          count: 0
+        }
+
+        log('监测 是否被 proxy 代理过----------------------')
+        log(isProxy(original)) // true
+        log(isProxy(copy)) // true
+        log(isProxy(normalObj)) // false
+
+        log('检测是否是 reactive 创建的对象---------------------')
+        log(isReactive(original)) // true
+        log(isReactive(copy)) // false
+        log(isReactive(normalObj)) // false
+
+        // 检测是否是 readonly 创建的对象
+        log('检测是否是 readonly 创建的对象-------------------')
+        log(isReadonly(original)) // false
+        log(isReadonly(copy)) // true
+        log(isReadonly(normalObj)) // false
+
+        log('返回 reactive | readonly 代理过的对象----')
+        let foo = {
+          count: 0
+        }
+        let reactiveFoo = reactive(foo)
+        log(toRaw(reactiveFoo) === foo) // true
+        log(toRaw(reactiveFoo) === normalObj) // false
+
+        log('标记一个对象，使其不能被 reactive')
+        const markRawObj = markRaw({
+          count: 0
+        })
+        log(isReactive(reactive(markRawObj))) // false
+
+        log('浅代理 shallowReactive')
+        let shallowObj = shallowReactive({
+          count: 0,
+          deep: {
+            count: 0
+          }
+        })
+        const handleAdd = () => {
+          // 浅代理，但是视图会变
+          // 但是在 chrome console 通过 vm.shallowObj.deep.count++，视图将不再改变，表示疑问
+          shallowObj.count++
+          shallowObj.deep.count++
+          console.log(shallowObj)
+        }
+
+        return {
+          original,
+          copy,
+          shallowObj,
+          handleAdd
+        }
+      }
+    }
+    const app = createApp(composition)
+    const vm = app.mount('#app')
+
+  </script>
+</body>
+</html>
