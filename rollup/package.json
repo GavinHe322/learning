@@ -20,7 +20,8 @@
     "package": "rollup -c src/package/rollup.config.js -o src/package/.dist/bundle.js",
     "peer": "rollup -c src/Peerdependencies/rollup.config.js -o src/Peerdependencies/.dist/bundle.js",
     "babel": "rollup -c src/babel/rollup.config.js -o src/babel/.dist/bundle.js",
-    "d3": "rollup -c src/d3/rollup.config.js -o src/d3/.dist/bundle.js"
+    "d3": "rollup -c src/d3/rollup.config.js -o src/d3/.dist/bundle.js",
+    "banner": "rollup -c src/banner/rollup.config.js -o src/banner/.dist/bundle.js"
   },
   "keywords": [],
   "author": "",
