@@ -10,6 +10,7 @@
     "@babel/core": "^7.11.6",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-latest": "^6.24.1",
+    "d3": "^6.2.0",
     "lodash": "^4.17.20",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-node-resolve": "^5.2.0",
@@ -18,7 +19,8 @@
   "scripts": {
     "package": "rollup -c src/package/rollup.config.js -o src/package/.dist/bundle.js",
     "peer": "rollup -c src/Peerdependencies/rollup.config.js -o src/Peerdependencies/.dist/bundle.js",
-    "babel": "rollup -c src/babel/rollup.config.js -o src/babel/.dist/bundle.js"
+    "babel": "rollup -c src/babel/rollup.config.js -o src/babel/.dist/bundle.js",
+    "d3": "rollup -c src/d3/rollup.config.js -o src/d3/.dist/bundle.js"
   },
   "keywords": [],
   "author": "",
