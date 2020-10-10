@@ -1,0 +1,19 @@
+{
+  "name": "rollupdemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "rollup": "^2.29.0"
+  },
+  "devDependencies": {
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "the-answer": "^1.0.0"
+  },
+  "scripts": {
+    "package": "rollup -c src/package/rollup.config.js -o src/package/.dist/bundle.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -4,3 +4,8 @@
 # ts 编译的js文件
 ts/*.js
 ts/**/*.js
+
+# npm 及 打包文件
+package-lock.json
+node_modules
+.dist
