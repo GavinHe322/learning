@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+
+<script>
+// 4.2 透明的单例模式
+/**
+ * 缺点
+ * 1、违反单一职责原则
+ * 2、使用自执行的米明函数和闭包，增加了程序的复杂度，阅读不舒服
+ */
+var CreateDiv = (function() {
+  var instance
+
+  var CreateDiv = function(html) {
+    if (instance) {
+      return instance
+    }
+    this.html = html
+    this.init()
+    return instance = this
+  }
+  CreateDiv.prototype.init = function() {
+    var div = document.createElement('div')
+    div.innerHTML = this.html
+    document.body.appendChild(div)
+  }
+  return CreateDiv
+})()
+
+var a = new CreateDiv('senv1')
+var b = new CreateDiv('senv2')
+console.log(a === b)
+</script>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+
+<script>
+// 4.3 用代理实现单例模式
+/**
+ * 通过代理类的方式，将单例的逻辑移到 proxy，这样一来 CreateDiv 就变成了一个普通的类，通过组合的方式达到单例模式的效果
+ * 本例是缓存代理的应用之一
+ */
+var CreateDiv = function(html) {
+  this.html = html
+  this.init()
+}
+
+CreateDiv.prototype.init = function() {
+  var div = document.createElement('div')
+  div.innerHTML = this.html
+  document.body.appendChild(div)
+}
+
+// 引入代理类
+var ProxySingetonCreateDiv = (function() {
+  var instance
+  return function(html) {
+    if (!instance) {
+      instance = new CreateDiv(html)
+    }
+    return instance
+  }
+})()
+var a = new ProxySingetonCreateDiv('senv1')
+var b = new ProxySingetonCreateDiv('senv2')
+console.log(a === b)
+</script>
+
+</body>
+</html>
