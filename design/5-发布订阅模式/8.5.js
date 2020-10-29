@@ -45,3 +45,8 @@ salesOffices.trigger('squareMeter88', '100w')
 
 log(salesOffices)
 log(event, 'event')
+
+module.exports = {
+  event,
+  installEvent
+}
