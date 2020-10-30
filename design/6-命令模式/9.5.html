@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="replay">播放录像</button>
+  <script>
+    var log = console.log
+
+    /**
+     * 9.5 撤销和重做
+     */
+    var Ryu = {
+      attack: function() {
+        log('攻击')
+      },
+      defense: function() {
+        log('防御')
+      },
+      jump: function() {
+        log('跳跃')
+      },
+      crouch: function() {
+        log('蹲下')
+      }
+    }
+
+    var makeCommand = function(receiver, state) {
+      return function() {
+        receiver[state]()
+      }
+    }
+
+    var commands = {
+      '119': 'jump', // w
+      '115': 'crouch', // s
+      '97': 'defense', // a,
+      '100': 'attack' // d
+    }
+
+    var commandStack = [] // 保存命令
+
+    document.onkeypress = function(ev) {
+      var keyCode = ev.keyCode,
+          command = makeCommand(Ryu, commands[keyCode])
+
+      if (command) {
+        command() // 执行命令
+        commandStack.push(command) // 保存到栈堆
+      }
+    }
+
+    document.getElementById('replay').onclick = function() {
+      var command
+      console.log('1')
+      while (command = commandStack.shift()) {
+        command()
+      }
+    }
+  </script>
+</body>
+</html>
