@@ -5,8 +5,9 @@ const program = new commander.Command()
 const brew = program.command('brew')
 
 /**
- * try to follwing
- * 
+ * Try to follwing
+ * node nestedCommands.js brew tea
+ * node nestedCommands.js heat jup
  */
 brew
   .command('tea')
