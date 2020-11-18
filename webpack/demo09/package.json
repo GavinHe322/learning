@@ -1,9 +1,0 @@
-{
-    "name": "webpack-demo07",
-    "version": "1.0.1",
-    "scripts": {
-        "dev": "webpack-dev-server --open",
-        "build": "webpack -p"
-    },
-    "license": "MIT"
-}
