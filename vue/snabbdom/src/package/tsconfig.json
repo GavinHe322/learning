@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "strictFunctionTypes": false,
+    "target": "ES2015",
+    "outDir": "../build",
+    "plugins": [
+      {
+        "transform": "./ts-transform-js-extension.cjs",
+        "import": "transform",
+        "after": true,
+        "type": "raw"
+      }
+    ]
+  },
+  "files": [
+    "h.ts",
+    "init.ts",
+    "htmldomapi.ts",
+    "is.ts",
+    "vnode.ts"
+  ]
+}

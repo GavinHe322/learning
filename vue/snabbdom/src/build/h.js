@@ -1,9 +1,6 @@
-"use strict";
-exports.__esModule = true;
-exports.h = void 0;
-var vnode_1 = require("./vnode");
-var is = require("./is");
-function h(sel, b, c) {
+import { vnode } from "./vnode.js";
+import * as is from "./is.js";
+export function h(sel, b, c) {
     var data = {};
     var children;
     var text;
@@ -39,11 +36,10 @@ function h(sel, b, c) {
     if (children !== undefined) {
         for (i = 0; i < children.length; ++i) {
             if (is.primitive(children[i])) {
-                children[i] = vnode_1.vnode(undefined, undefined, undefined, children[i], undefined);
+                children[i] = vnode(undefined, undefined, undefined, children[i], undefined);
             }
         }
     }
     // 原逻辑这里有个处理 SVG 标签的
-    return vnode_1.vnode(sel, data, children, text, undefined);
+    return vnode(sel, data, children, text, undefined);
 }
-exports.h = h;
