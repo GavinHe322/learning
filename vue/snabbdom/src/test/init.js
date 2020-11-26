@@ -13,4 +13,11 @@ const div = h('div', [
   h('p', 'p')
 ])
 
+const div2 = h('div', [
+  h('span', 'span1'),
+  h('div', 'div1')
+])
 patch(container, div)
+
+debugger
+patch(div, div2)

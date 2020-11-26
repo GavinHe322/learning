@@ -72,6 +72,15 @@ export function init() {
     }
   }
 
+  function removeVnodes(parent: Node, oldVnode: VNode[],startIdx: number, endIdx: number): void {
+    for (; startIdx <= endIdx; startIdx++) {
+      const ch = oldVnode[startIdx]
+      if (ch != null) {
+        api.removeChild(parent, ch.elm)
+      }
+    }
+  }
+
   function updateChildren(parentElm: Node,
     oldCh: VNode[],
     newCh: VNode[]) {
@@ -157,6 +166,8 @@ export function init() {
       if (oldStartIdx > oldEndIdx) {
         before = newCh[newEndIdx + 1] == null ? null : newCh[newEndIdx + 1].elm
         addVnodes(parentElm, before, newCh, newStartIdx, newEndIdx)
+      } else {
+        removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)
       }
     }
   }
