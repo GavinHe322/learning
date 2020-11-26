@@ -40,7 +40,7 @@ export function init() {
     } else if (sel !== undefined) {
       // 原先有解析选择器的逻辑 eg: div.class 之类
       const tag = vnode.sel
-      const elm = api.createElement(tag)
+      const elm = vnode.elm = api.createElement(tag)
       if (is.array(children)) {
         for (i = 0; i < children.length; ++i) {
           const ch = children[i]
