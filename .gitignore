@@ -9,6 +9,7 @@ ts/**/*.js
 package-lock.json
 node_modules
 .dist
+dist
 
 # snabbdom
 vue/snabbdom/src/build
