@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "1": "webpack --config ./demo-1/webpack.config.js"
+    "1": "webpack --config ./demo-1/webpack.config.js",
+    "2": "webpack --config ./demo-2/webpack.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "babel-loader": "^8.2.2",
     "webpack": "^5.9.0",
     "webpack-cli": "^4.2.0"
   }
