@@ -1,17 +1,23 @@
 const {
-  AsyncParallelBailHook
+  AsyncParallelBailHook,
+  AsyncParallelHook
 } = require('tapable')
 const log = console.log
 
 class Car {
   constructor() {
     this.hooks = {
-      asyncParallelBailHook: new AsyncParallelBailHook()
+      asyncParallelBailHook: new AsyncParallelBailHook(),
+      asyncParallelHook: new AsyncParallelHook()
     }
   }
 
   asyncParallelBailHook(callback) {
     this.hooks.asyncParallelBailHook.callAsync(callback)
+  }
+
+  asyncParallelHook(callback) {
+    this.hooks.asyncParallelHook.callAsync(callback)
   }
 }
 
@@ -35,6 +41,22 @@ car.hooks.asyncParallelBailHook.tapAsync('BPlugin', (callback) => {
   }, random())
 })
 
-car.asyncParallelBailHook((result) => {
-  console.log(result, 'result?') // 输出最快的
+// car.asyncParallelBailHook((result) => {
+//   console.log(result, 'result?') // 输出最快的
+// })
+
+// asyncParallelHook
+car.hooks.asyncParallelHook.tapAsync('CPlugin', (callback) => {
+  setTimeout(() => {
+    callback('C')
+  }, random())
+})
+car.hooks.asyncParallelHook.tapAsync('DPlugin', (callback) => {
+  setTimeout(() => {
+    callback('D')
+  }, random())
+})
+
+car.asyncParallelHook((result) => {
+  console.log(result, '???')
 })

@@ -6,7 +6,7 @@ const {
   SyncLoopHook, // 如果返回一个 非undefined，会一直循环调用回调函数，直到返回undefined
   // 异步
   AsyncParallelBailHook, // 异步并发可早退钩子
-  AsyncParallelHook,
+  AsyncParallelHook, // 异步并行
   AsyncSeriesHook,
   AsyncSeriesBailHook,
   AsyncSeriesWaterfallHook
