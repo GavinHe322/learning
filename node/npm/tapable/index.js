@@ -7,7 +7,7 @@ const {
   // 异步
   AsyncParallelBailHook, // 异步并发可早退钩子
   AsyncParallelHook, // 异步并行
-  AsyncSeriesHook,
+  AsyncSeriesHook, // 异步串行
   AsyncSeriesBailHook,
   AsyncSeriesWaterfallHook
 } = require('tapable')

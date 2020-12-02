@@ -1,6 +1,7 @@
 const {
   AsyncParallelBailHook,
-  AsyncParallelHook
+  AsyncParallelHook,
+  AsyncSeriesHook
 } = require('tapable')
 const log = console.log
 
@@ -8,7 +9,8 @@ class Car {
   constructor() {
     this.hooks = {
       asyncParallelBailHook: new AsyncParallelBailHook(),
-      asyncParallelHook: new AsyncParallelHook()
+      asyncParallelHook: new AsyncParallelHook(),
+      asyncSeriesHook: new AsyncSeriesHook()
     }
   }
 
@@ -18,6 +20,10 @@ class Car {
 
   asyncParallelHook(callback) {
     this.hooks.asyncParallelHook.callAsync(callback)
+  }
+
+  asyncSeriesHook(callback) {
+    this.hooks.asyncSeriesHook.callAsync(callback)
   }
 }
 
@@ -57,6 +63,30 @@ car.hooks.asyncParallelHook.tapAsync('DPlugin', (callback) => {
   }, random())
 })
 
-car.asyncParallelHook((result) => {
-  console.log(result, '???')
+// car.asyncParallelHook((result) => {
+//   console.log(result, '???')
+// })
+
+// AsyncSeriesHook
+car.hooks.asyncSeriesHook.tapPromise('EPlugin', (callback) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      log('E')
+      resolve('E')
+    }, random())
+  })
+  
+})
+
+car.hooks.asyncSeriesHook.tapPromise('FPlugin', (callback) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      log('F')
+      resolve('F')
+    }, random())
+  })
+})
+
+car.asyncSeriesHook((result) => {
+  console.log(result, '?')
 })
