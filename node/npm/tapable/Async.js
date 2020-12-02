@@ -2,7 +2,8 @@ const {
   AsyncParallelBailHook,
   AsyncParallelHook,
   AsyncSeriesHook,
-  AsyncSeriesBailHook
+  AsyncSeriesBailHook,
+  AsyncSeriesWaterfallHook
 } = require('tapable')
 const log = console.log
 
@@ -12,7 +13,8 @@ class Car {
       asyncParallelBailHook: new AsyncParallelBailHook(),
       asyncParallelHook: new AsyncParallelHook(),
       asyncSeriesHook: new AsyncSeriesHook(),
-      asyncSeriesBailHook: new AsyncSeriesBailHook()
+      asyncSeriesBailHook: new AsyncSeriesBailHook(),
+      asyncSeriesWaterfallHook: new AsyncSeriesWaterfallHook(['name'])
     }
   }
 
@@ -30,6 +32,10 @@ class Car {
 
   asyncSeriesBailHook(callback) {
     this.hooks.asyncSeriesBailHook.callAsync(callback)
+  }
+
+  asyncSeriesWaterfallHook(num) {
+    return this.hooks.asyncSeriesWaterfallHook.promise(num)
   }
 }
 
@@ -116,6 +122,27 @@ car.hooks.asyncSeriesBailHook.tapPromise('HPlugin', (callback) => {
   })
 })
 
-car.asyncSeriesBailHook((result) => {
-  log(result, '??')
+// car.asyncSeriesBailHook((result) => {
+//   log(result, '??')
+// })
+
+// asyncSeriesWaterfallHook
+car.hooks.asyncSeriesWaterfallHook.tapPromise('JPlugin', (result) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      log('J', result)
+      resolve(1 + result)
+    }, random())
+  })
 })
+
+car.hooks.asyncSeriesWaterfallHook.tapPromise('KPlugin', (result) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      log('K', result)
+      resolve(2 + result)
+    }, random())
+  })
+})
+
+car.asyncSeriesWaterfallHook(0).then(res => log(res))

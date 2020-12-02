@@ -9,5 +9,5 @@ const {
   AsyncParallelHook, // 异步并行
   AsyncSeriesHook, // 异步串行
   AsyncSeriesBailHook, // 顺序可早退钩子 异步串行熔断
-  AsyncSeriesWaterfallHook
+  AsyncSeriesWaterfallHook // 顺序瀑布钩子   异步串行值传递【瀑布】
 } = require('tapable')
