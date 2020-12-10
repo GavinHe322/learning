@@ -24,6 +24,7 @@
     "webpack-cli": "^4.2.0"
   },
   "devDependencies": {
+    "@babel/parser": "^7.12.10",
     "madge": "^3.12.0"
   }
 }
