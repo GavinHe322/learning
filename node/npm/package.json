@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@babel/parser": "^7.12.10",
+    "acorn-jsx": "^5.3.1",
     "madge": "^3.12.0"
   }
 }
