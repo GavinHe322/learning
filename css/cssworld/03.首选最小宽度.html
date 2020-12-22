@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>首选最小宽度</title>
+  <style>
+    .ao,
+    .tu {
+      display: inline-block;
+      width: 0;
+      font-size: 14px;
+      margin: 50px;
+    }
+
+    .ao::before,
+    .tu::before {
+      outline: 2px solid #f40;
+    }
+
+    .ao::before {
+      content: 'love你love';
+    }
+    .tu::before {
+      content: '我love你';
+    }
+  </style>
+</head>
+<body>
+  <span class="ao"></span>
+  <span class="tu"></span>
+</body>
+</html>
