@@ -16,7 +16,7 @@
 
 ## leetcode
 
-- [跳转](./leetcode)
+- [跳转](./algorithm/leetcode)
 
 ## example
 
