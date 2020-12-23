@@ -1,37 +1,42 @@
-> # learning
-### step by step
+# learning
+> step by step
+---
 
-> algorithm
-  - code 
-  - dataStructure 数据结构
-  - leetCode
-  - sort
-> example(练习)
-  - baseJs (原生js)
-  - router (路由)
-  - 其他练习
-> vue
-  - Vue (vue2.6 core源码书写板)
-  - MVVM 
-    - new Vue 实例
-    - defineProperty 数据劫持
-    - proxy 代理属性
-    - Observer 订阅
-    - notify 发布
-    - child.update
-  - 基础语法
-  - 组件通讯
-> React
-  - 基础语法、
-  - 组件通讯
-  
-> ts
-  - typeScript 基础语法
-  
-> python
-  - python 基础语法
-  
-> django
-  - project 和 app 的概念
-  - 路由系统
-  - http request && response
+## 书籍
+- [JavaScript中的设计模式-曾探](./design)
+- [CSS World-张鑫旭](./css/cssworld)
+
+## algorithm
+
+### 数据结构
+
+- [二叉树](./algorithm/dataStructure/binaryTree.html)
+- [单向链表](./algorithm/dataStructure/LinkedList1.html)
+- [双向链表](./algorithm/dataStructure/LinkedList2.html)
+
+## leetcode
+
+- [跳转](./leetcode)
+
+## example
+
+- [路由](./example/router)
+- [js的一些原生实现](./example/baseJs)
+
+## vue
+- [MVVM练习](./vue/mvvm/index.html)
+- [snabbdom源码](./vue/snabbdom/snabbdom.xmind)
+- [vue2源码](./vue/vue/Vue.xmind)
+- [vue3练习](./vue/vue3/api)
+
+## 一些语言练习
+- [node](./node/api)
+- [typescript](./ts)
+- [react](./react)
+- [java](./java)
+- [python](./python)
+- [dart](./dart)
+
+## 构建工具练习
+- [rollup](./rollup)
+- [webpack](./node/npm)
