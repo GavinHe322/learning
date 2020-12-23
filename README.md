@@ -22,6 +22,7 @@
 
 - [路由](./example/router)
 - [js的一些原生实现](./example/baseJs)
+- [正则速记](./example/regexp/index.js)
 
 ## vue
 - [MVVM练习](./vue/mvvm/index.html)
