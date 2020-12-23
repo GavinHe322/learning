@@ -40,4 +40,5 @@
 
 ## 构建工具练习
 - [rollup](./rollup)
+- [lerna包管理练习](https://github.com/GavinHe322/lerna)
 - [webpack](./node/npm)
