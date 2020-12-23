@@ -28,7 +28,7 @@
 - [snabbdom源码](./vue/snabbdom/snabbdom.xmind)
 - [vue2源码](./vue/vue/Vue.xmind)
 - [vue3练习](./vue/vue3/api)
-- [vuecli源码](./issues/6)
+- [vuecli源码](https://github.com/GavinHe322/learning/issues/6)
 
 ## 一些语言练习
 - [node](./node/api)
