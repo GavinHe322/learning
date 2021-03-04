@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "rollup": "^2.29.0"
+    "rollup": "^2.29.0",
+    "rollup-plugin-vue": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
+    "@vue/compiler-sfc": "^3.0.6",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-latest": "^6.24.1",
     "d3": "^6.2.0",
@@ -21,7 +23,8 @@
     "peer": "rollup -c src/Peerdependencies/rollup.config.js -o src/Peerdependencies/.dist/bundle.js",
     "babel": "rollup -c src/babel/rollup.config.js -o src/babel/.dist/bundle.js",
     "d3": "rollup -c src/d3/rollup.config.js -o src/d3/.dist/bundle.js",
-    "banner": "rollup -c src/banner/rollup.config.js -o src/banner/.dist/bundle.js"
+    "banner": "rollup -c src/banner/rollup.config.js -o src/banner/.dist/bundle.js",
+    "vue:plugin": "rollup -c src/rollup-plugin-vue/rollup.config.js"
   },
   "keywords": [],
   "author": "",
